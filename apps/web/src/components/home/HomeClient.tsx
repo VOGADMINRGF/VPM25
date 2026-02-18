@@ -2,22 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { WorldPanoramaMap } from "@/components/home/WorldPanoramaMap";
-import { SupporterBanner } from "@/components/home/SupporterBanner";
-import { MomentumAndCtas } from "@/components/home/MomentumAndCtas";
 import { SupporterSection } from "@/components/join/SupporterSection";
 import { COUNTRY_OPTIONS } from "@/lib/countries";
-
-type Stats = {
-  people: number;
-  countries: number;
-  chapters: number;
-};
 
 type Notice = { ok: boolean; msg: string } | null;
 
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
-const DONATION_URL = "https://startnext.com/mehrheit";
 const MIN_AGE = 16;
 const MOTIVATION_MAX = 160;
 const MOTIVATION_PRESETS = [
@@ -70,9 +60,6 @@ function maxBirthDateIso(minAge: number) {
 }
 
 export default function HomeClient() {
-  const [stats, setStats] = useState<Stats>({ people: 0, countries: 0, chapters: 0 });
-  const [statsError, setStatsError] = useState(false);
-
   const [memberType, setMemberType] = useState<"person" | "organisation">("person");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -96,34 +83,8 @@ export default function HomeClient() {
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showDonationPopup, setShowDonationPopup] = useState(false);
   const avatarFileRef = useRef<HTMLInputElement | null>(null);
   const supporterFileRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    let active = true;
-    fetch("/api/stats")
-      .then((res) => res.json())
-      .then((data) => {
-        if (!active) return;
-        if (
-          typeof data?.people === "number" &&
-          typeof data?.countries === "number" &&
-          typeof data?.chapters === "number"
-        ) {
-          setStats({ people: data.people, countries: data.countries, chapters: data.chapters });
-        } else {
-          setStatsError(true);
-        }
-      })
-      .catch(() => {
-        if (!active) return;
-        setStatsError(true);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   const handleImageFile = (
     file: File | null,
@@ -254,7 +215,7 @@ export default function HomeClient() {
         avatarUrl: isPublic ? avatarValue : undefined,
         publicSupporter,
         supporterImageUrl: supporterImageValue,
-        supporterNote: publicSupporter ? supporterNote.trim() || undefined : undefined,
+        supporterNote: supporterNote.trim() || undefined,
         wantsNewsletter,
         wantsNewsletterEdDebatte,
       };
@@ -268,10 +229,6 @@ export default function HomeClient() {
 
         if (res.ok && data?.ok) {
           setNotice({ ok: true, msg: "Bitte E-Mail bestätigen – wir haben dir einen Link geschickt." });
-          setStats((prev) => ({
-            ...prev,
-            people: prev.people + (memberType === "person" ? 1 : 0),
-          }));
           resetForm();
         } else {
         setNotice({ ok: false, msg: "Das hat nicht geklappt. Bitte später erneut versuchen." });
@@ -284,77 +241,130 @@ export default function HomeClient() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[var(--brand-from)] via-white to-white pb-16">
+    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
       <section
         id="hero"
-        className="border-b border-slate-200/60 bg-gradient-to-b from-[var(--brand-from)] via-white to-[var(--brand-to)]"
+        className="relative overflow-hidden border-b border-slate-800/70 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900"
       >
-        <div className="mx-auto max-w-6xl px-4 pb-12 pt-12">
-          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-            <div className="space-y-6">
-              <div className="inline-flex items-center rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
-                Mehrheitsprinzip zuerst
+        <div className="pointer-events-none absolute -right-20 top-12 h-64 w-64 rounded-full bg-cyan-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-24 top-40 h-72 w-72 rounded-full bg-sky-500/20 blur-3xl" />
+        <div className="mx-auto max-w-6xl px-4 pb-14 pt-12">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="space-y-7">
+              <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-sky-300">
+                Prüfpfade statt Parolen
               </div>
 
               <div className="space-y-4">
                 <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
                   <span className="block bg-gradient-to-r from-cyan-500 to-sky-600 bg-clip-text text-transparent">
-                    Mehrheitsprinzip. Weltweit.
+                    Mehrheiten, die man prüfen kann.
                   </span>
-                  <span className="block text-slate-900">Nachvollziehbar statt parteitaktisch.</span>
+                  <span className="block text-slate-100">Klar, fair, nachvollziehbar.</span>
                 </h1>
-                <p className="max-w-2xl text-lg text-slate-700 md:text-xl">
-                  Viele Menschen erleben Politik als intransparent, folgenlos und
-                  korruptionsanfällig – während Krisen, Konflikte, Sanktionen, Preise und soziale
-                  Spannungen den Alltag prägen. VoiceOpenGov baut eine unabhängige Infrastruktur,
-                  damit Entscheidungen wieder prüfbar, fair und mehrheitsfähig werden – über
-                  Grenzen hinweg.
+                <p className="max-w-2xl text-lg text-slate-300 md:text-xl">
+                  VoiceOpenGov baut eine unabhängige Infrastruktur, damit Entscheidungen wieder
+                  verständlich, prüfbar und mehrheitsfähig werden – jenseits von Taktik,
+                  parteipolitischem Lagerdenken und Intransparenz.
                 </p>
-                <ul className="space-y-2 text-sm text-slate-700">
-                  <li className="flex gap-3 text-sm text-slate-700">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-600" />
-                    Nicht links, nicht rechts – sondern überprüfbar: Quellen, Begriffe und Optionen
-                    sind offen dokumentiert.
-                  </li>
-                  <li className="flex gap-3 text-sm text-slate-700">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-600" />
-                    Keine Partei, kein Verein: Inhalte entstehen mit der Gemeinschaft – unabhängig
-                    von Lagerdenken und Förderlogik.
-                  </li>
-                  <li className="flex gap-3 text-sm text-slate-700">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-600" />
-                    Ein Werkzeug, ein Prüfpfad: eDebatte macht Mehrheiten nachvollziehbar – von der
-                    Frage bis zur Umsetzung.
-                  </li>
-                </ul>
-
-                <MomentumAndCtas
-                  members={stats.people}
-                  chapters={stats.chapters}
-                  countries={stats.countries}
-                />
-                {statsError && (
-                  <p className="mt-2 text-xs text-slate-500">
-                    Live-Zahlen werden später nachgeladen.
-                  </p>
-                )}
+                <div className="flex flex-wrap gap-3">
+                  <Link href="/#mitmachen" className="btn btn-primary">
+                    Kostenfrei beitreten
+                  </Link>
+                  <Link href="/unterstuetzen" className="btn btn-ghost">
+                    Initiative unterstützen
+                  </Link>
+                  <Link href="/dossier/direkte-demokratie" className="btn btn-ghost">
+                    Beispiel-Dossier
+                  </Link>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {[
+                    {
+                      title: "Quellenpflicht",
+                      body: "Begriffe, Annahmen und Quellen sind offen dokumentiert.",
+                    },
+                    {
+                      title: "Mehrheit mit Kontext",
+                      body: "Entscheidungen zeigen Optionen, Begründungen und Gegenpositionen.",
+                    },
+                    {
+                      title: "Umsetzung sichtbar",
+                      body: "Status, Zuständigkeit und nächste Schritte bleiben nachvollziehbar.",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-xs text-slate-300 shadow-sm"
+                    >
+                      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                        {item.title}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-slate-100">{item.body}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <WorldPanoramaMap />
+            <div className="relative">
+              <div className="absolute -right-8 top-10 h-40 w-40 rounded-full bg-sky-500/20 blur-3xl" />
+              <div className="relative rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-soft">
+                <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  <span>Prüfpfad in Arbeit</span>
+                  <span className="rounded-full border border-slate-700 bg-slate-950/70 px-2 py-0.5 text-[10px] text-slate-300">
+                    Aufbauphase
+                  </span>
+                </div>
+                <h2 className="mt-3 text-xl font-semibold text-slate-100">
+                  So sieht eine prüfbare Entscheidung aus
+                </h2>
+                <div className="mt-4 grid gap-3">
+                  {[
+                    {
+                      title: "1. Frage & Rahmen",
+                      body: "Was genau soll entschieden werden und wer ist zuständig?",
+                    },
+                    {
+                      title: "2. Dossier",
+                      body: "Begriffe, Quellen, Risiken und offene Fragen.",
+                    },
+                    {
+                      title: "3. Optionen",
+                      body: "Mehrere Wege mit klaren Folgen und Annahmen.",
+                    },
+                    {
+                      title: "4. Mehrheit & Umsetzung",
+                      body: "Entscheidung mit Begründung und sichtbarem Status.",
+                    },
+                  ].map((step) => (
+                    <div
+                      key={step.title}
+                      className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4"
+                    >
+                      <p className="text-xs font-semibold text-slate-100">{step.title}</p>
+                      <p className="mt-1 text-xs text-slate-400">{step.body}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-xs text-slate-400">
+                  Unterstützung ist freiwillig und bringt keine Stimmvorteile.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section id="trust" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Vertrauen & Prüfpfade
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-900">
+          <h2 className="mt-2 text-2xl font-bold text-slate-100">
             Vertrauen entsteht nicht durch Versprechen – sondern durch Prüfpfade.
           </h2>
-          <p className="mt-3 text-sm text-slate-700">
+          <p className="mt-3 text-sm text-slate-300">
             Wir behaupten nicht, die Wahrheit zu besitzen. Wir machen sie prüfbar: Jede Aussage
             bekommt Kontext, Quellen und Gegenargumente. Jede Entscheidung zeigt, wer was wann
             vorgeschlagen hat, welche Optionen zur Wahl standen – und warum eine Mehrheit sich so
@@ -382,10 +392,10 @@ export default function HomeClient() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4"
+                className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4"
               >
-                <h3 className="text-sm font-semibold text-slate-900">{item.title}</h3>
-                <p className="mt-2 text-xs text-slate-600">{item.body}</p>
+                <h3 className="text-sm font-semibold text-slate-100">{item.title}</h3>
+                <p className="mt-2 text-xs text-slate-400">{item.body}</p>
               </div>
             ))}
           </div>
@@ -393,15 +403,15 @@ export default function HomeClient() {
       </section>
 
       <section id="chapter" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Chapters
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-900">
+          <h2 className="mt-2 text-2xl font-bold text-slate-100">
             Ein Chapter in jedem Land. In jedem Bundesland. Ein offener Anlaufpunkt – digital und
             analog.
           </h2>
-          <p className="mt-3 text-sm text-slate-700">
+          <p className="mt-3 text-sm text-slate-300">
             Politikverdrossenheit entsteht oft, weil Menschen nicht wissen, wo sie ihr Anliegen
             wirksam adressieren können – und weil Prozesse im Zuständigkeits-Nebel verschwinden.
             Darum bauen wir Chapters: lokale, offene Sprechstunden (z. B. in Stadtteilen, Kommunen,
@@ -417,7 +427,7 @@ export default function HomeClient() {
             ].map((step) => (
               <div
                 key={step}
-                className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-700"
+                className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-300"
               >
                 {step}
               </div>
@@ -442,14 +452,14 @@ export default function HomeClient() {
       </section>
 
       <section id="dossier-beispiel" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Beispiel-Dossier
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-900">
+          <h2 className="mt-2 text-2xl font-bold text-slate-100">
             Beispiel-Dossier: Direkte Demokratie
           </h2>
-          <p className="mt-2 text-sm text-slate-700">
+          <p className="mt-2 text-sm text-slate-300">
             Ein Dossier bündelt Behauptungen, Quellen, Gegenpositionen, offene Fragen und
             Varianten – damit Mehrheiten auf belastbaren Grundlagen entscheiden.
           </p>
@@ -462,7 +472,7 @@ export default function HomeClient() {
             ].map((item) => (
               <div
                 key={item}
-                className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-700"
+                className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-300"
               >
                 {item}
               </div>
@@ -484,36 +494,36 @@ export default function HomeClient() {
       </section>
 
       <section id="vergleich" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Systemvergleich
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-900">
+          <h2 className="mt-2 text-2xl font-bold text-slate-100">
             Warum das heutige System oft blockiert – und was wir anders machen
           </h2>
 
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                 Heute (parlamentarisch)
               </p>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li>Zuständigkeiten verschwimmen (Kommune/Land/Bund/EU).</li>
                 <li>Debatten belohnen Taktik statt Nachvollziehbarkeit.</li>
                 <li>Konsequenzen wirken unklar oder folgenlos.</li>
               </ul>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-sky-50/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-sky-700">
+            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-sky-300">
                 Neu (Mehrheitsprinzip mit Dossier)
               </p>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              <ul className="mt-3 space-y-2 text-sm text-slate-300">
                 <li>Optionen & Quellen sind offen (prüfbar statt „Glauben“).</li>
                 <li>Mehrheiten sind dokumentiert (mit Kontext, nicht nur Prozent).</li>
                 <li>Umsetzung wird sichtbar (Status, Zuständigkeit, nächste Schritte).</li>
               </ul>
-              <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-sky-700">
+              <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-sky-300">
                 {[
                   "1. Check",
                   "2. Dossier",
@@ -521,7 +531,7 @@ export default function HomeClient() {
                 ].map((step) => (
                   <span
                     key={step}
-                    className="rounded-full border border-sky-200 bg-white px-3 py-1"
+                    className="rounded-full border border-slate-700 bg-slate-950/70 px-3 py-1"
                   >
                     {step}
                   </span>
@@ -533,25 +543,25 @@ export default function HomeClient() {
       </section>
 
       <section id="mitmachen" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                 Mitgliedschaft
               </p>
-              <h2 className="text-2xl font-bold text-slate-900">Kostenfrei beitreten</h2>
-              <p className="mt-1 text-xs text-slate-600">
-                Double-Opt-In: Bitte E-Mail bestätigen. Spenden aktuell via Startnext.
+              <h2 className="text-2xl font-bold text-slate-100">Kostenfrei beitreten</h2>
+              <p className="mt-1 text-xs text-slate-400">
+                Double-Opt-In: Bitte E-Mail bestätigen. Mitgliedschaft ist kostenfrei.
               </p>
             </div>
-            <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 text-xs font-semibold text-slate-600">
+            <div className="inline-flex rounded-full border border-slate-700 bg-slate-950/60 p-1 text-xs font-semibold text-slate-300">
               {(["person", "organisation"] as const).map((value) => (
                 <button
                   key={value}
                   type="button"
                   onClick={() => setMemberType(value)}
                   className={`rounded-full px-3 py-1 ${
-                    memberType === value ? "bg-sky-600 text-white" : "hover:bg-slate-100"
+                    memberType === value ? "bg-sky-600 text-white" : "hover:bg-slate-900"
                   }`}
                 >
                   {value === "person" ? "Person" : "Organisation"}
@@ -564,34 +574,34 @@ export default function HomeClient() {
             {memberType === "person" && (
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-700">Vorname</label>
+                  <label className="text-xs font-medium text-slate-300">Vorname</label>
                   <input
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-700">Nachname</label>
+                  <label className="text-xs font-medium text-slate-300">Nachname</label>
                   <input
                     required
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   />
                 </div>
                 <div className="space-y-1 md:col-span-2">
-                  <label className="text-xs font-medium text-slate-700">Geburtsdatum</label>
+                  <label className="text-xs font-medium text-slate-300">Geburtsdatum</label>
                   <input
                     required
                     type="date"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
                     max={maxBirthDateIso(MIN_AGE)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   />
-                  <p className="text-[11px] text-slate-500">Teilnahme ab 16 Jahren.</p>
+                  <p className="text-[11px] text-slate-400">Teilnahme ab 16 Jahren.</p>
                 </div>
               </div>
             )}
@@ -599,12 +609,12 @@ export default function HomeClient() {
             {memberType === "organisation" && (
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-1 md:col-span-2">
-                  <label className="text-xs font-medium text-slate-700">Organisation</label>
+                  <label className="text-xs font-medium text-slate-300">Organisation</label>
                   <input
                     required
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   />
                 </div>
               </div>
@@ -612,31 +622,31 @@ export default function HomeClient() {
 
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700">E-Mail</label>
+                <label className="text-xs font-medium text-slate-300">E-Mail</label>
                 <input
                   required
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700">Ort</label>
+                <label className="text-xs font-medium text-slate-300">Ort</label>
                 <input
                   required={isPublic}
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700">Land (optional)</label>
+                <label className="text-xs font-medium text-slate-300">Land (optional)</label>
                 <select
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                 >
                   <option value="">Bitte wählen</option>
                   {COUNTRY_OPTIONS.map((country) => (
@@ -649,36 +659,36 @@ export default function HomeClient() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-700">Orts-Sichtbarkeit</label>
-              <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 text-xs font-semibold text-slate-600">
+              <label className="text-xs font-medium text-slate-300">Orts-Sichtbarkeit</label>
+              <div className="inline-flex rounded-full border border-slate-700 bg-slate-950/60 p-1 text-xs font-semibold text-slate-300">
                 <button
                   type="button"
                   onClick={() => setIsPublic(true)}
-                  className={`rounded-full px-3 py-1 ${isPublic ? "bg-sky-600 text-white" : "hover:bg-slate-100"}`}
+                  className={`rounded-full px-3 py-1 ${isPublic ? "bg-sky-600 text-white" : "hover:bg-slate-900"}`}
                 >
                   Öffentlich
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsPublic(false)}
-                  className={`rounded-full px-3 py-1 ${!isPublic ? "bg-sky-600 text-white" : "hover:bg-slate-100"}`}
+                  className={`rounded-full px-3 py-1 ${!isPublic ? "bg-sky-600 text-white" : "hover:bg-slate-900"}`}
                 >
                   Privat
                 </button>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 Öffentlich zeigt nur Orts-Summen. Keine Einzelprofile oder Rohdaten.
               </p>
             </div>
 
             {(isPublic || publicSupporter) && memberType === "organisation" && (
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700">Logo-Link (optional)</label>
+                <label className="text-xs font-medium text-slate-300">Logo-Link (optional)</label>
                 <input
                   type="url"
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   placeholder="https://"
                 />
               </div>
@@ -686,7 +696,7 @@ export default function HomeClient() {
 
             {(isPublic || publicSupporter) && memberType === "person" && (
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-700">
+                <label className="text-xs font-medium text-slate-300">
                   Profilfoto hochladen (optional)
                 </label>
                 <input
@@ -696,12 +706,12 @@ export default function HomeClient() {
                   onChange={(e) =>
                     handleImageFile(e.target.files?.[0] ?? null, setAvatarDataUrl, setAvatarFileName)
                   }
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                 />
                 {avatarFileName && (
-                  <p className="text-[11px] text-slate-500">Ausgewählt: {avatarFileName}</p>
+                  <p className="text-[11px] text-slate-400">Ausgewählt: {avatarFileName}</p>
                 )}
-                <p className="text-[11px] text-slate-500">Max. 2 MB, JPG/PNG.</p>
+                <p className="text-[11px] text-slate-400">Max. 2 MB, JPG/PNG.</p>
               </div>
             )}
 
@@ -716,7 +726,6 @@ export default function HomeClient() {
                     setSupporterImageUrl("");
                     setSupporterImageDataUrl(null);
                     setSupporterImageFileName("");
-                    setSupporterNote("");
                     if (supporterFileRef.current) supporterFileRef.current.value = "";
                   }
                 }}
@@ -731,8 +740,7 @@ export default function HomeClient() {
                 }}
               />
 
-              {publicSupporter && (
-                <div className="space-y-1">
+              <div className="space-y-1">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-medium text-slate-700">
                       Motivation (optional)
@@ -773,10 +781,9 @@ export default function HomeClient() {
                     placeholder="Warum bist du Teil der Community?"
                   />
                   <p className="text-[11px] text-slate-500">
-                    Wird öffentlich bei den Unterstützern angezeigt. Bitte keine Kontaktdaten.
+                    Öffentlich sichtbar nur, wenn du als Unterstützer aktiviert bist. Bitte keine Kontaktdaten.
                   </p>
                 </div>
-              )}
 
               {publicSupporter && supporterMode === "separate" && memberType === "organisation" && (
                 <div className="space-y-1">
@@ -841,17 +848,13 @@ export default function HomeClient() {
             </label>
 
             <div className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-              <p className="text-xs font-medium text-slate-700">Spenden (aktuell über Startnext)</p>
+              <p className="text-xs font-medium text-slate-700">Initiative unterstützen</p>
               <p className="text-xs text-slate-500">
-                Wir modernisieren den Spendenprozess. Bis dahin sammeln wir über Startnext.
+                Freiwillige Unterstützung hält Infrastruktur, Recherche und Chapters am Laufen. Keine Stimmvorteile.
               </p>
-              <button
-                type="button"
-                onClick={() => setShowDonationPopup(true)}
-                className="btn btn-ghost"
-              >
-                Zu Startnext
-              </button>
+              <Link href="/unterstuetzen" className="btn btn-ghost">
+                Unterstützungswege ansehen
+              </Link>
             </div>
 
             <label className="flex items-start gap-2 text-xs text-slate-600">
@@ -889,82 +892,46 @@ export default function HomeClient() {
           <div className="mt-4 space-y-2 text-xs text-slate-600">
             <p>Mitgliedschaft ist kostenfrei.</p>
             <p>
-              Spenden sind freiwillig und helfen beim Aufbau von Chapters, Moderation, Dossiers und
-              Infrastruktur. Aktuell über Startnext – Fragen gern an members@voiceopengov.org.
+              Unterstützung ist freiwillig und hilft beim Aufbau von Chapters, Moderation, Dossiers
+              und Infrastruktur. Details findest du unter{" "}
+              <Link href="/unterstuetzen" className="font-semibold text-slate-900 underline underline-offset-2">
+                Unterstützen
+              </Link>{" "}
+              oder per Mail an{" "}
+              <a href="mailto:members@voiceopengov.org" className="font-semibold text-slate-900">
+                members@voiceopengov.org
+              </a>
+              .
             </p>
             <p>Öffentlich/Privat: Öffentlich zeigt nur Orts-Summen (keine Einzelprofile, keine Rohdaten).</p>
           </div>
         </div>
       </section>
 
-
-      <section id="spenden" className="mx-auto mt-14 max-w-6xl px-4 pb-10">
+      <section id="unterstuetzen" className="mx-auto mt-14 max-w-6xl px-4 pb-10">
         <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Spenden</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Unterstützen</p>
               <h3 className="text-xl font-semibold text-slate-900">
-                Unterstütze Aufbau, Recherche und Community.
+                Unterstütze die Initiative – transparent und ohne Stimmvorteile.
               </h3>
               <p className="text-sm text-slate-700">
-                Spenden halten Infrastruktur, Recherche, Übersetzung und Transparenz am Laufen.
-                Aktuell über Startnext – wir modernisieren den Prozess.
+                Unterstützung ermöglicht Infrastruktur, Recherche, Übersetzungen und lokale Chapters.
+                Wir halten alles nachvollziehbar und offen dokumentiert.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <button type="button" onClick={() => setShowDonationPopup(true)} className="btn btn-primary">
-                Spenden via Startnext
-              </button>
-              <Link
-                href="/kontakt"
-                className="btn btn-ghost"
-              >
+              <Link href="/unterstuetzen" className="btn btn-primary">
+                Unterstützungswege
+              </Link>
+              <Link href="/kontakt" className="btn btn-ghost">
                 Fragen stellen
               </Link>
             </div>
           </div>
         </div>
       </section>
-
-      {showDonationPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Spendenhinweis
-            </p>
-            <h4 className="mt-2 text-lg font-semibold text-slate-900">
-              Spenden aktuell über Startnext
-            </h4>
-            <p className="mt-2 text-sm text-slate-700">
-              Wir sammeln Spenden derzeit über Startnext und modernisieren den Prozess. Bei Fragen
-              erreichst du uns unter{" "}
-              <a href="mailto:members@voiceopengov.org" className="font-semibold text-slate-900">
-                members@voiceopengov.org
-              </a>
-              .
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <a
-                href={DONATION_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-primary"
-              >
-                Zu Startnext
-              </a>
-              <button
-                type="button"
-                onClick={() => setShowDonationPopup(false)}
-                className="btn btn-ghost"
-              >
-                Schließen
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <SupporterBanner />
     </main>
   );
 }

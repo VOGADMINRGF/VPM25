@@ -58,7 +58,7 @@ const STRINGS = {
       {
         label: "Unterstuetzer:innen",
         description:
-          "Angaben aus dem Mitmachen-Formular (z. B. Name, E-Mail, Geburtsdatum und -ort, Land, Support-Modus, optionale Skills). Wir nutzen diese Daten fuer Moderation, Rueckfragen und interne Abstimmungen. Fuer den Globus und die Live-Zahlen verwenden wir nur aggregierte Werte.",
+          "Angaben aus dem Mitmachen-Formular (z. B. Name, E-Mail, Geburtsdatum und -ort, Land, Support-Modus, optionale Motivationstexte und Skills). Wir nutzen diese Daten fuer Moderation, Rueckfragen und interne Abstimmungen. Fuer den Globus und die Live-Zahlen verwenden wir nur aggregierte Werte.",
       },
       {
         label: "Initiativen-Intake",
@@ -80,7 +80,7 @@ const STRINGS = {
       {
         label: "Supporters",
         description:
-          "Details submitted via the join form (e.g. name, e-mail, birth date/place, country, support mode, optional skills). We use these details for moderation, follow-ups and internal coordination. The globe and live stats show aggregated data only.",
+          "Details submitted via the join form (e.g. name, e-mail, birth date/place, country, support mode, optional motivation text and skills). We use these details for moderation, follow-ups and internal coordination. The globe and live stats show aggregated data only.",
       },
       {
         label: "Initiatives intake",

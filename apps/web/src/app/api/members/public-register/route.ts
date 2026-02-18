@@ -100,6 +100,12 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#039;");
 }
 
+function containsContactInfo(value: string) {
+  const emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+  const urlRegex = /\bhttps?:\/\/|\bwww\./i;
+  return emailRegex.test(value) || urlRegex.test(value);
+}
+
 function parseDateOnly(value: string) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
   if (!match) return null;
@@ -155,10 +161,15 @@ export async function POST(req: Request) {
     const publicSupporter = Boolean(body.publicSupporter);
     const wantsNewsletter = Boolean(body.wantsNewsletter);
     const wantsNewsletterEdDebatte = Boolean(body.wantsNewsletterEdDebatte);
-    const supporterNote =
-      publicSupporter && typeof body.supporterNote === "string"
-        ? body.supporterNote.replace(/\s+/g, " ").trim().slice(0, 160)
-        : undefined;
+    const supporterNoteRaw =
+      typeof body.supporterNote === "string" ? body.supporterNote : "";
+    const supporterNote = supporterNoteRaw.replace(/\s+/g, " ").trim().slice(0, 160) || undefined;
+    if (supporterNote && containsContactInfo(supporterNote)) {
+      return NextResponse.json(
+        { ok: false, requestId, error: { message: "supporter_note_contact" } },
+        { status: 400 }
+      );
+    }
 
     let birthDateValue: string | undefined;
     if (type === "person") {
@@ -258,7 +269,7 @@ export async function POST(req: Request) {
     const birthDateText = birthDateValue
       ? birthDateValue.split("-").reverse().join(".")
       : undefined;
-    const donationUrl = "https://startnext.com/mehrheit";
+    const supportUrl = `${base}/unterstuetzen`;
     const contactUrl = `${base}/kontakt`;
     const notifyEmail =
       process.env.VOG_MEMBERSHIP_CONTACT_EMAIL || "members@voiceopengov.org";
@@ -309,7 +320,7 @@ export async function POST(req: Request) {
         `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 22px;">`,
         `<tr>`,
         `<td bgcolor="#06b6d4" style="border-radius: 999px;">`,
-        `<a href="${donationUrl}" style="display: inline-block; padding: 8px 14px; font-weight: 600; font-size: 12px; color: #ffffff; text-decoration: none; border-radius: 999px;">Spenden via Startnext</a>`,
+        `<a href="${supportUrl}" style="display: inline-block; padding: 8px 14px; font-weight: 600; font-size: 12px; color: #ffffff; text-decoration: none; border-radius: 999px;">Initiative unterstützen</a>`,
         `</td>`,
         `<td style="width: 10px;"></td>`,
         `<td bgcolor="#e2e8f0" style="border-radius: 999px;">`,
@@ -339,7 +350,7 @@ export async function POST(req: Request) {
         `<tr><td style="padding: 4px 0; color: #475569;">Updates eDebatte</td><td style="padding: 4px 0; font-weight: 600;">${newsletterEdText}</td></tr>`,
         `</table>`,
         `</div>`,
-        `<p style="margin: 0 0 10px; font-size: 13px; color: #334155;">Wir halten aktuell über Startnext Ausschau nach finanziellen Mitteln, um Infrastruktur, Moderation und Chapters auszubauen.</p>`,
+        `<p style="margin: 0 0 10px; font-size: 13px; color: #334155;">Wenn du die Initiative unterstützen möchtest, findest du alle Wege und Hinweise auf unserer Unterstützungsseite.</p>`,
         `<p style="margin: 0 0 10px; font-size: 13px; color: #334155;">Wenn du dich in Marketing, Programmierung oder gesellschaftlich einbringen willst, freuen wir uns auf ein Zeichen an <a href="mailto:members@voiceopengov.org" style="color:#0ea5e9; font-weight:600; text-decoration:none;">members@voiceopengov.org</a>.</p>`,
         `<p style="margin: 0 0 16px; font-size: 13px; color: #334155;">Ansonsten freuen wir uns erstmal über deine Beteiligung.</p>`,
         `<p style="margin: 0; font-size: 12px; color: #64748b;">Wenn du dich nicht eingetragen hast, kannst du diese E-Mail ignorieren.</p>`,

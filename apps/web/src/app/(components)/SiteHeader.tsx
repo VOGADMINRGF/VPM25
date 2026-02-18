@@ -19,9 +19,9 @@ const NAV_ITEMS: NavItem[] = [
     description: "In wenigen Sekunden eintragen und informiert bleiben.",
   },
   {
-    href: "/donate",
-    label: "Spenden",
-    description: "Unterstuetze Aufbau, Recherche und Community.",
+    href: "/unterstuetzen",
+    label: "Unterstützen",
+    description: "Unterstütze Aufbau, Recherche und Community.",
   },
   {
     href: "/initiatives",
@@ -75,7 +75,7 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-100/80 bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
         {/* Logo / Brand */}
         <Link href="/" className="flex items-center gap-2">
@@ -100,21 +100,21 @@ export function SiteHeader() {
               aria-label={`Sprache waehlen (aktuell ${activeLocaleConfig.label})`}
               aria-expanded={localeOpen}
               onClick={() => setLocaleOpen((v) => !v)}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-600 hover:border-sky-300 hover:text-sky-600"
-            >
+            className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-sky-300 hover:text-sky-200"
+          >
               <span aria-hidden="true" className="text-base">
                 {activeLocaleConfig.flagEmoji || "🏳️"}
               </span>
               <span>{localeLabel}</span>
             </button>
             {localeOpen && (
-              <div className="absolute right-0 mt-2 w-44 rounded-2xl border border-slate-200 bg-white p-2 shadow-lg">
+              <div className="absolute right-0 mt-2 w-44 rounded-2xl border border-slate-700 bg-slate-950 p-2 shadow-lg">
                 {localeOptions.map((lang) => (
                   <button
                     key={lang.code}
                     type="button"
                     onClick={() => handleLocaleSelect(lang.code)}
-                    className="flex w-full items-center justify-between rounded-xl px-2 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-50"
+                    className="flex w-full items-center justify-between rounded-xl px-2 py-1 text-[11px] font-semibold text-slate-200 hover:bg-slate-900"
                   >
                     <span className="inline-flex items-center gap-2">
                       <span aria-hidden="true">{lang.flag}</span>
@@ -130,7 +130,7 @@ export function SiteHeader() {
             type="button"
             aria-label="Navigation öffnen"
             onClick={() => setMobileOpen((v) => !v)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-300/80 bg-white/90 text-sm font-semibold text-slate-700 shadow-sm hover:border-sky-300"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700/80 bg-slate-900 text-sm font-semibold text-slate-200 shadow-sm hover:border-sky-300"
           >
             <>
               <span className="sr-only">Menue</span>
@@ -154,10 +154,10 @@ export function SiteHeader() {
 
       {/* Mobile-Drawer */}
       {mobileOpen && (
-        <div className="border-t border-slate-100/80 bg-white/95">
+        <div className="border-t border-slate-800/80 bg-slate-950/95">
           <div className="mx-auto max-w-6xl px-4 py-4 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs uppercase tracking-wide text-slate-500">
+              <span className="text-xs uppercase tracking-wide text-slate-400">
                 Navigation
               </span>
               <button
@@ -165,7 +165,7 @@ export function SiteHeader() {
                 aria-label={`Sprache waehlen (aktuell ${activeLocaleConfig.label})`}
                 aria-expanded={localeOpen}
                 onClick={() => setLocaleOpen((v) => !v)}
-                className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500 hover:border-sky-300 hover:text-sky-600"
+                className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-300 hover:border-sky-300 hover:text-sky-200"
               >
                 <span className="inline-flex items-center gap-2">
                   <span aria-hidden="true">{activeLocaleConfig.flagEmoji || "🏳️"}</span>
@@ -180,7 +180,7 @@ export function SiteHeader() {
                     key={lang.code}
                     type="button"
                     onClick={() => handleLocaleSelect(lang.code)}
-                    className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-[11px] font-semibold text-slate-700 hover:border-sky-300 hover:text-sky-600"
+                    className="flex items-center justify-between rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-[11px] font-semibold text-slate-200 hover:border-sky-300 hover:text-sky-200"
                   >
                     <span className="inline-flex items-center gap-2">
                       <span aria-hidden="true">{lang.flag}</span>
@@ -194,19 +194,19 @@ export function SiteHeader() {
 
             <nav
               aria-label="Mobile Navigation"
-              className="flex flex-col gap-2 text-sm font-semibold text-slate-800"
+              className="flex flex-col gap-2 text-sm font-semibold text-slate-100"
             >
               {NAV_ITEMS.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-2xl border border-slate-200 bg-slate-50/80 px-3 py-2 text-left hover:border-sky-300 hover:bg-sky-50"
+                  className="rounded-2xl border border-slate-700 bg-slate-900/80 px-3 py-2 text-left hover:border-sky-300 hover:bg-slate-900"
                 >
                   <span className="block text-sm font-semibold">
                     {item.label}
                   </span>
-                  <span className="mt-0.5 block text-[11px] font-normal text-slate-600">
+                  <span className="mt-0.5 block text-[11px] font-normal text-slate-400">
                     {item.description}
                   </span>
                 </Link>

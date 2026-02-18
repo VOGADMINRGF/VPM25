@@ -21,7 +21,7 @@ export async function GET() {
   const rows = await col
     .find({ status: "active", publicSupporter: true })
     .sort({ createdAt: -1 })
-    .limit(120)
+    .limit(60)
     .toArray();
 
   const supporters = rows.map((member) => ({

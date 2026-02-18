@@ -85,14 +85,9 @@ export function MomentumAndCtas({
           Chapter starten
         </Link>
 
-        <a
-          className={ctaGhost}
-          href="https://startnext.com/mehrheit"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Spenden (Startnext)
-        </a>
+        <Link href="/unterstuetzen" className={ctaGhost}>
+          Initiative unterstützen
+        </Link>
       </div>
 
       <div className="mt-2 text-xs text-slate-500">

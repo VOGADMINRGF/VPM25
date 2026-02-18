@@ -12,7 +12,7 @@ export function SupporterSection({
   onModeChange: (mode: Mode) => void;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+    <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
       <label className="flex items-start gap-3">
         <input
           type="checkbox"
@@ -21,10 +21,10 @@ export function SupporterSection({
           onChange={(e) => onEnabledChange(e.target.checked)}
         />
         <div>
-          <div className="text-sm font-semibold text-slate-900">
+          <div className="text-sm font-semibold text-slate-100">
             Als Unterstützer genannt werden (optional)
           </div>
-          <div className="text-sm text-slate-600">
+          <div className="text-sm text-slate-400">
             Öffentlich zeigen wir nur gekürzten Namen und optional ein Bild/Logo - keine Rohdaten.
           </div>
         </div>
@@ -41,7 +41,7 @@ export function SupporterSection({
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                 mode === "reuse"
                   ? "bg-sky-600 text-white"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
+                  : "bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800"
               }`}
             >
               Profilbild/Logo verwenden
@@ -54,7 +54,7 @@ export function SupporterSection({
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                 mode === "separate"
                   ? "bg-sky-600 text-white"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
+                  : "bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800"
               }`}
             >
               Anderes Bild hochladen

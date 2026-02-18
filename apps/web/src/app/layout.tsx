@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={initialLocale} className="h-full">
-      <body className="min-h-screen bg-gradient-to-b from-[var(--brand-from)] via-white to-white text-neutral-900 antialiased">
+      <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
         <LocaleProvider initialLocale={initialLocale}>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />

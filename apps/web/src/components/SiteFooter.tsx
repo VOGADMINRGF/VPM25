@@ -3,7 +3,7 @@ import Link from "next/link";
 const mainLinks = [
   { href: "/#mitmachen", label: "Mitmachen" },
   { href: "/dossier", label: "Dossier" },
-  { href: "/donate", label: "Spenden" },
+  { href: "/unterstuetzen", label: "Unterstützen" },
 ];
 
 const initiativeLinks = [
@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear();
 export default function SiteFooter() {
   return (
     <footer
-      className="mt-16 border-t border-slate-200 bg-slate-50/80"
+      className="mt-16 border-t border-slate-800 bg-slate-950/90"
       role="contentinfo"
     >
       <div className="mx-auto max-w-6xl px-4 py-10">
@@ -40,10 +40,10 @@ export default function SiteFooter() {
             >
               VoiceOpenGov
             </Link>
-            <p className="mt-2 text-sm font-semibold text-slate-900">
+            <p className="mt-2 text-sm font-semibold text-slate-100">
               Bewegung fuer robuste, nachvollziehbare Entscheidungen.
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-slate-600">
+            <p className="mt-3 text-sm leading-relaxed text-slate-400">
               VoiceOpenGov verbindet Menschen, Initiativen und Organisationen,
               die klare Verfahren und transparente Beteiligung aufbauen wollen.
             </p>
@@ -71,7 +71,7 @@ export default function SiteFooter() {
           />
         </div>
 
-        <div className="mt-8 border-t border-slate-200/70 pt-6 text-xs text-slate-500 md:flex md:items-center md:justify-between">
+        <div className="mt-8 border-t border-slate-800/70 pt-6 text-xs text-slate-500 md:flex md:items-center md:justify-between">
           <p>© {currentYear} VoiceOpenGov</p>
           <p className="mt-2 text-[11px] text-slate-500 md:mt-0">
             powered by Ricky G. Fleischer
@@ -91,8 +91,8 @@ type FooterNavProps = {
 function FooterNav({ title, ariaLabel, links }: FooterNavProps) {
   return (
     <nav aria-label={ariaLabel}>
-      <p className="text-sm font-semibold text-slate-900">{title}</p>
-      <ul className="mt-3 space-y-2 text-sm text-slate-600">
+      <p className="text-sm font-semibold text-slate-100">{title}</p>
+      <ul className="mt-3 space-y-2 text-sm text-slate-400">
         {links.map((link) => (
           <li key={`${link.href}-${link.label}`}>
             {link.external ? (
@@ -100,14 +100,14 @@ function FooterNav({ title, ariaLabel, links }: FooterNavProps) {
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="transition hover:text-slate-900 hover:underline hover:underline-offset-4"
+                className="transition hover:text-slate-100 hover:underline hover:underline-offset-4"
               >
                 {link.label}
               </a>
             ) : (
               <Link
                 href={link.href}
-                className="transition hover:text-slate-900 hover:underline hover:underline-offset-4"
+                className="transition hover:text-slate-100 hover:underline hover:underline-offset-4"
               >
                 {link.label}
               </Link>
