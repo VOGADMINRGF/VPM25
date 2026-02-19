@@ -1,4 +1,9 @@
 import countries from "world-countries";
+import {
+  DEFAULT_LOCALE,
+  type SupportedLocale,
+  isSupportedLocale,
+} from "@/config/locales";
 
 type CountryEntry = (typeof countries)[number];
 
@@ -38,20 +43,42 @@ const EU_CODES = [
   "SE",
 ];
 
-function germanLabel(country: CountryEntry) {
+const LOCALE_TO_TRANSLATION: Partial<Record<SupportedLocale, string>> = {
+  de: "deu",
+  en: "eng",
+  fr: "fra",
+  pl: "pol",
+  es: "spa",
+  it: "ita",
+  tr: "tur",
+  ar: "ara",
+  ru: "rus",
+  zh: "zho",
+};
+
+function localizedLabel(country: CountryEntry, locale: SupportedLocale) {
   const translations = (country as any)?.translations;
+  const translationKey = LOCALE_TO_TRANSLATION[locale] || "eng";
   return (
-    translations?.deu?.common ||
-    translations?.deu?.official ||
+    translations?.[translationKey]?.common ||
+    translations?.[translationKey]?.official ||
+    translations?.eng?.common ||
+    translations?.eng?.official ||
     country.name.common
   );
 }
 
-export const COUNTRY_OPTIONS: CountryOption[] = (() => {
+const optionsCache = new Map<SupportedLocale, CountryOption[]>();
+
+export function getCountryOptions(locale: SupportedLocale | string): CountryOption[] {
+  const normalized = isSupportedLocale(locale) ? locale : DEFAULT_LOCALE;
+  const cached = optionsCache.get(normalized);
+  if (cached) return cached;
+
   const options = (countries as CountryEntry[])
     .map((country) => ({
       code: country.cca2,
-      label: germanLabel(country),
+      label: localizedLabel(country, normalized),
     }))
     .filter((entry) => Boolean(entry.code) && Boolean(entry.label));
 
@@ -74,10 +101,12 @@ export const COUNTRY_OPTIONS: CountryOption[] = (() => {
 
   const rest = options
     .filter((entry) => !used.has(entry.code))
-    .sort((a, b) => a.label.localeCompare(b.label, "de"));
+    .sort((a, b) => a.label.localeCompare(b.label, normalized));
 
-  return [...ordered, ...rest];
-})();
+  const result = [...ordered, ...rest];
+  optionsCache.set(normalized, result);
+  return result;
+}
 
 const countryIndex = new Map(
   (countries as CountryEntry[]).map((country) => [country.cca2, country]),

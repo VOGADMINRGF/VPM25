@@ -5,46 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/context/LocaleContext";
 import { getLocaleConfig, SUPPORTED_LOCALES, type SupportedLocale } from "@/config/locales";
-
-type NavItem = {
-  href: string;
-  label: string;
-  description: string;
-};
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    href: "/#mitmachen",
-    label: "Mitmachen",
-    description: "In wenigen Sekunden eintragen und informiert bleiben.",
-  },
-  {
-    href: "/unterstuetzen",
-    label: "Unterstützen",
-    description: "Unterstütze Aufbau, Recherche und Community.",
-  },
-  {
-    href: "/initiatives",
-    label: "Fuer Initiativen",
-    description: "Themen einreichen und Prozesse sauber aufsetzen.",
-  },
-  {
-    href: "/dossier",
-    label: "Dossier",
-    description: "Standards, offene Fragen und Quellen.",
-  },
-  {
-    href: "/kontakt",
-    label: "Kontakt",
-    description: "Direkter Draht zum VoiceOpenGov Team.",
-  },
-];
+import { getHeaderStrings } from "./headerStrings";
 
 export function SiteHeader() {
   const { locale, setLocale } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [localeOpen, setLocaleOpen] = useState(false);
   const router = useRouter();
+  const strings = getHeaderStrings(locale);
 
   const activeLang = locale || "de";
   const activeLocaleConfig = useMemo(
@@ -63,6 +31,7 @@ export function SiteHeader() {
       flag: cfg.flagEmoji || "🏳️",
     };
   });
+  const localeAriaLabel = strings.aria.localeSelect.replace("{label}", activeLocaleConfig.label);
 
   useEffect(() => {
     if (!mobileOpen) setLocaleOpen(false);
@@ -97,11 +66,11 @@ export function SiteHeader() {
           <div className="relative hidden sm:block">
             <button
               type="button"
-              aria-label={`Sprache waehlen (aktuell ${activeLocaleConfig.label})`}
+              aria-label={localeAriaLabel}
               aria-expanded={localeOpen}
               onClick={() => setLocaleOpen((v) => !v)}
-            className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-sky-300 hover:text-sky-200"
-          >
+              className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-sky-300 hover:text-sky-200"
+            >
               <span aria-hidden="true" className="text-base">
                 {activeLocaleConfig.flagEmoji || "🏳️"}
               </span>
@@ -128,12 +97,12 @@ export function SiteHeader() {
           </div>
           <button
             type="button"
-            aria-label="Navigation öffnen"
+            aria-label={strings.aria.openNav}
             onClick={() => setMobileOpen((v) => !v)}
             className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700/80 bg-slate-900 text-sm font-semibold text-slate-200 shadow-sm hover:border-sky-300"
           >
             <>
-              <span className="sr-only">Menue</span>
+              <span className="sr-only">{strings.menuLabel}</span>
               <svg
                 aria-hidden="true"
                 className="h-5 w-5"
@@ -158,11 +127,11 @@ export function SiteHeader() {
           <div className="mx-auto max-w-6xl px-4 py-4 space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs uppercase tracking-wide text-slate-400">
-                Navigation
+                {strings.navigationLabel}
               </span>
               <button
                 type="button"
-                aria-label={`Sprache waehlen (aktuell ${activeLocaleConfig.label})`}
+                aria-label={localeAriaLabel}
                 aria-expanded={localeOpen}
                 onClick={() => setLocaleOpen((v) => !v)}
                 className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-300 hover:border-sky-300 hover:text-sky-200"
@@ -193,10 +162,10 @@ export function SiteHeader() {
             )}
 
             <nav
-              aria-label="Mobile Navigation"
+              aria-label={strings.aria.mobileNav}
               className="flex flex-col gap-2 text-sm font-semibold text-slate-100"
             >
-              {NAV_ITEMS.map((item) => (
+              {strings.navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}

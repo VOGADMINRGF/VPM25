@@ -3,6 +3,7 @@ import { DEFAULT_LOCALE, type SupportedLocale } from "@/config/locales";
 type LocaleValue<T> = Record<"de", T> & Partial<Record<SupportedLocale, T>>;
 
 const STRINGS: {
+  label: LocaleValue<string>;
   title: LocaleValue<string>;
   intro: LocaleValue<string>;
   responsibleTitle: LocaleValue<string>;
@@ -13,6 +14,11 @@ const STRINGS: {
   disclaimerBody: LocaleValue<string>;
   emailLabel: LocaleValue<string>;
 } = {
+  label: {
+    de: "Rechtliches",
+    en: "Legal",
+  },
+
   title: {
     de: "Impressum",
     en: "Legal Notice",
@@ -194,11 +200,12 @@ const STRINGS: {
 
 function pick<T>(entry: LocaleValue<T>, locale: SupportedLocale | string): T {
   const normalized = (locale || DEFAULT_LOCALE) as SupportedLocale;
-  return entry[normalized] ?? entry.de;
+  return entry[normalized] ?? entry.en ?? entry.de;
 }
 
 export function getImpressumStrings(locale: SupportedLocale | string) {
   return {
+    label: pick(STRINGS.label, locale),
     title: pick(STRINGS.title, locale),
     intro: pick(STRINGS.intro, locale),
     responsibleTitle: pick(STRINGS.responsibleTitle, locale),

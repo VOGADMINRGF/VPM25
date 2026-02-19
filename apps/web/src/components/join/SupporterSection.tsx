@@ -1,15 +1,24 @@
 type Mode = "reuse" | "separate";
 
+export type SupporterSectionStrings = {
+  title: string;
+  description: string;
+  reuse: string;
+  separate: string;
+};
+
 export function SupporterSection({
   enabled,
   mode,
   onEnabledChange,
   onModeChange,
+  strings,
 }: {
   enabled: boolean;
   mode: Mode;
   onEnabledChange: (v: boolean) => void;
   onModeChange: (mode: Mode) => void;
+  strings: SupporterSectionStrings;
 }) {
   return (
     <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
@@ -21,12 +30,8 @@ export function SupporterSection({
           onChange={(e) => onEnabledChange(e.target.checked)}
         />
         <div>
-          <div className="text-sm font-semibold text-slate-100">
-            Als Unterstützer genannt werden (optional)
-          </div>
-          <div className="text-sm text-slate-400">
-            Öffentlich zeigen wir nur gekürzten Namen und optional ein Bild/Logo - keine Rohdaten.
-          </div>
+          <div className="text-sm font-semibold text-slate-100">{strings.title}</div>
+          <div className="text-sm text-slate-400">{strings.description}</div>
         </div>
       </label>
 
@@ -44,7 +49,7 @@ export function SupporterSection({
                   : "bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800"
               }`}
             >
-              Profilbild/Logo verwenden
+              {strings.reuse}
             </button>
             <button
               type="button"
@@ -57,7 +62,7 @@ export function SupporterSection({
                   : "bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800"
               }`}
             >
-              Anderes Bild hochladen
+              {strings.separate}
             </button>
           </div>
         </div>

@@ -123,7 +123,7 @@ function updateHtmlAttrs(locale: SupportedLocale) {
   if (typeof document === "undefined") return;
   try {
     document.documentElement.lang = locale;
-    document.documentElement.dir = "ltr";
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
   } catch {
     /* ignore */
   }

@@ -13,7 +13,7 @@ export default function DatenschutzPage() {
         <div className="rounded-3xl bg-slate-900/80 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.4)] ring-1 ring-slate-800 md:p-10">
           <header className="space-y-3 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-              Datenschutz
+              {strings.label}
             </p>
             <h1 className="text-3xl font-extrabold leading-tight headline-gradient md:text-4xl">
               {strings.title}
@@ -62,7 +62,7 @@ export default function DatenschutzPage() {
               </p>
               <p className="whitespace-pre-line">{strings.contactBody}</p>
               <p className="pt-2">
-                Kontakt-E-Mail:{" "}
+                {strings.contactEmailLabel}{" "}
                 <a
                   className="font-semibold text-sky-300 underline underline-offset-4"
                   href={`mailto:${strings.contactEmail}`}
@@ -71,8 +71,7 @@ export default function DatenschutzPage() {
                 </a>
               </p>
               <p className="mt-1 text-slate-300">
-                Diese Hinweise werden laufend aktualisiert und rechtlich überprüft, sobald sich unser
-                Angebot oder die Rechtslage ändert.
+                {strings.updateNote}
               </p>
             </div>
           </div>

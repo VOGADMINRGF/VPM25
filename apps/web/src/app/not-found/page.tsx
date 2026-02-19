@@ -1,15 +1,21 @@
-export default function NotfoundPage() {
+import { getRequestLocale } from "@/lib/locale";
+import { getNotFoundStrings } from "./strings";
+
+export default async function NotfoundPage() {
+  const locale = await getRequestLocale();
+  const strings = getNotFoundStrings(locale);
+
   return (
-    <main className="max-w-3xl mx-auto px-4 py-16 space-y-8 text-slate-100">
+    <main className="mx-auto max-w-3xl space-y-8 px-4 py-16 text-slate-100">
       <h1 className="text-3xl font-bold headline-gradient text-center">
-        404 - Seite nicht gefunden
+        {strings.title}
       </h1>
       <p className="text-slate-300 text-lg text-center">
-        Die Seite, die du gesucht hast, gibt es nicht oder sie wurde verschoben.
+        {strings.body}
       </p>
       <p className="text-center">
         <a className="text-sky-300 underline" href="/">
-          Zur Startseite
+          {strings.cta}
         </a>
       </p>
     </main>

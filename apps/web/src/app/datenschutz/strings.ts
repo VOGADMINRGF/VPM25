@@ -8,6 +8,11 @@ export type PrivacyDataPoint = {
 };
 
 const STRINGS = {
+  label: {
+    de: "Datenschutz",
+    en: "Privacy",
+  } as LocaleValue<string>,
+
   title: {
     de: "Datenschutz",
     en: "Privacy Policy",
@@ -192,15 +197,26 @@ const STRINGS = {
     de: "privacy@voiceopengov.org",
     en: "privacy@voiceopengov.org",
   } as LocaleValue<string>,
+
+  contactEmailLabel: {
+    de: "Kontakt-E-Mail:",
+    en: "Contact email:",
+  } as LocaleValue<string>,
+
+  updateNote: {
+    de: "Diese Hinweise werden laufend aktualisiert und rechtlich überprüft, sobald sich unser Angebot oder die Rechtslage ändert.",
+    en: "This notice is updated continuously and reviewed legally whenever our services or legal requirements change.",
+  } as LocaleValue<string>,
 } as const;
 
 function pick<T>(entry: LocaleValue<T>, locale: SupportedLocale | string): T {
   const normalized = (locale || DEFAULT_LOCALE) as SupportedLocale;
-  return entry[normalized] ?? entry.de;
+  return entry[normalized] ?? entry.en ?? entry.de;
 }
 
 export function getPrivacyStrings(locale: SupportedLocale | string) {
   return {
+    label: pick(STRINGS.label, locale),
     title: pick(STRINGS.title, locale),
     intro: pick(STRINGS.intro, locale),
     controllerTitle: pick(STRINGS.controllerTitle, locale),
@@ -216,5 +232,7 @@ export function getPrivacyStrings(locale: SupportedLocale | string) {
     contactTitle: pick(STRINGS.contactTitle, locale),
     contactBody: pick(STRINGS.contactBody, locale),
     contactEmail: pick(STRINGS.contactEmail, locale),
+    contactEmailLabel: pick(STRINGS.contactEmailLabel, locale),
+    updateNote: pick(STRINGS.updateNote, locale),
   };
 }

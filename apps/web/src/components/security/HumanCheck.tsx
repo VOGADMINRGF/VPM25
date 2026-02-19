@@ -9,9 +9,58 @@ interface HumanCheckProps {
   onSolved: (result: { token: string; meta?: Record<string, unknown> }) => void;
   onError?: (reason: string) => void;
   variant?: "full" | "compact";
+  strings?: HumanCheckStrings;
 }
 
+export type HumanCheckStrings = {
+  compact: {
+    title: string;
+    description: string;
+    open: string;
+  };
+  loading: string;
+  promptTitle: string;
+  verified: string;
+  intro: string;
+  honeypotLabel: string;
+  answerLabel: string;
+  buttonChecking: string;
+  buttonSolved: string;
+  buttonIdle: string;
+  messages: {
+    alreadySolved: string;
+    numberRequired: string;
+    verifyFailed: string;
+    techError: string;
+    verified: string;
+  };
+};
 
+const DEFAULT_STRINGS: HumanCheckStrings = {
+  compact: {
+    title: "Kurze Bestätigung",
+    description:
+      "Kurzer Anti-Spam-Check. Öffne die Aufgabe nur, wenn du das Formular absenden willst.",
+    open: "Bestätigung öffnen",
+  },
+  loading: "Lade kurze Bestätigung …",
+  promptTitle: "Kurze Bestätigung: Bist du ein Mensch?",
+  verified: "✓ geprüft",
+  intro:
+    "Wir schützen Formulare vor Spam. Kein Tracking, nur ein kleiner Check: Bitte rechne die Aufgabe und lass das versteckte Feld leer.",
+  honeypotLabel: "Bitte leer lassen",
+  answerLabel: "Ergebnis eintragen",
+  buttonChecking: "Prüfen …",
+  buttonSolved: "Bestätigt",
+  buttonIdle: "Kurz prüfen",
+  messages: {
+    alreadySolved: "Sicherheitscheck bereits erledigt.",
+    numberRequired: "Bitte trage das Ergebnis als Zahl ein.",
+    verifyFailed: "Die Bestätigung hat nicht geklappt. Bitte kurz erneut versuchen.",
+    techError: "Es gab ein technisches Problem. Bitte später erneut versuchen.",
+    verified: "Danke – kurz bestätigt.",
+  },
+};
 const STORAGE_PREFIX = "vog_human_check";
 const TOKEN_TTL_MS = 10 * 60 * 1000;
 
@@ -85,7 +134,9 @@ export function HumanCheck({
   onSolved,
   onError,
   variant = "full",
+  strings,
 }: HumanCheckProps) {
+  const text = strings ?? DEFAULT_STRINGS;
   const isCompact = variant === "compact";
   const [isOpen, setIsOpen] = useState(!isCompact);
   const [honeypot, setHoneypot] = useState("");
@@ -111,9 +162,9 @@ export function HumanCheck({
     if (!storedToken || restoredForRef.current === formId) return;
     restoredForRef.current = formId;
     setStatus("solved");
-    setMessage("Sicherheitscheck bereits erledigt.");
+    setMessage(text.messages.alreadySolved);
     onSolved({ token: storedToken, meta: { restored: true } });
-  }, [formId, onSolved]);
+  }, [formId, onSolved, text.messages.alreadySolved]);
 
   const puzzle = useMemo(() => (puzzleSeed ? derivePuzzle(puzzleSeed) : null), [puzzleSeed]);
   const refreshPuzzle = () => {
@@ -133,7 +184,7 @@ export function HumanCheck({
   const handleVerify = async () => {
     if (!isAnswerValid) {
       setStatus("error");
-      setMessage("Bitte trage das Ergebnis als Zahl ein.");
+      setMessage(text.messages.numberRequired);
       return;
     }
     setStatus("checking");
@@ -159,7 +210,7 @@ export function HumanCheck({
       if (!res.ok || !data?.ok) {
         const reason = data?.code ?? "unknown";
         setStatus("error");
-        setMessage("Die Bestätigung hat nicht geklappt. Bitte kurz erneut versuchen.");
+        setMessage(text.messages.verifyFailed);
         onError?.(reason);
         const is4xx = res.status >= 400 && res.status < 500;
         const isRateLimit = res.status === 429 || data?.code === "ratelimit";
@@ -171,12 +222,12 @@ export function HumanCheck({
       }
 
       setStatus("solved");
-      setMessage("Danke – kurz bestätigt.");
+      setMessage(text.messages.verified);
       storeToken(formId, data.humanToken);
       onSolved({ token: data.humanToken, meta: { timeToSolve, puzzleSeed } });
     } catch (err) {
       setStatus("error");
-      setMessage("Es gab ein technisches Problem. Bitte später erneut versuchen.");
+      setMessage(text.messages.techError);
       onError?.(err instanceof Error ? err.message : "unknown");
       refreshPuzzle();
     }
@@ -185,16 +236,14 @@ export function HumanCheck({
   if (isCompact && !isOpen) {
     return (
       <div className="space-y-2 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-400 shadow-sm">
-        <p className="text-sm font-semibold text-slate-100">Kurze Bestätigung</p>
-        <p>
-          Kurzer Anti-Spam-Check. Öffne die Aufgabe nur, wenn du das Formular absenden willst.
-        </p>
+        <p className="text-sm font-semibold text-slate-100">{text.compact.title}</p>
+        <p>{text.compact.description}</p>
         <button
           type="button"
           onClick={() => setIsOpen(true)}
           className="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow hover:bg-slate-800"
         >
-          Bestätigung öffnen
+          {text.compact.open}
         </button>
       </div>
     );
@@ -209,7 +258,7 @@ export function HumanCheck({
             : "border-sky-900/60 bg-sky-950/40 text-sky-200"
         }`}
       >
-        Lade kurze Bestätigung …
+        {text.loading}
       </div>
     );
   }
@@ -228,7 +277,7 @@ export function HumanCheck({
             isCompact ? "text-slate-100" : "text-sky-100"
           }`}
         >
-          Kurze Bestätigung: Bist du ein Mensch?
+          {text.promptTitle}
         </p>
         {status === "solved" && (
           <span
@@ -236,17 +285,16 @@ export function HumanCheck({
               isCompact ? "text-slate-400" : "text-sky-200"
             }`}
           >
-            ✓ geprüft
+            {text.verified}
           </span>
         )}
       </div>
       <p className={`text-xs ${isCompact ? "text-slate-400" : "text-sky-200"}`}>
-        Wir schützen Formulare vor Spam. Kein Tracking, nur ein kleiner Check: Bitte rechne die Aufgabe und lass das versteckte
-        Feld leer.
+        {text.intro}
       </p>
 
       <label className="sr-only" aria-hidden>
-        Bitte leer lassen
+        {text.honeypotLabel}
         <input
           tabIndex={-1}
           autoComplete="off"
@@ -293,7 +341,7 @@ export function HumanCheck({
               ? "border-slate-700 text-slate-100 focus:border-slate-500 focus:ring-2 focus:ring-slate-800/40"
               : "border-sky-700 text-sky-100 focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
           }`}
-          aria-label="Ergebnis eintragen"
+          aria-label={text.answerLabel}
         />
         <button
           type="button"
@@ -305,7 +353,11 @@ export function HumanCheck({
               : "bg-sky-600 hover:brightness-110"
           }`}
         >
-          {status === "checking" ? "Prüfen …" : status === "solved" ? "Bestätigt" : "Kurz prüfen"}
+          {status === "checking"
+            ? text.buttonChecking
+            : status === "solved"
+              ? text.buttonSolved
+              : text.buttonIdle}
         </button>
       </div>
 

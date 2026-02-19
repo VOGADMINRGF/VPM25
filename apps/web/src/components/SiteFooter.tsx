@@ -1,24 +1,16 @@
 import Link from "next/link";
-
-const mainLinks = [
-  { href: "/#mitmachen", label: "Mitmachen" },
-  { href: "/dossier", label: "Dossier" },
-  { href: "/unterstuetzen", label: "Unterstützen" },
-];
-
-const initiativeLinks = [
-  { href: "/initiatives", label: "Fuer Initiativen" },
-];
-
-const legalLinks = [
-  { href: "/kontakt", label: "Kontakt" },
-  { href: "/impressum", label: "Impressum" },
-  { href: "/datenschutz", label: "Datenschutz" },
-];
+import type { SupportedLocale } from "@/config/locales";
+import { getFooterStrings } from "@/components/footerStrings";
 
 const currentYear = new Date().getFullYear();
 
-export default function SiteFooter() {
+type SiteFooterProps = {
+  locale: SupportedLocale;
+};
+
+export default function SiteFooter({ locale }: SiteFooterProps) {
+  const strings = getFooterStrings(locale);
+
   return (
     <footer
       className="mt-16 border-t border-slate-800 bg-slate-950/90"
@@ -41,40 +33,39 @@ export default function SiteFooter() {
               VoiceOpenGov
             </Link>
             <p className="mt-2 text-sm font-semibold text-slate-100">
-              Bewegung fuer robuste, nachvollziehbare Entscheidungen.
+              {strings.brand.claim}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-400">
-              VoiceOpenGov verbindet Menschen, Initiativen und Organisationen,
-              die klare Verfahren und transparente Beteiligung aufbauen wollen.
+              {strings.brand.body}
             </p>
           </div>
 
           {/* Mitmachen */}
           <FooterNav
-            title="Mitmachen"
-            ariaLabel="Footer Navigation: Mitmachen"
-            links={mainLinks}
+            title={strings.columns.main}
+            ariaLabel={strings.aria.main}
+            links={strings.links.main}
           />
 
           {/* Initiativen */}
           <FooterNav
-            title="Fuer Initiativen"
-            ariaLabel="Footer Navigation: Initiativen"
-            links={initiativeLinks}
+            title={strings.columns.initiatives}
+            ariaLabel={strings.aria.initiatives}
+            links={strings.links.initiatives}
           />
 
           {/* Kontakt & Rechtliches */}
           <FooterNav
-            title="Kontakt & Rechtliches"
-            ariaLabel="Footer Navigation: Kontakt und Rechtliches"
-            links={legalLinks}
+            title={strings.columns.legal}
+            ariaLabel={strings.aria.legal}
+            links={strings.links.legal}
           />
         </div>
 
         <div className="mt-8 border-t border-slate-800/70 pt-6 text-xs text-slate-500 md:flex md:items-center md:justify-between">
           <p>© {currentYear} VoiceOpenGov</p>
           <p className="mt-2 text-[11px] text-slate-500 md:mt-0">
-            powered by Ricky G. Fleischer
+            {strings.poweredBy}
           </p>
         </div>
       </div>

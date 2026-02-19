@@ -1,34 +1,40 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { getRequestLocale } from "@/lib/locale";
 import ChapterIntakeForm from "./ChapterIntakeForm";
+import { getChapterStrings } from "./strings";
 
-export const metadata: Metadata = {
-  title: "Chapter starten - VoiceOpenGov",
-  description: "Unverbindliche Anfrage für lokale VoiceOpenGov Chapter.",
-};
+export async function generateMetadata() {
+  const locale = await getRequestLocale();
+  const strings = getChapterStrings(locale);
+  return {
+    title: strings.meta.title,
+    description: strings.meta.description,
+  };
+}
 
-export default function ChapterPage() {
+export default async function ChapterPage() {
+  const locale = await getRequestLocale();
+  const strings = getChapterStrings(locale);
+
   return (
     <main className="mx-auto max-w-6xl px-6 py-10 text-slate-100">
       <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
         <section>
           <h1 className="text-4xl font-semibold tracking-tight headline-gradient">
-            Chapter starten - lokal verankert, weltweit vergleichbar.
+            {strings.page.title}
           </h1>
           <p className="mt-4 text-lg text-slate-300">
-            Chapter sind regionale Ankerpunkte: Themen sammeln, Optionen prüfen, Mehrheiten
-            nachvollziehbar machen. Überparteilich. Transparent. Skalierbar.
+            {strings.page.intro}
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            {[
-              { t: "1) Vormerken", d: "30 Sekunden - wir melden uns mit den Schritten." },
-              { t: "2) Region wählen", d: "Ort/Bezirk und Sichtbarkeit festlegen." },
-              { t: "3) Launch-Kit", d: "Vorlagen, Regeln, QR-Material und Support." },
-            ].map((x) => (
-              <div key={x.t} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-sm">
-                <div className="text-sm font-semibold text-slate-100">{x.t}</div>
-                <div className="mt-1 text-sm text-slate-300">{x.d}</div>
+            {strings.page.steps.map((step) => (
+              <div
+                key={step.title}
+                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-sm"
+              >
+                <div className="text-sm font-semibold text-slate-100">{step.title}</div>
+                <div className="mt-1 text-sm text-slate-300">{step.body}</div>
               </div>
             ))}
           </div>
@@ -38,18 +44,18 @@ export default function ChapterPage() {
               href="#vormerken"
               className="rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500"
             >
-              Sich vormerken lassen
+              {strings.page.ctas.primary}
             </a>
             <Link
               href="/"
               className="rounded-full border border-slate-700 bg-slate-900 px-6 py-3 text-sm font-semibold text-slate-100 shadow-sm hover:bg-slate-800"
             >
-              Zurück
+              {strings.page.ctas.secondary}
             </Link>
           </div>
 
           <div className="mt-2 text-xs text-slate-400">
-            Öffentlich nur Orts-Summen - keine Einzelprofile
+            {strings.page.note}
           </div>
         </section>
 
@@ -58,17 +64,19 @@ export default function ChapterPage() {
 
       <section className="mt-10 grid gap-4 md:grid-cols-2">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-          <div className="text-sm font-semibold text-slate-100">Was ein Chapter ist</div>
+          <div className="text-sm font-semibold text-slate-100">
+            {strings.page.sections.whatTitle}
+          </div>
           <p className="mt-2 text-sm text-slate-300">
-            Ein Chapter bringt lokale Themen in eine saubere Struktur: Fakten, Optionen,
-            Konsequenzen, Mehrheiten.
+            {strings.page.sections.whatBody}
           </p>
         </div>
         <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-          <div className="text-sm font-semibold text-slate-100">Was wir nicht sind</div>
+          <div className="text-sm font-semibold text-slate-100">
+            {strings.page.sections.notTitle}
+          </div>
           <p className="mt-2 text-sm text-slate-300">
-            Keine Partei, kein Lobby-Instrument. Inhalte sind offen dokumentiert - nachvollziehbar
-            statt taktisch.
+            {strings.page.sections.notBody}
           </p>
         </div>
       </section>

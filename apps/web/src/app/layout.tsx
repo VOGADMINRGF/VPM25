@@ -25,13 +25,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const privacyStrings = getPrivacyStrings(initialLocale);
 
   return (
-    <html lang={initialLocale} className="h-full">
+    <html lang={initialLocale} dir={initialLocale === "ar" ? "rtl" : "ltr"} className="h-full">
       <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
         <LocaleProvider initialLocale={initialLocale}>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
             <main className="flex-1">{children}</main>
-            <SiteFooter />
+            <SiteFooter locale={initialLocale} />
             <div className="h-[env(safe-area-inset-bottom)]" />
             <VogCookieBanner strings={privacyStrings} initialConsent={initialConsent} />
           </div>

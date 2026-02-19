@@ -13,7 +13,7 @@ export default function ImpressumPage() {
         <div className="rounded-3xl bg-slate-900/80 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.4)] ring-1 ring-slate-800 md:p-10">
           <header className="space-y-3 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-              Rechtliches
+              {strings.label}
             </p>
             <h1 className="text-3xl font-extrabold leading-tight headline-gradient md:text-4xl">
               {strings.title}

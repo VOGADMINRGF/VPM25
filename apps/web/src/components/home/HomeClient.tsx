@@ -1,25 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SupporterSection } from "@/components/join/SupporterSection";
-import { COUNTRY_OPTIONS } from "@/lib/countries";
+import { useLocale } from "@/context/LocaleContext";
+import { getCountryOptions } from "@/lib/countries";
+import { getHomeStrings } from "./strings";
 
 type Notice = { ok: boolean; msg: string } | null;
 
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 const MIN_AGE = 16;
 const MOTIVATION_MAX = 160;
-const MOTIVATION_PRESETS = [
-  "Ich möchte meine Perspektive strukturiert und nachvollziehbar einbringen.",
-  "Ich unterstütze VoiceOpenGov, weil klare Entscheidungswege wichtig sind.",
-  "Ich möchte Entscheidungen verstehen und ihre Begründung nachvollziehen.",
-  "Ich will mich {ort} sachlich beteiligen – mit klaren Optionen.",
-  "Ich unterstütze eine formale Dokumentation von Entscheidung und Status.",
-];
 
-function applyMotivationTemplate(template: string, cityValue: string) {
-  const place = cityValue.trim() ? `in ${cityValue.trim()}` : "in meinem Ort";
+function applyMotivationTemplate(
+  template: string,
+  cityValue: string,
+  cityTemplate: string,
+  cityFallback: string,
+) {
+  const trimmed = cityValue.trim();
+  const place = trimmed
+    ? cityTemplate.replace("{city}", trimmed)
+    : cityFallback;
   return template.replaceAll("{ort}", place);
 }
 
@@ -60,6 +63,9 @@ function maxBirthDateIso(minAge: number) {
 }
 
 export default function HomeClient() {
+  const { locale } = useLocale();
+  const strings = getHomeStrings(locale);
+  const countryOptions = useMemo(() => getCountryOptions(locale), [locale]);
   const [memberType, setMemberType] = useState<"person" | "organisation">("person");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -85,6 +91,13 @@ export default function HomeClient() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const avatarFileRef = useRef<HTMLInputElement | null>(null);
   const supporterFileRef = useRef<HTMLInputElement | null>(null);
+  const inputClass =
+    "w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40";
+  const labelClass = "text-xs font-medium text-slate-300";
+  const isPerson = memberType === "person";
+  const isOrg = memberType === "organisation";
+  const showMediaFields = isPublic || publicSupporter;
+  const cityRequired = isPublic;
 
   const handleImageFile = (
     file: File | null,
@@ -97,11 +110,11 @@ export default function HomeClient() {
       return;
     }
     if (!file.type.startsWith("image/")) {
-      setNotice({ ok: false, msg: "Bitte eine Bilddatei auswählen." });
+      setNotice({ ok: false, msg: strings.notices.imageType });
       return;
     }
     if (file.size > MAX_IMAGE_BYTES) {
-      setNotice({ ok: false, msg: "Bitte ein Bild unter 2 MB hochladen." });
+      setNotice({ ok: false, msg: strings.notices.imageTooLarge });
       return;
     }
     const reader = new FileReader();
@@ -111,7 +124,7 @@ export default function HomeClient() {
       setFileName(file.name);
     };
     reader.onerror = () => {
-      setNotice({ ok: false, msg: "Bild konnte nicht gelesen werden." });
+      setNotice({ ok: false, msg: strings.notices.imageReadFail });
     };
     reader.readAsDataURL(file);
   };
@@ -161,23 +174,23 @@ export default function HomeClient() {
     setNotice(null);
 
     if (!privacyAccepted) {
-      setNotice({ ok: false, msg: "Bitte Datenschutzhinweis akzeptieren." });
+      setNotice({ ok: false, msg: strings.notices.privacyRequired });
       return;
     }
 
     if (memberType === "person") {
       if (!birthDate.trim()) {
-        setNotice({ ok: false, msg: "Bitte gib dein Geburtsdatum an." });
+        setNotice({ ok: false, msg: strings.notices.birthMissing });
         return;
       }
       if (!isAtLeastAge(birthDate, MIN_AGE)) {
-        setNotice({ ok: false, msg: "Teilnahme ist erst ab 16 Jahren möglich." });
+        setNotice({ ok: false, msg: strings.notices.ageTooYoung });
         return;
       }
     }
 
-    if (isPublic && !city.trim()) {
-      setNotice({ ok: false, msg: "Bitte gib deinen Ort an (für die Orts-Summen)." });
+    if (cityRequired && !city.trim()) {
+      setNotice({ ok: false, msg: strings.notices.cityRequired });
       return;
     }
 
@@ -189,7 +202,7 @@ export default function HomeClient() {
       if (publicSupporter && supporterMode === "reuse" && !avatarValue) {
         setNotice({
           ok: false,
-          msg: "Bitte Profilfoto/Logo hochladen oder 'Anderes Bild' wählen.",
+          msg: strings.notices.supporterImageMissing,
         });
         return;
       }
@@ -209,6 +222,7 @@ export default function HomeClient() {
         lastName: memberType === "person" ? lastName.trim() || undefined : undefined,
         birthDate: memberType === "person" ? birthDate.trim() || undefined : undefined,
         orgName: memberType === "organisation" ? orgName.trim() || undefined : undefined,
+        // Ort: bei Öffentlich Pflicht (Orts-Summen), bei Privat optional und nicht öffentlich aggregiert.
         city: city.trim() || undefined,
         country: countryCode || undefined,
         isPublic,
@@ -227,14 +241,14 @@ export default function HomeClient() {
       });
       const data = await res.json().catch(() => ({}));
 
-        if (res.ok && data?.ok) {
-          setNotice({ ok: true, msg: "Bitte E-Mail bestätigen – wir haben dir einen Link geschickt." });
-          resetForm();
-        } else {
-        setNotice({ ok: false, msg: "Das hat nicht geklappt. Bitte später erneut versuchen." });
+      if (res.ok && data?.ok) {
+        setNotice({ ok: true, msg: strings.notices.submitOk });
+        resetForm();
+      } else {
+        setNotice({ ok: false, msg: strings.notices.submitFail });
       }
     } catch {
-      setNotice({ ok: false, msg: "Das hat nicht geklappt. Bitte später erneut versuchen." });
+      setNotice({ ok: false, msg: strings.notices.submitFail });
     } finally {
       setIsSubmitting(false);
     }
@@ -252,46 +266,74 @@ export default function HomeClient() {
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-7">
               <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-sky-300">
-                Strukturierte Beteiligung
+                {strings.hero.badge}
               </div>
               <div className="space-y-4">
                 <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
                   <span className="block headline-gradient">
-                    Mehrheiten, die man prüfen kann.
+                    {strings.hero.title}
                   </span>
-                  <span className="block text-slate-100">Neutral, nachvollziehbar, verantwortbar.</span>
+                  <span className="block text-slate-100">{strings.hero.subtitle}</span>
                 </h1>
                 <p className="max-w-2xl text-lg text-slate-300 md:text-xl">
-                  VoiceOpenGov ermöglicht strukturierte Beteiligung mit klaren Entscheidungswegen,
-                  dokumentierten Optionen und nachvollziehbaren Ergebnissen.
+                  {strings.hero.lead.pre}{" "}
+                  <span className="text-slate-100 font-semibold">
+                    {strings.hero.lead.highlight1}
+                  </span>{" "}
+                  {strings.hero.lead.mid1}{" "}
+                  <span className="text-slate-100 font-semibold">
+                    {strings.hero.lead.highlight2}
+                  </span>{" "}
+                  {strings.hero.lead.mid2}{" "}
+                  <span className="text-slate-100 font-semibold">
+                    {strings.hero.lead.highlight3}
+                  </span>{" "}
+                  {strings.hero.lead.post}
                 </p>
                 <p className="max-w-2xl text-sm text-slate-400">
-                  Wir freuen uns über Beiträge von Menschen, die ihre Meinung regelmäßig einbringen
-                  möchten – respektvoll, sachlich und lösungsorientiert.
+                  {strings.hero.focus}
+                </p>
+                <p className="max-w-2xl text-sm text-slate-400">
+                  {strings.hero.scalable}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link href="/#mitmachen" className="btn btn-primary">
-                    Kostenfrei beitreten
+                    {strings.hero.ctas.join}
+                  </Link>
+                  <Link href="/howtoworks/bewegung" className="btn btn-ghost">
+                    {strings.hero.ctas.how}
                   </Link>
                   <Link href="/unterstuetzen" className="btn btn-ghost">
-                    Initiative unterstützen
+                    {strings.hero.ctas.support}
                   </Link>
                 </div>
+                <p className="mt-3 max-w-2xl text-xs text-slate-400">
+                  <span className="block">
+                    {strings.hero.micro.line1}
+                  </span>
+                  <span className="mt-1 block">
+                    {strings.hero.micro.line2}
+                  </span>
+                </p>
+                <div className="mt-6 grid gap-3 md:grid-cols-4">
+                  {strings.hero.steps.map((item) => (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      className="group rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left shadow-sm transition hover:border-sky-400/60"
+                    >
+                      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 group-hover:text-sky-200">
+                        {item.title}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-slate-100">{item.body}</p>
+                      <p className="mt-2 text-xs text-slate-400 group-hover:text-slate-300">
+                        {strings.hero.learnMore}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
                 <div className="grid gap-3 sm:grid-cols-3">
-                  {[
-                    {
-                      title: "Strukturierte Entscheidungsdimensionen",
-                      body: "Ziel, Wirkung, Kosten, Zeit, Risiken, Zuständigkeit.",
-                    },
-                    {
-                      title: "Klare Verantwortungszuordnung",
-                      body: "Verantwortliche Stellen werden benannt und dokumentiert.",
-                    },
-                    {
-                      title: "Formaler Berichtsteil",
-                      body: "Beschluss, Begründung, Verantwortlichkeit, Status.",
-                    },
-                  ].map((item) => (
+                  {strings.hero.cards.map((item) => (
                     <div
                       key={item.title}
                       className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-xs text-slate-300 shadow-sm"
@@ -310,22 +352,16 @@ export default function HomeClient() {
               <div className="absolute -right-8 top-10 h-40 w-40 rounded-full bg-sky-500/20 blur-3xl" />
               <div className="relative rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-soft">
                 <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  <span>Entscheidungslogik</span>
+                  <span>{strings.decisionCard.label}</span>
                   <span className="rounded-full border border-slate-700 bg-slate-950/70 px-2 py-0.5 text-[10px] text-slate-300">
-                    Civic-Level
+                    {strings.decisionCard.tag}
                   </span>
                 </div>
                 <h2 className="mt-3 text-xl font-semibold text-slate-100">
-                  Civic-Level 5 Optionen
+                  {strings.decisionCard.title}
                 </h2>
                 <div className="mt-4 grid gap-2">
-                  {[
-                    "1. Informieren",
-                    "2. Feedback einholen",
-                    "3. Mitgestalten",
-                    "4. Entscheiden",
-                    "5. Umsetzung begleiten",
-                  ].map((step) => (
+                  {strings.decisionCard.steps.map((step) => (
                     <div
                       key={step}
                       className="rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-2 text-xs text-slate-300"
@@ -335,7 +371,7 @@ export default function HomeClient() {
                   ))}
                 </div>
                 <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-xs text-slate-400">
-                  Realistische Zahlen: Beiträge und Reichweite werden im Bericht ausgewiesen.
+                  {strings.decisionCard.note}
                 </div>
               </div>
             </div>
@@ -348,11 +384,11 @@ export default function HomeClient() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                Mitgliedschaft
+                {strings.membership.label}
               </p>
-              <h2 className="text-2xl font-bold text-slate-100">Kostenfrei beitreten</h2>
+              <h2 className="text-2xl font-bold text-slate-100">{strings.membership.title}</h2>
               <p className="mt-1 text-xs text-slate-400">
-                Double-Opt-In: Bitte E-Mail bestätigen. Mitgliedschaft ist kostenfrei.
+                {strings.membership.subtitle}
               </p>
             </div>
             <div className="inline-flex rounded-full border border-slate-700 bg-slate-950/60 p-1 text-xs font-semibold text-slate-300">
@@ -365,7 +401,9 @@ export default function HomeClient() {
                     memberType === value ? "bg-sky-600 text-white" : "hover:bg-slate-900"
                   }`}
                 >
-                  {value === "person" ? "Person" : "Organisation"}
+                  {value === "person"
+                    ? strings.membership.type.person
+                    : strings.membership.type.organisation}
                 </button>
               ))}
             </div>
@@ -375,34 +413,46 @@ export default function HomeClient() {
             {memberType === "person" && (
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Vorname</label>
+                  <label className={labelClass} htmlFor="firstName">
+                    {strings.form.firstName}
+                  </label>
                   <input
+                    id="firstName"
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                    autoComplete="given-name"
+                    className={inputClass}
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-300">Nachname</label>
+                  <label className={labelClass} htmlFor="lastName">
+                    {strings.form.lastName}
+                  </label>
                   <input
+                    id="lastName"
                     required
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                    autoComplete="family-name"
+                    className={inputClass}
                   />
                 </div>
                 <div className="space-y-1 md:col-span-2">
-                  <label className="text-xs font-medium text-slate-300">Geburtsdatum</label>
+                  <label className={labelClass} htmlFor="birthDate">
+                    {strings.form.birthDate}
+                  </label>
                   <input
+                    id="birthDate"
                     required
                     type="date"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
                     max={maxBirthDateIso(MIN_AGE)}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                    autoComplete="bday"
+                    className={inputClass}
                   />
-                  <p className="text-[11px] text-slate-400">Teilnahme ab 16 Jahren.</p>
+                  <p className="text-[11px] text-slate-400">{strings.form.birthHint}</p>
                 </div>
               </div>
             )}
@@ -410,12 +460,16 @@ export default function HomeClient() {
             {memberType === "organisation" && (
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-1 md:col-span-2">
-                  <label className="text-xs font-medium text-slate-300">Organisation</label>
+                  <label className={labelClass} htmlFor="orgName">
+                    {strings.form.organisation}
+                  </label>
                   <input
+                    id="orgName"
                     required
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
-                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                    autoComplete="organization"
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -423,34 +477,52 @@ export default function HomeClient() {
 
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">E-Mail</label>
+                <label className={labelClass} htmlFor="email">
+                  {strings.form.email}
+                </label>
                 <input
+                  id="email"
                   required
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                  className={inputClass}
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">Ort</label>
+                <label className={labelClass} htmlFor="city">
+                  {strings.form.city}{" "}
+                  {!cityRequired && (
+                    <span className="text-slate-400">{strings.form.optional}</span>
+                  )}
+                </label>
                 <input
-                  required={isPublic}
+                  id="city"
+                  required={cityRequired}
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                  autoComplete="address-level2"
+                  className={inputClass}
+                  placeholder={
+                    cityRequired
+                      ? strings.form.cityPlaceholderPublic
+                      : strings.form.cityPlaceholderPrivate
+                  }
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">Land (optional)</label>
+                <label className={labelClass} htmlFor="country">
+                  {strings.form.country}
+                </label>
                 <select
+                  id="country"
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                  className={inputClass}
                 >
-                  <option value="">Bitte wählen</option>
-                  {COUNTRY_OPTIONS.map((country) => (
+                  <option value="">{strings.form.countryPlaceholder}</option>
+                  {countryOptions.map((country) => (
                     <option key={country.code} value={country.code}>
                       {country.label}
                     </option>
@@ -460,59 +532,80 @@ export default function HomeClient() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-medium text-slate-300">Orts-Sichtbarkeit</label>
+              <label className="text-xs font-medium text-slate-300">
+                {strings.form.locationVisibility}
+              </label>
               <div className="inline-flex rounded-full border border-slate-700 bg-slate-950/60 p-1 text-xs font-semibold text-slate-300">
                 <button
                   type="button"
                   onClick={() => setIsPublic(true)}
                   className={`rounded-full px-3 py-1 ${isPublic ? "bg-sky-600 text-white" : "hover:bg-slate-900"}`}
                 >
-                  Öffentlich
+                  {strings.form.public}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsPublic(false)}
                   className={`rounded-full px-3 py-1 ${!isPublic ? "bg-sky-600 text-white" : "hover:bg-slate-900"}`}
                 >
-                  Privat
+                  {strings.form.private}
                 </button>
               </div>
               <p className="text-xs text-slate-400">
-                Öffentlich zeigt nur Orts-Summen. Keine Einzelprofile oder Rohdaten.
+                {strings.form.visibilityHint}
               </p>
             </div>
 
-            {(isPublic || publicSupporter) && memberType === "organisation" && (
+            {showMediaFields && isOrg && (
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">Logo-Link (optional)</label>
+                <label className={labelClass} htmlFor="avatarUrl">
+                  {strings.form.logoUrl}
+                </label>
                 <input
+                  id="avatarUrl"
                   type="url"
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                  className={inputClass}
                   placeholder="https://"
                 />
               </div>
             )}
 
-            {(isPublic || publicSupporter) && memberType === "person" && (
+            {showMediaFields && isPerson && (
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">
-                  Profilfoto hochladen (optional)
+                <label className={labelClass} htmlFor="avatarFile">
+                  {strings.form.avatarUpload}
                 </label>
                 <input
+                  id="avatarFile"
                   ref={avatarFileRef}
                   type="file"
                   accept="image/*"
                   onChange={(e) =>
                     handleImageFile(e.target.files?.[0] ?? null, setAvatarDataUrl, setAvatarFileName)
                   }
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                  className={inputClass}
                 />
-                {avatarFileName && (
-                  <p className="text-[11px] text-slate-400">Ausgewählt: {avatarFileName}</p>
+                {avatarDataUrl && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <img
+                      src={avatarDataUrl}
+                      alt={strings.form.previewLabel}
+                      className="h-10 w-10 rounded-full border border-slate-700 object-cover"
+                    />
+                    <p className="text-[11px] text-slate-400">
+                      {strings.form.previewLabel}
+                      {avatarFileName ? ` • ${avatarFileName}` : ""}
+                    </p>
+                  </div>
                 )}
-                <p className="text-[11px] text-slate-400">Max. 2 MB, JPG/PNG.</p>
+                {avatarFileName && (
+                  <p className="text-[11px] text-slate-400">
+                    {strings.form.selectedLabel.replace("{name}", avatarFileName)}
+                  </p>
+                )}
+                <p className="text-[11px] text-slate-400">{strings.form.imageHint}</p>
               </div>
             )}
 
@@ -520,6 +613,7 @@ export default function HomeClient() {
               <SupporterSection
                 enabled={publicSupporter}
                 mode={supporterMode}
+                strings={strings.supporterSection}
                 onEnabledChange={(value) => {
                   setPublicSupporter(value);
                   if (!value) {
@@ -544,25 +638,31 @@ export default function HomeClient() {
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-medium text-slate-300">
-                    Motivation (optional)
+                    {strings.form.motivation}
                   </label>
                   <span className="text-[11px] text-slate-400">
                     {supporterNote.length}/{MOTIVATION_MAX}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {MOTIVATION_PRESETS.map((preset) => (
+                  {strings.motivationPresets.map((preset) => (
                     <button
-                      key={preset}
+                      key={preset.label}
                       type="button"
                       onClick={() =>
                         setSupporterNote(
-                          applyMotivationTemplate(preset, city).slice(0, MOTIVATION_MAX),
+                          applyMotivationTemplate(
+                            preset.template,
+                            city,
+                            strings.form.cityTemplate,
+                            strings.form.cityFallback,
+                          ).slice(0, MOTIVATION_MAX),
                         )
                       }
                       className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1 text-[11px] font-semibold text-slate-200 hover:border-sky-300 hover:text-sky-200"
+                      title={preset.template}
                     >
-                      Vorschlag
+                      {preset.label}
                     </button>
                   ))}
                   <button
@@ -570,7 +670,7 @@ export default function HomeClient() {
                     onClick={() => setSupporterNote("")}
                     className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1 text-[11px] font-semibold text-slate-400 hover:text-slate-200"
                   >
-                    Leeren
+                    {strings.form.clear}
                   </button>
                 </div>
                 <textarea
@@ -579,18 +679,17 @@ export default function HomeClient() {
                   value={supporterNote}
                   onChange={(e) => setSupporterNote(e.target.value)}
                   className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
-                  placeholder="Warum bist du Teil der Community?"
+                  placeholder={strings.form.motivationPlaceholder}
                 />
                 <p className="text-[11px] text-slate-400">
-                  Öffentlich sichtbar nur, wenn du als Unterstützer aktiviert bist. Bitte keine
-                  Kontaktdaten.
+                  {strings.form.motivationHint}
                 </p>
               </div>
 
               {publicSupporter && supporterMode === "separate" && memberType === "organisation" && (
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-slate-300">
-                    Unterstützer-Bild (optional)
+                    {strings.form.supporterImage}
                   </label>
                   <input
                     type="url"
@@ -605,7 +704,7 @@ export default function HomeClient() {
               {publicSupporter && supporterMode === "separate" && memberType === "person" && (
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-slate-300">
-                    Unterstützer-Bild (optional)
+                    {strings.form.supporterImage}
                   </label>
                   <input
                     ref={supporterFileRef}
@@ -622,10 +721,10 @@ export default function HomeClient() {
                   />
                   {supporterImageFileName && (
                     <p className="text-[11px] text-slate-400">
-                      Ausgewählt: {supporterImageFileName}
+                      {strings.form.selectedLabel.replace("{name}", supporterImageFileName)}
                     </p>
                   )}
-                  <p className="text-[11px] text-slate-400">Max. 2 MB, JPG/PNG.</p>
+                  <p className="text-[11px] text-slate-400">{strings.form.imageHint}</p>
                 </div>
               )}
             </div>
@@ -637,7 +736,7 @@ export default function HomeClient() {
                 onChange={(e) => setWantsNewsletter(e.target.checked)}
                 className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
               />
-              <span>Newsletter-Updates zu VoiceOpenGov (optional)</span>
+              <span>{strings.form.newsletter}</span>
             </label>
             <label className="flex items-start gap-2 text-xs text-slate-300">
               <input
@@ -646,16 +745,18 @@ export default function HomeClient() {
                 onChange={(e) => setWantsNewsletterEdDebatte(e.target.checked)}
                 className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
               />
-              <span>Updates zu eDebatte (Werkzeug) (optional)</span>
+              <span>{strings.form.newsletterTool}</span>
             </label>
 
             <div className="space-y-2 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-              <p className="text-xs font-medium text-slate-300">Initiative unterstützen</p>
+              <p className="text-xs font-medium text-slate-300">
+                {strings.form.supportCardTitle}
+              </p>
               <p className="text-xs text-slate-400">
-                Freiwillige Unterstützung hält Infrastruktur, Recherche und Moderation am Laufen. Keine Stimmvorteile.
+                {strings.form.supportCardBody}
               </p>
               <Link href="/unterstuetzen" className="btn btn-ghost">
-                Unterstützungswege ansehen
+                {strings.form.supportCardCta}
               </Link>
             </div>
 
@@ -668,22 +769,23 @@ export default function HomeClient() {
                 required
               />
               <span>
-                Ich akzeptiere die{" "}
+                {strings.form.privacyBefore}{" "}
                 <Link href="/datenschutz" className="font-semibold text-slate-100 underline underline-offset-2">
-                  Datenschutzhinweise
+                  {strings.form.privacyLink}
                 </Link>{" "}
-                und den Double-Opt-In Hinweis.
+                {strings.form.privacyAfter}
               </span>
             </label>
 
             <div className="flex flex-wrap items-center gap-3">
               <button type="submit" disabled={isSubmitting} className="btn btn-primary">
-                {isSubmitting ? "Senden ..." : "Jetzt eintragen"}
+                {isSubmitting ? strings.form.submitting : strings.form.submit}
               </button>
               {notice && (
                 <span
                   className={`text-xs ${notice.ok ? "text-sky-300" : "text-red-400"}`}
                   role="status"
+                  aria-live="polite"
                 >
                   {notice.msg}
                 </span>
@@ -692,20 +794,19 @@ export default function HomeClient() {
           </form>
 
           <div className="mt-4 space-y-2 text-xs text-slate-300">
-            <p>Mitgliedschaft ist kostenfrei.</p>
+            <p>{strings.footer.membershipFree}</p>
             <p>
-              Unterstützung ist freiwillig und hilft beim Aufbau von Moderation, Dossiers und
-              Infrastruktur. Details findest du unter{" "}
+              {strings.footer.supportNoteBefore}{" "}
               <Link href="/unterstuetzen" className="font-semibold text-slate-100 underline underline-offset-2">
-                Unterstützen
+                {strings.footer.supportNoteLink}
               </Link>{" "}
-              oder per Mail an{" "}
+              {strings.footer.supportNoteAfter}{" "}
               <a href="mailto:members@voiceopengov.org" className="font-semibold text-slate-100">
                 members@voiceopengov.org
               </a>
               .
             </p>
-            <p>Öffentlich/Privat: Öffentlich zeigt nur Orts-Summen (keine Einzelprofile, keine Rohdaten).</p>
+            <p>{strings.footer.publicPrivateNote}</p>
           </div>
         </div>
       </section>
@@ -714,21 +815,22 @@ export default function HomeClient() {
         <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Unterstützen</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {strings.supportSection.label}
+              </p>
               <h3 className="text-xl font-semibold text-slate-100">
-                Unterstütze die Initiative – transparent und ohne Stimmvorteile.
+                {strings.supportSection.title}
               </h3>
               <p className="text-sm text-slate-300">
-                Unterstützung ermöglicht Infrastruktur, Recherche und Übersetzungen. Wir halten
-                alles nachvollziehbar und offen dokumentiert.
+                {strings.supportSection.body}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Link href="/unterstuetzen" className="btn btn-primary">
-                Unterstützungswege
+                {strings.supportSection.ctaSupport}
               </Link>
               <Link href="/kontakt" className="btn btn-ghost">
-                Fragen stellen
+                {strings.supportSection.ctaQuestions}
               </Link>
             </div>
           </div>

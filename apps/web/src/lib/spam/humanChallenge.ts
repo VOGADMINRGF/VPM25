@@ -9,7 +9,21 @@ const HUMAN_CHALLENGES: HumanChallenge[] = [
   {
     id: "farbe",
     prompt: "Schreib bitte das Wort \"blau\" in dieses Feld.",
-    answers: ["blau"],
+    answers: [
+      "blau",
+      "blue",
+      "bleu",
+      "azul",
+      "blu",
+      "azzurro",
+      "niebieski",
+      "mavi",
+      "أزرق",
+      "ازرق",
+      "синий",
+      "蓝色",
+      "蓝",
+    ],
   },
 ];
 

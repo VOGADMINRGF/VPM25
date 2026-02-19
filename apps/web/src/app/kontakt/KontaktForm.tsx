@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { HumanChallenge } from "@/lib/spam/humanChallenge";
+import { useLocale } from "@/context/LocaleContext";
+import { getKontaktStrings } from "./strings";
 
 declare global {
   interface Window {
@@ -15,30 +17,7 @@ declare global {
 }
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
-const SHAPE_OPTIONS = [
-  {
-    value: "kreis",
-    label: "Kreis",
-    hint: "blau",
-    shape: "circle" as const,
-    gradient: "bg-gradient-to-br from-sky-400 to-blue-600",
-  },
-  {
-    value: "rechteck",
-    label: "Rechteck",
-    hint: "türkis",
-    shape: "rect" as const,
-    gradient: "bg-gradient-to-br from-teal-300 to-cyan-400",
-  },
-  {
-    value: "dreieck",
-    label: "Dreieck",
-    hint: "grün",
-    shape: "triangle" as const,
-    gradient: "bg-gradient-to-br from-sky-300 to-sky-500",
-  },
-];
+const CONTACT_EMAIL = "kontakt@voiceopengov.org";
 
 type Props = {
   sent?: boolean;
@@ -117,27 +96,37 @@ function useTurnstile() {
   return { token, error, widgetRef };
 }
 
-const errorText: Record<string, string> = {
-  ratelimit: "Kurz zu viele Anfragen. Bitte versuche es in ein paar Minuten erneut oder schreib direkt an kontakt@voiceopengov.org.",
-  captcha:
-    "Die Verifizierung konnte nicht abgeschlossen werden. Bitte lade die Seite neu oder schreib uns direkt an kontakt@voiceopengov.org.",
-  invalid:
-    "Die Angaben waren unvollständig. Bitte prüfe die Felder oder schreib direkt an kontakt@voiceopengov.org.",
-  challenge:
-    "Die Sicherheitsfrage wurde nicht korrekt beantwortet. Bitte versuche es erneut oder schreib uns direkt an kontakt@voiceopengov.org.",
-  shape:
-    "Bitte klicke die korrekte Form an (Kreis). Sollte das nicht funktionieren, schreib uns direkt an kontakt@voiceopengov.org.",
-};
+function renderWithEmailLink(text: string) {
+  const parts = text.split(CONTACT_EMAIL);
+  if (parts.length === 1) return text;
+  return (
+    <>
+      {parts[0]}
+      <a
+        href={`mailto:${CONTACT_EMAIL}`}
+        className="font-semibold text-amber-200 underline underline-offset-4"
+      >
+        {CONTACT_EMAIL}
+      </a>
+      {parts.slice(1).join(CONTACT_EMAIL)}
+    </>
+  );
+}
 
 export default function KontaktForm({ sent, error, challenge }: Props) {
+  const { locale } = useLocale();
+  const strings = getKontaktStrings(locale);
+  const formStrings = strings.form;
   const formStartedAt = useFormStartTimestamp();
   const { token: turnstileToken, error: turnstileError, widgetRef } = useTurnstile();
   const showTurnstile = Boolean(TURNSTILE_SITE_KEY);
-  const displayError = error ? errorText[error] ?? errorText.invalid : null;
-  const [shapes, setShapes] = useState(SHAPE_OPTIONS);
+  const displayError = error
+    ? formStrings.errors[error] ?? formStrings.errors.invalid
+    : null;
+  const [shapes, setShapes] = useState(formStrings.shapes);
 
   const reshuffleShapes = () => {
-    const arr = [...SHAPE_OPTIONS];
+    const arr = [...formStrings.shapes];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -145,19 +134,24 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
     setShapes(arr);
   };
 
+  useEffect(() => {
+    setShapes(formStrings.shapes);
+  }, [formStrings.shapes]);
+
   return (
     <section
       id="kontaktformular"
       className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-5 shadow-sm ring-1 ring-slate-800"
     >
-      <h2 className="text-base font-semibold text-slate-100 text-center">Kontaktformular</h2>
+      <h2 className="text-base font-semibold text-slate-100 text-center">
+        {formStrings.title}
+      </h2>
       <p className="mt-1 text-center text-xs text-slate-400">
-        Wir routen dein Anliegen intern an die passende Stelle.
+        {formStrings.subtitle}
       </p>
       {sent && (
         <div className="mt-3 rounded-xl border border-sky-900/60 bg-sky-950/40 px-4 py-3 text-sm text-sky-200">
-          Danke! Deine Nachricht ist bei uns angekommen. Wir freuen uns über jedes Feedback und
-          melden uns zeitnah.
+          {formStrings.success}
         </div>
       )}
       {displayError && (
@@ -167,15 +161,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
       )}
       {!sent && turnstileError && showTurnstile && (
         <div className="mt-3 rounded-xl border border-amber-900/60 bg-amber-950/40 px-4 py-3 text-xs text-amber-200">
-          Die Schutzabfrage konnte nicht geladen werden. Du kannst das Formular trotzdem absenden
-          oder uns direkt per Mail an{" "}
-          <a
-            href="mailto:kontakt@voiceopengov.org"
-            className="font-semibold text-amber-200 underline underline-offset-4"
-          >
-            kontakt@voiceopengov.org
-          </a>{" "}
-          schreiben.
+          {renderWithEmailLink(formStrings.turnstileError)}
         </div>
       )}
 
@@ -185,7 +171,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
         <input type="hidden" name="humanChallengeId" value={challenge.id} readOnly />
 
         <div className="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden" aria-hidden="true">
-          <label htmlFor="website">Bitte dieses Feld frei lassen</label>
+          <label htmlFor="website">{formStrings.honeypot}</label>
           <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
           <input id="hp_contact" name="hp_contact" type="text" tabIndex={-1} autoComplete="off" />
           <input id="hp_company" name="hp_company" type="text" tabIndex={-1} autoComplete="off" />
@@ -195,7 +181,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
 
         <div>
           <label htmlFor="category" className="block text-xs font-semibold text-slate-300">
-            Worum geht es?
+            {formStrings.categoryLabel}
           </label>
           <select
             id="category"
@@ -203,20 +189,19 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             required
             className="mt-1 block w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
           >
-            <option value="">Bitte auswählen …</option>
-            <option value="juristisch">Juristische / rechtliche Anfrage</option>
-            <option value="presse">Presse- / Interviewanfrage</option>
-            <option value="medien">Medien / Kooperation</option>
-            <option value="partei">Partei, Fraktion oder Mandatsträger:in</option>
-            <option value="bewerbung">Bewerbung / Mitarbeit</option>
-            <option value="sonstiges">Sonstiges Anliegen</option>
+            <option value="">{formStrings.categoryPlaceholder}</option>
+            {formStrings.categories.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
           </select>
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
             <label htmlFor="name" className="block text-xs font-semibold text-slate-300">
-              Name
+              {formStrings.nameLabel}
             </label>
             <input
               id="name"
@@ -229,7 +214,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
           </div>
           <div className="space-y-1">
             <label htmlFor="email" className="block text-xs font-semibold text-slate-300">
-              E-Mail
+              {formStrings.emailLabel}
             </label>
             <input
               id="email"
@@ -244,7 +229,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
 
         <div className="space-y-1">
           <label htmlFor="phone" className="block text-xs font-semibold text-slate-300">
-            Telefon (optional)
+            {formStrings.phoneLabel}
           </label>
           <input
             id="phone"
@@ -252,27 +237,27 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             type="tel"
             autoComplete="tel"
             className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-            placeholder="Wenn du einen Rückruf wünschst, gib bitte eine Nummer an."
+            placeholder={formStrings.phonePlaceholder}
           />
         </div>
 
         <div className="space-y-1">
           <label htmlFor="subject" className="block text-xs font-semibold text-slate-300">
-            Betreff (optional)
+            {formStrings.subjectLabel}
           </label>
           <input
             id="subject"
             name="subject"
             type="text"
             className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-            placeholder="Worum geht es in einem Satz?"
+            placeholder={formStrings.subjectPlaceholder}
             maxLength={200}
           />
         </div>
 
         <div className="space-y-1">
           <label htmlFor="message" className="block text-xs font-semibold text-slate-300">
-            Nachricht
+            {formStrings.messageLabel}
           </label>
           <textarea
             id="message"
@@ -280,7 +265,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             required
             rows={6}
             className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-            placeholder="Wie können wir dir helfen?"
+            placeholder={formStrings.messagePlaceholder}
             maxLength={5000}
           />
         </div>
@@ -288,24 +273,25 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
         <div className="space-y-3 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-4 shadow-sm">
           <div className="flex flex-col gap-1">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-              Human Check
+              {formStrings.humanCheck.title}
             </p>
             <p className="text-sm text-slate-300">
-              Bitte den <span className="font-semibold text-slate-100">blauen Kreis</span> auswählen
-              und die Farbe ins Feld schreiben. Hinweis: Rechteck ist türkis, Dreieck ist grün.
+              {formStrings.humanCheck.description}
             </p>
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-[11px] font-semibold text-slate-400">Klickcheck</p>
+                <p className="text-[11px] font-semibold text-slate-400">
+                  {formStrings.humanCheck.clickCheckLabel}
+                </p>
                 <button
                   type="button"
                   onClick={reshuffleShapes}
                   className="text-[11px] font-semibold text-sky-300 hover:text-sky-200 underline underline-offset-4"
                 >
-                  Challenge neu mischen
+                  {formStrings.humanCheck.reshuffle}
                 </button>
               </div>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -337,7 +323,10 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
                       <div className="leading-tight">
                         <div className="text-sm font-semibold text-slate-100">{shape.label}</div>
                         <div className="text-[11px] text-slate-400">
-                          {shape.hint} {shape.value === "kreis" ? "(anklicken)" : "(nicht auswählen)"}
+                          {shape.hint}{" "}
+                          {shape.value === "kreis"
+                            ? formStrings.humanCheck.shapeSelected
+                            : formStrings.humanCheck.shapeNot}
                         </div>
                       </div>
                     </div>
@@ -348,10 +337,10 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
 
             <div className="space-y-2">
               <label htmlFor="humanAnswer" className="text-[11px] font-semibold text-slate-400">
-                Kurze Schreibfrage
+                {formStrings.humanCheck.writingLabel}
               </label>
               <p className="text-[11px] text-slate-400">
-                Schreibe die Farbe des angeklickten Kreises ins Feld (Tipp: blau).
+                {formStrings.humanCheck.writingHelp}
               </p>
               <input
                 id="humanAnswer"
@@ -360,7 +349,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
                 autoComplete="off"
                 required
                 className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-                placeholder='Bitte "blau" eintragen'
+                placeholder={formStrings.humanCheck.writingPlaceholder}
               />
             </div>
           </div>
@@ -369,7 +358,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
         {showTurnstile && (
           <div className="rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-3">
             <p className="text-[11px] text-slate-400">
-              Kurze Bestätigung, dass du kein Bot bist:
+              {formStrings.turnstileLabel}
             </p>
             <div ref={widgetRef} className="mt-2" aria-live="polite" />
           </div>
@@ -383,15 +372,12 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             className="mt-0.5 h-4 w-4 rounded border-slate-500 text-sky-500 focus:ring-sky-500"
           />
           <label htmlFor="newsletterOptIn" className="text-[11px] leading-snug text-slate-400">
-            Ich möchte gelegentlich Updates und Informationen zu VoiceOpenGov erhalten (Newsletter).
-            Du kannst dich jederzeit wieder abmelden.
+            {formStrings.newsletterLabel}
           </label>
         </div>
 
         <p className="text-[11px] text-slate-400">
-          Mit dem Absenden erklärst du dich einverstanden, dass wir deine Angaben zur Bearbeitung
-          deiner Anfrage verarbeiten. Vollständige Datenschutz-Hinweise folgen nach
-          Gesellschaftseintragung.
+          {formStrings.privacyNote}
         </p>
 
         <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -399,14 +385,14 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             type="submit"
             className="w-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(14,116,144,0.35)] transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-sky-200 md:w-auto md:px-10"
           >
-            Anfrage absenden
+            {formStrings.submit}
           </button>
 
           <Link
-            href="mailto:kontakt@voiceopengov.org"
+            href={`mailto:${CONTACT_EMAIL}`}
             className="w-full rounded-full border border-sky-700/60 bg-slate-950/60 px-4 py-3 text-center text-sm font-semibold text-sky-200 shadow-[0_6px_18px_rgba(14,165,233,0.15)] transition hover:border-sky-400 hover:bg-slate-950 hover:text-sky-100 md:w-auto"
           >
-            Oder direkt per E-Mail schreiben
+            {formStrings.emailCta}
           </Link>
         </div>
       </form>

@@ -2,32 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useLocale } from "@/context/LocaleContext";
 import { HumanCheck } from "@/components/security/HumanCheck";
+import { getChapterStrings } from "./strings";
 
 type Notice = { ok: boolean; msg: string } | null;
-
-const INTEREST_OPTIONS = [
-  {
-    value: "start",
-    label: "Chapter starten",
-    hint: "Ich möchte vor Ort vertreten.",
-  },
-  {
-    value: "join",
-    label: "Mithelfen",
-    hint: "Ich möchte mich anschließen.",
-  },
-  {
-    value: "space",
-    label: "Räumlichkeiten anbieten",
-    hint: "Ich habe Zugang zu einem Ort.",
-  },
-  {
-    value: "info",
-    label: "Erstmal Infos",
-    hint: "Ich bin interessiert, aber offen.",
-  },
-] as const;
 
 export default function ChapterIntakeForm({
   id,
@@ -36,6 +15,8 @@ export default function ChapterIntakeForm({
   id?: string;
   className?: string;
 }) {
+  const { locale } = useLocale();
+  const strings = getChapterStrings(locale);
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [orgName, setOrgName] = useState("");
@@ -73,17 +54,17 @@ export default function ChapterIntakeForm({
     setNotice(null);
 
     if (interests.length === 0) {
-      setNotice({ ok: false, msg: "Bitte mindestens eine Interessen-Option auswählen." });
+      setNotice({ ok: false, msg: strings.form.notices.interestRequired });
       return;
     }
 
     if (!privacyAccepted) {
-      setNotice({ ok: false, msg: "Bitte Datenschutzhinweis akzeptieren." });
+      setNotice({ ok: false, msg: strings.form.notices.privacyRequired });
       return;
     }
 
     if (!humanToken) {
-      setNotice({ ok: false, msg: "Bitte den kurzen Human-Check abschliessen." });
+      setNotice({ ok: false, msg: strings.form.notices.humanRequired });
       return;
     }
 
@@ -113,14 +94,14 @@ export default function ChapterIntakeForm({
       if (res.ok && data?.ok) {
         setNotice({
           ok: true,
-          msg: "Danke! Wir melden uns mit den nächsten Schritten. Die Anfrage ist unverbindlich.",
+          msg: strings.form.notices.submitOk,
         });
         resetForm();
       } else {
-        setNotice({ ok: false, msg: "Das hat nicht geklappt. Bitte später erneut versuchen." });
+        setNotice({ ok: false, msg: strings.form.notices.submitFail });
       }
     } catch {
-      setNotice({ ok: false, msg: "Das hat nicht geklappt. Bitte später erneut versuchen." });
+      setNotice({ ok: false, msg: strings.form.notices.submitFail });
     } finally {
       setIsSubmitting(false);
     }
@@ -134,9 +115,9 @@ export default function ChapterIntakeForm({
       }`}
     >
       <div className="space-y-2">
-        <h2 className="text-xl font-semibold text-slate-100">Sich vormerken lassen</h2>
+        <h2 className="text-xl font-semibold text-slate-100">{strings.form.title}</h2>
         <p className="text-sm text-slate-300">
-          Wir melden uns mit dem Chapter-Launch-Kit und den nächsten Schritten.
+          {strings.form.subtitle}
         </p>
       </div>
 
@@ -154,7 +135,7 @@ export default function ChapterIntakeForm({
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div className="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden" aria-hidden="true">
-          <label htmlFor="hp_chapter">Bitte dieses Feld frei lassen</label>
+          <label htmlFor="hp_chapter">{strings.form.labels.honeypot}</label>
           <input
             id="hp_chapter"
             name="hp_chapter"
@@ -169,7 +150,7 @@ export default function ChapterIntakeForm({
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
             <label htmlFor="contactName" className="block text-xs font-semibold text-slate-300">
-              Name
+              {strings.form.labels.name}
             </label>
             <input
               id="contactName"
@@ -184,7 +165,7 @@ export default function ChapterIntakeForm({
           </div>
           <div className="space-y-1">
             <label htmlFor="contactEmail" className="block text-xs font-semibold text-slate-300">
-              E-Mail
+              {strings.form.labels.email}
             </label>
             <input
               id="contactEmail"
@@ -202,7 +183,7 @@ export default function ChapterIntakeForm({
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
             <label htmlFor="orgName" className="block text-xs font-semibold text-slate-300">
-              Organisation (optional)
+              {strings.form.labels.organisation}
             </label>
             <input
               id="orgName"
@@ -211,12 +192,12 @@ export default function ChapterIntakeForm({
               value={orgName}
               onChange={(event) => setOrgName(event.target.value)}
               className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-              placeholder="Name der Organisation/Initiative"
+              placeholder={strings.form.placeholders.organisation}
             />
           </div>
           <div className="space-y-1">
             <label htmlFor="location" className="block text-xs font-semibold text-slate-300">
-              Ort / Region
+              {strings.form.labels.location}
             </label>
             <input
               id="location"
@@ -226,17 +207,17 @@ export default function ChapterIntakeForm({
               value={location}
               onChange={(event) => setLocation(event.target.value)}
               className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-              placeholder="z. B. Berlin, Leipzig, Rhein-Main"
+              placeholder={strings.form.placeholders.location}
             />
           </div>
         </div>
 
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Interesse
+            {strings.form.labels.interest}
           </p>
           <div className="grid gap-2 md:grid-cols-2">
-            {INTEREST_OPTIONS.map((option) => (
+            {strings.form.interestOptions.map((option) => (
               <label
                 key={option.value}
                 className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-300 shadow-sm transition hover:border-sky-500/60"
@@ -261,7 +242,7 @@ export default function ChapterIntakeForm({
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
             <label htmlFor="spaceAvailable" className="block text-xs font-semibold text-slate-300">
-              Räumlichkeiten vorhanden?
+              {strings.form.labels.spaceAvailable}
             </label>
             <select
               id="spaceAvailable"
@@ -270,15 +251,16 @@ export default function ChapterIntakeForm({
               onChange={(event) => setSpaceAvailable(event.target.value)}
               className="mt-1 block w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             >
-              <option value="">Bitte auswählen ...</option>
-              <option value="yes">Ja, Raum vorhanden</option>
-              <option value="maybe">Vielleicht / später</option>
-              <option value="no">Kein Raum</option>
+              {strings.form.spaceOptions.map((option) => (
+                <option key={option.value || "empty"} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
           <div className="space-y-1">
             <label htmlFor="spaceNotes" className="block text-xs font-semibold text-slate-300">
-              Raum-Details (optional)
+              {strings.form.labels.spaceNotes}
             </label>
             <input
               id="spaceNotes"
@@ -287,14 +269,14 @@ export default function ChapterIntakeForm({
               value={spaceNotes}
               onChange={(event) => setSpaceNotes(event.target.value)}
               className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-              placeholder="z. B. Kapazität, Verfügbarkeit"
+              placeholder={strings.form.placeholders.spaceNotes}
             />
           </div>
         </div>
 
         <div className="space-y-1">
           <label htmlFor="notes" className="block text-xs font-semibold text-slate-300">
-            Weitere Hinweise (optional)
+            {strings.form.labels.notes}
           </label>
           <textarea
             id="notes"
@@ -303,13 +285,14 @@ export default function ChapterIntakeForm({
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
             className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
-            placeholder="Mitstreiter, lokale Besonderheiten, Zeithorizont ..."
+            placeholder={strings.form.placeholders.notes}
           />
         </div>
 
         <HumanCheck
           formId="chapter-intake"
           variant="compact"
+          strings={strings.humanCheck}
           onSolved={({ token }) => setHumanToken(token)}
           onError={() => setHumanToken("")}
         />
@@ -324,11 +307,11 @@ export default function ChapterIntakeForm({
             className="mt-0.5 h-4 w-4 rounded border-slate-500 text-sky-500 focus:ring-sky-500"
           />
           <label htmlFor="privacyAccepted" className="text-[11px] leading-snug text-slate-400">
-            Ich akzeptiere die{" "}
+            {strings.form.labels.privacy.before}{" "}
             <Link href="/datenschutz" className="font-semibold text-sky-300 underline underline-offset-4">
-              Datenschutzhinweise
-            </Link>
-            .
+              {strings.form.labels.privacy.link}
+            </Link>{" "}
+            {strings.form.labels.privacy.after}
           </label>
         </div>
 
@@ -338,14 +321,14 @@ export default function ChapterIntakeForm({
             disabled={isSubmitting}
             className="w-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(14,116,144,0.35)] transition hover:brightness-105 focus:outline-none focus:ring-2 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-70 md:w-auto md:px-10"
           >
-            {isSubmitting ? "Sende..." : "Vormerken lassen"}
+            {isSubmitting ? strings.form.submitting : strings.form.submit}
           </button>
 
           <a
             href="mailto:kontakt@voiceopengov.org"
             className="w-full rounded-full border border-sky-700/60 bg-slate-950/60 px-4 py-3 text-center text-sm font-semibold text-sky-200 shadow-[0_6px_18px_rgba(14,165,233,0.15)] transition hover:border-sky-400 hover:bg-slate-950 hover:text-sky-100 md:w-auto"
           >
-            Oder per E-Mail
+            {strings.form.emailCta}
           </a>
         </div>
       </form>

@@ -1,24 +1,35 @@
 import Link from "next/link";
+import { getRequestLocale } from "@/lib/locale";
+import { getDossierStrings } from "./strings";
 
-export default function DirekteDemokratieDossierPage() {
+export async function generateMetadata() {
+  const locale = await getRequestLocale();
+  const strings = getDossierStrings(locale);
+  return {
+    title: strings.meta.title,
+    description: strings.meta.description,
+  };
+}
+
+export default async function DirekteDemokratieDossierPage() {
+  const locale = await getRequestLocale();
+  const strings = getDossierStrings(locale);
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
       <section className="mx-auto max-w-4xl px-4 pb-10 pt-12">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Beispiel-Dossier</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+          {strings.label}
+        </p>
         <h1 className="mt-2 text-4xl font-extrabold leading-tight headline-gradient md:text-5xl">
-          Direkte Demokratie
+          {strings.title}
         </h1>
         <p className="mt-4 text-lg text-slate-300">
-          Ein Dossier bündelt Behauptungen, Quellen, offene Fragen und Varianten. So wird sichtbar,
-          worüber Mehrheiten entscheiden und welche Grundlagen geprüft wurden.
+          {strings.intro}
         </p>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {[
-            "Wie sichern wir die Qualität von Abstimmungen?",
-            "Welche Rollen haben Regionen und Gemeinden?",
-            "Welche Standards braucht die Umsetzung?",
-          ].map((item) => (
+          {strings.cards.map((item) => (
             <div
               key={item}
               className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300 shadow-sm"
@@ -32,14 +43,13 @@ export default function DirekteDemokratieDossierPage() {
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                Diskussion
+                {strings.discussion.label}
               </p>
               <h2 className="text-xl font-semibold text-slate-100">
-                Beiträge aus eDebatte
+                {strings.discussion.title}
               </h2>
               <p className="text-sm text-slate-300">
-                Hier entsteht die Diskussion zu diesem Dossier. Die Live‑Einbindung folgt; bis
-                dahin kannst du direkt im Tool mitdiskutieren.
+                {strings.discussion.body}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -49,13 +59,13 @@ export default function DirekteDemokratieDossierPage() {
                 rel="noreferrer"
                 className="btn btn-primary"
               >
-                Diskussion öffnen
+                {strings.discussion.ctaPrimary}
               </a>
               <Link
                 href="/#mitmachen"
                 className="btn border border-slate-700 text-slate-100 hover:bg-slate-800"
               >
-                Mitglied werden
+                {strings.discussion.ctaSecondary}
               </Link>
             </div>
           </div>
@@ -63,10 +73,10 @@ export default function DirekteDemokratieDossierPage() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/#mitmachen" className="btn btn-primary">
-            Mitglied werden
+            {strings.actions.primary}
           </Link>
           <Link href="/initiatives" className="btn border border-slate-700 text-slate-100 hover:bg-slate-800">
-            Thema einreichen
+            {strings.actions.secondary}
           </Link>
         </div>
       </section>

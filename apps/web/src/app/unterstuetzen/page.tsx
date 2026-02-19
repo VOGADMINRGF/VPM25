@@ -1,20 +1,26 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { getRequestLocale } from "@/lib/locale";
 import { SUPPORT_COOKIE, verifySupportCookie } from "@/lib/supportSession";
 import { loginSupporter, logoutSupporter } from "./actions";
+import { getSupportStrings } from "./strings";
 
-export const metadata: Metadata = {
-  title: "Unterstützen – VoiceOpenGov",
-  description:
-    "Unterstütze die Initiative mit Beitrag, Zeit oder Know-how – transparent und ohne Stimmvorteile.",
-};
+export async function generateMetadata() {
+  const locale = await getRequestLocale();
+  const strings = getSupportStrings(locale);
+  return {
+    title: strings.meta.title,
+    description: strings.meta.description,
+  };
+}
 
 export default async function SupportPage({
   searchParams,
 }: {
   searchParams?: { error?: string };
 }) {
+  const locale = await getRequestLocale();
+  const strings = getSupportStrings(locale);
   const supportSecret =
     process.env.JWT_SECRET || process.env.EDITOR_TOKEN || "support-session";
   const cookieStore = await cookies();
@@ -36,37 +42,21 @@ export default async function SupportPage({
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-100 pb-16">
       <section className="mx-auto max-w-4xl px-4 py-16 space-y-10">
         <header className="space-y-4 text-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Unterstützen</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            {strings.header.label}
+          </p>
           <h1
             className="text-3xl md:text-4xl font-extrabold leading-tight headline-gradient"
           >
-            Infrastruktur für prüfbare Mehrheiten sichern
+            {strings.header.title}
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-            Unterstützung stärkt Aufbau, Recherche, Übersetzung und Moderation. Sie ist freiwillig,
-            transparent dokumentiert und bringt keine Stimmvorteile.
+            {strings.header.body}
           </p>
         </header>
 
         <section className="grid gap-4 md:grid-cols-2">
-          {[
-            {
-              title: "Finanzieller Beitrag",
-              body: "Ermöglicht Hosting, Sicherheit, Recherche und transparente Dossiers.",
-            },
-            {
-              title: "Zeit & Know-how",
-              body: "Hilf bei Technik, Moderation, Community-Aufbau oder Übersetzung.",
-            },
-            {
-              title: "Institutionelle Partnerschaft",
-              body: "Unterstützung durch Organisationen für Standards und Infrastruktur.",
-            },
-            {
-              title: "Sachleistungen",
-              body: "Räume, Infrastruktur oder Services für die lokale Arbeit.",
-            },
-          ].map((item) => (
+          {strings.cards.map((item) => (
             <div
               key={item.title}
               className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300 shadow-sm"
@@ -80,17 +70,16 @@ export default async function SupportPage({
         </section>
 
         <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-100">So kannst du unterstützen</h2>
+          <h2 className="text-lg font-semibold text-slate-100">{strings.how.title}</h2>
           <p className="mt-2 text-sm text-slate-300">
-            Schreib uns kurz, wie du unterstützen möchtest. Wir senden dir alle Details und
-            klären den passenden Weg für deinen Beitrag.
+            {strings.how.body}
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <a href={`mailto:${contactEmail}`} className="btn btn-primary">
-              Kontakt aufnehmen
+              {strings.how.ctaPrimary}
             </a>
             <Link href="/kontakt" className="btn btn-ghost !bg-slate-900/70 !text-slate-100 !border-slate-700">
-              Kontaktformular
+              {strings.how.ctaSecondary}
             </Link>
           </div>
         </section>
@@ -98,10 +87,9 @@ export default async function SupportPage({
         <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold text-slate-100">Bankverbindung</h2>
+              <h2 className="text-lg font-semibold text-slate-100">{strings.bank.title}</h2>
               <p className="mt-2 text-sm text-slate-300">
-                Zugriff nur für angemeldete Unterstützer. Bitte im Verwendungszweck nur das
-                Nötigste angeben.
+                {strings.bank.body}
               </p>
             </div>
             {isAuthed && (
@@ -110,7 +98,7 @@ export default async function SupportPage({
                   type="submit"
                   className="btn btn-ghost !bg-slate-900/70 !text-slate-100 !border-slate-700"
                 >
-                  Abmelden
+                  {strings.bank.logout}
                 </button>
               </form>
             )}
@@ -120,12 +108,12 @@ export default async function SupportPage({
             <form action={loginSupporter} className="mt-4 space-y-3">
               {error === "invalid" && (
                 <p className="text-xs text-red-400">
-                  Zugangscode ist nicht korrekt.
+                  {strings.bank.login.invalid}
                 </p>
               )}
               {error === "unconfigured" && (
                 <p className="text-xs text-red-400">
-                  Zugangscode ist aktuell nicht konfiguriert. Bitte admin informieren.
+                  {strings.bank.login.unconfigured}
                 </p>
               )}
               <div className="flex flex-wrap gap-3">
@@ -133,16 +121,16 @@ export default async function SupportPage({
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  placeholder="Zugangscode"
+                  placeholder={strings.bank.login.placeholder}
                   className="w-full max-w-xs rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   required
                 />
                 <button type="submit" className="btn btn-primary">
-                  Freischalten
+                  {strings.bank.login.button}
                 </button>
               </div>
               <p className="text-xs text-slate-400">
-                Kein Zugang? Schreib an{" "}
+                {strings.bank.login.noAccess}{" "}
                 <a href={`mailto:${contactEmail}`} className="font-semibold text-slate-100">
                   {contactEmail}
                 </a>
@@ -159,12 +147,12 @@ export default async function SupportPage({
                   open
                 >
                   <summary className="cursor-pointer text-sm font-semibold text-slate-100">
-                    Bankverbindung anzeigen
+                    {strings.bank.summary}
                   </summary>
                   <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                        Kontoinhaber
+                        {strings.bank.labels.recipient}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-slate-100">
                         {bankRecipient}
@@ -172,29 +160,29 @@ export default async function SupportPage({
                     </div>
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                        Bank
+                        {strings.bank.labels.bank}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-slate-100">{bankName}</p>
                     </div>
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                        IBAN
+                        {strings.bank.labels.iban}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-slate-100">{bankIban}</p>
                     </div>
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                        BIC
+                        {strings.bank.labels.bic}
                       </p>
                       <p className="mt-1 text-sm font-semibold text-slate-100">{bankBic}</p>
                     </div>
                     {bankRefPrefix ? (
                       <div className="sm:col-span-2">
                         <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                          Verwendungszweck
+                          {strings.bank.labels.reference}
                         </p>
                         <p className="mt-1 text-sm text-slate-300">
-                          {bankRefPrefix} optionaler Hinweis (z. B. Stadt oder Projekt)
+                          {strings.bank.referenceHint.replace("{bankRefPrefix}", bankRefPrefix)}
                         </p>
                       </div>
                     ) : null}
@@ -202,12 +190,11 @@ export default async function SupportPage({
                 </details>
               ) : (
                 <div className="mt-4 rounded-2xl border border-dashed border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
-                  Bankdaten senden wir dir gern auf Anfrage.
+                  {strings.bank.noDetails}
                 </div>
               )}
               <p className="mt-3 text-xs text-slate-400">
-                Unterstützung ist freiwillig, nicht zweckgebunden für Stimmrechte und wird transparent
-                dokumentiert.
+                {strings.bank.afterNote}
               </p>
             </>
           )}
@@ -215,11 +202,10 @@ export default async function SupportPage({
 
         <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 text-xs text-slate-400">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-            Hinweis
+            {strings.hint.label}
           </p>
           <p className="mt-2">
-            Unterstützung ist freiwillig und unabhängig von Mitgliedschaft. Entscheidungen bleiben
-            nachvollziehbar, Stimmen sind gleichwertig und nie käuflich.
+            {strings.hint.body}
           </p>
         </section>
       </section>
