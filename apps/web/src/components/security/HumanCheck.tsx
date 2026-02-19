@@ -184,8 +184,8 @@ export function HumanCheck({
 
   if (isCompact && !isOpen) {
     return (
-      <div className="space-y-2 rounded-xl border border-slate-200 bg-white/95 p-4 text-xs text-slate-600 shadow-sm">
-        <p className="text-sm font-semibold text-slate-900">Kurze Bestätigung</p>
+      <div className="space-y-2 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-400 shadow-sm">
+        <p className="text-sm font-semibold text-slate-100">Kurze Bestätigung</p>
         <p>
           Kurzer Anti-Spam-Check. Öffne die Aufgabe nur, wenn du das Formular absenden willst.
         </p>
@@ -205,8 +205,8 @@ export function HumanCheck({
       <div
         className={`space-y-2 rounded-xl border p-4 text-xs ${
           isCompact
-            ? "border-slate-200 bg-white/95 text-slate-600 shadow-sm"
-            : "border-sky-100 bg-sky-50/70 text-sky-800"
+            ? "border-slate-800 bg-slate-950/60 text-slate-400 shadow-sm"
+            : "border-sky-900/60 bg-sky-950/40 text-sky-200"
         }`}
       >
         Lade kurze Bestätigung …
@@ -218,14 +218,14 @@ export function HumanCheck({
     <div
       className={`space-y-3 rounded-xl border p-4 ${
         isCompact
-          ? "border-slate-200 bg-white/95 shadow-sm"
-          : "border-sky-100 bg-sky-50/70"
+          ? "border-slate-800 bg-slate-950/60 shadow-sm"
+          : "border-sky-900/60 bg-sky-950/40"
       }`}
     >
       <div className="flex items-center justify-between gap-2">
         <p
           className={`text-sm font-semibold ${
-            isCompact ? "text-slate-900" : "text-sky-900"
+            isCompact ? "text-slate-100" : "text-sky-100"
           }`}
         >
           Kurze Bestätigung: Bist du ein Mensch?
@@ -233,14 +233,14 @@ export function HumanCheck({
         {status === "solved" && (
           <span
             className={`text-xs font-semibold ${
-              isCompact ? "text-slate-600" : "text-sky-700"
+              isCompact ? "text-slate-400" : "text-sky-200"
             }`}
           >
             ✓ geprüft
           </span>
         )}
       </div>
-      <p className={`text-xs ${isCompact ? "text-slate-600" : "text-sky-800"}`}>
+      <p className={`text-xs ${isCompact ? "text-slate-400" : "text-sky-200"}`}>
         Wir schützen Formulare vor Spam. Kein Tracking, nur ein kleiner Check: Bitte rechne die Aufgabe und lass das versteckte
         Feld leer.
       </p>
@@ -259,13 +259,13 @@ export function HumanCheck({
       <div
         className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${
           isCompact
-            ? "border-slate-200 bg-slate-50/60"
-            : "border-sky-200 bg-white/70"
+            ? "border-slate-800 bg-slate-950/60"
+            : "border-sky-900/60 bg-sky-950/40"
         }`}
       >
         <span
           className={`text-sm font-semibold ${
-            isCompact ? "text-slate-900" : "text-sky-900"
+            isCompact ? "text-slate-100" : "text-sky-100"
           }`}
         >
           {puzzle.first} + {puzzle.second} =
@@ -288,10 +288,10 @@ export function HumanCheck({
             e.stopPropagation();
             if (status !== "checking" && status !== "solved") void handleVerify();
           }}
-          className={`w-24 rounded-lg border bg-white px-3 py-2 text-sm outline-none ${
+          className={`w-24 rounded-lg border bg-slate-950/60 px-3 py-2 text-sm outline-none ${
             isCompact
-              ? "border-slate-200 text-slate-900 focus:border-slate-400 focus:ring-2 focus:ring-slate-100"
-              : "border-sky-200 text-sky-900 focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+              ? "border-slate-700 text-slate-100 focus:border-slate-500 focus:ring-2 focus:ring-slate-800/40"
+              : "border-sky-700 text-sky-100 focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
           }`}
           aria-label="Ergebnis eintragen"
         />
@@ -310,7 +310,7 @@ export function HumanCheck({
       </div>
 
       {message && (
-        <p className={`text-xs ${isCompact ? "text-slate-600" : "text-sky-700"}`}>
+        <p className={`text-xs ${isCompact ? "text-slate-400" : "text-sky-200"}`}>
           {message}
         </p>
       )}

@@ -11,11 +11,11 @@ const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 const MIN_AGE = 16;
 const MOTIVATION_MAX = 160;
 const MOTIVATION_PRESETS = [
-  "Ich will, dass Politik wieder nachvollziehbar wird – mit Fakten, Optionen und Verantwortung.",
-  "Weil ich genug von Show und PR habe. Ich will Transparenz und echte Mehrheitsentscheidungen.",
-  "Ich unterstütze VoiceOpenGov, weil Beteiligung zwischen den Wahlen besser werden muss.",
-  "Ich glaube an digitale Demokratie – strukturiert, fair und offen für alle.",
-  "Ich will, dass Entscheidungen wieder erklärbar sind – nicht nur Mehrheiten, sondern Gründe.",
+  "Ich möchte meine Perspektive strukturiert und nachvollziehbar einbringen.",
+  "Ich unterstütze VoiceOpenGov, weil klare Entscheidungswege wichtig sind.",
+  "Ich möchte Entscheidungen verstehen und ihre Begründung nachvollziehen.",
+  "Ich will mich {ort} sachlich beteiligen – mit klaren Optionen.",
+  "Ich unterstütze eine formale Dokumentation von Entscheidung und Status.",
 ];
 
 function applyMotivationTemplate(template: string, cityValue: string) {
@@ -252,20 +252,22 @@ export default function HomeClient() {
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-7">
               <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-sky-300">
-                Prüfpfade statt Parolen
+                Strukturierte Beteiligung
               </div>
-
               <div className="space-y-4">
                 <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
-                  <span className="block bg-gradient-to-r from-cyan-500 to-sky-600 bg-clip-text text-transparent">
+                  <span className="block headline-gradient">
                     Mehrheiten, die man prüfen kann.
                   </span>
-                  <span className="block text-slate-100">Klar, fair, nachvollziehbar.</span>
+                  <span className="block text-slate-100">Neutral, nachvollziehbar, verantwortbar.</span>
                 </h1>
                 <p className="max-w-2xl text-lg text-slate-300 md:text-xl">
-                  VoiceOpenGov baut eine unabhängige Infrastruktur, damit Entscheidungen wieder
-                  verständlich, prüfbar und mehrheitsfähig werden – jenseits von Taktik,
-                  parteipolitischem Lagerdenken und Intransparenz.
+                  VoiceOpenGov ermöglicht strukturierte Beteiligung mit klaren Entscheidungswegen,
+                  dokumentierten Optionen und nachvollziehbaren Ergebnissen.
+                </p>
+                <p className="max-w-2xl text-sm text-slate-400">
+                  Wir freuen uns über Beiträge von Menschen, die ihre Meinung regelmäßig einbringen
+                  möchten – respektvoll, sachlich und lösungsorientiert.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link href="/#mitmachen" className="btn btn-primary">
@@ -274,23 +276,20 @@ export default function HomeClient() {
                   <Link href="/unterstuetzen" className="btn btn-ghost">
                     Initiative unterstützen
                   </Link>
-                  <Link href="/dossier/direkte-demokratie" className="btn btn-ghost">
-                    Beispiel-Dossier
-                  </Link>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {[
                     {
-                      title: "Quellenpflicht",
-                      body: "Begriffe, Annahmen und Quellen sind offen dokumentiert.",
+                      title: "Strukturierte Entscheidungsdimensionen",
+                      body: "Ziel, Wirkung, Kosten, Zeit, Risiken, Zuständigkeit.",
                     },
                     {
-                      title: "Mehrheit mit Kontext",
-                      body: "Entscheidungen zeigen Optionen, Begründungen und Gegenpositionen.",
+                      title: "Klare Verantwortungszuordnung",
+                      body: "Verantwortliche Stellen werden benannt und dokumentiert.",
                     },
                     {
-                      title: "Umsetzung sichtbar",
-                      body: "Status, Zuständigkeit und nächste Schritte bleiben nachvollziehbar.",
+                      title: "Formaler Berichtsteil",
+                      body: "Beschluss, Begründung, Verantwortlichkeit, Status.",
                     },
                   ].map((item) => (
                     <div
@@ -311,231 +310,33 @@ export default function HomeClient() {
               <div className="absolute -right-8 top-10 h-40 w-40 rounded-full bg-sky-500/20 blur-3xl" />
               <div className="relative rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-soft">
                 <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  <span>Prüfpfad in Arbeit</span>
+                  <span>Entscheidungslogik</span>
                   <span className="rounded-full border border-slate-700 bg-slate-950/70 px-2 py-0.5 text-[10px] text-slate-300">
-                    Aufbauphase
+                    Civic-Level
                   </span>
                 </div>
                 <h2 className="mt-3 text-xl font-semibold text-slate-100">
-                  So sieht eine prüfbare Entscheidung aus
+                  Civic-Level 5 Optionen
                 </h2>
-                <div className="mt-4 grid gap-3">
+                <div className="mt-4 grid gap-2">
                   {[
-                    {
-                      title: "1. Frage & Rahmen",
-                      body: "Was genau soll entschieden werden und wer ist zuständig?",
-                    },
-                    {
-                      title: "2. Dossier",
-                      body: "Begriffe, Quellen, Risiken und offene Fragen.",
-                    },
-                    {
-                      title: "3. Optionen",
-                      body: "Mehrere Wege mit klaren Folgen und Annahmen.",
-                    },
-                    {
-                      title: "4. Mehrheit & Umsetzung",
-                      body: "Entscheidung mit Begründung und sichtbarem Status.",
-                    },
+                    "1. Informieren",
+                    "2. Feedback einholen",
+                    "3. Mitgestalten",
+                    "4. Entscheiden",
+                    "5. Umsetzung begleiten",
                   ].map((step) => (
                     <div
-                      key={step.title}
-                      className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4"
+                      key={step}
+                      className="rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-2 text-xs text-slate-300"
                     >
-                      <p className="text-xs font-semibold text-slate-100">{step.title}</p>
-                      <p className="mt-1 text-xs text-slate-400">{step.body}</p>
+                      {step}
                     </div>
                   ))}
                 </div>
                 <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-xs text-slate-400">
-                  Unterstützung ist freiwillig und bringt keine Stimmvorteile.
+                  Realistische Zahlen: Beiträge und Reichweite werden im Bericht ausgewiesen.
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="trust" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Vertrauen & Prüfpfade
-          </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-100">
-            Vertrauen entsteht nicht durch Versprechen – sondern durch Prüfpfade.
-          </h2>
-          <p className="mt-3 text-sm text-slate-300">
-            Wir behaupten nicht, die Wahrheit zu besitzen. Wir machen sie prüfbar: Jede Aussage
-            bekommt Kontext, Quellen und Gegenargumente. Jede Entscheidung zeigt, wer was wann
-            vorgeschlagen hat, welche Optionen zur Wahl standen – und warum eine Mehrheit sich so
-            entschieden hat.
-          </p>
-
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
-            {[
-              {
-                title: "Quellenpflicht & Standards",
-                body: "Begriffe, Quellen, Annahmen und offene Fragen werden sichtbar.",
-              },
-              {
-                title: "Mehrheiten mit Kontext",
-                body: "Nicht nur Stimmung, sondern begründete Entscheidungen.",
-              },
-              {
-                title: "Umsetzung sichtbar",
-                body: "Zuständigkeiten, Status und nächste Schritte (wo möglich).",
-              },
-              {
-                title: "Datenschutz & Unabhängigkeit",
-                body: "Kein Datenverkauf, keine Werbung, Double-Opt-In.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4"
-              >
-                <h3 className="text-sm font-semibold text-slate-100">{item.title}</h3>
-                <p className="mt-2 text-xs text-slate-400">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="chapter" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Chapters
-          </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-100">
-            Ein Chapter in jedem Land. In jedem Bundesland. Ein offener Anlaufpunkt – digital und
-            analog.
-          </h2>
-          <p className="mt-3 text-sm text-slate-300">
-            Politikverdrossenheit entsteht oft, weil Menschen nicht wissen, wo sie ihr Anliegen
-            wirksam adressieren können – und weil Prozesse im Zuständigkeits-Nebel verschwinden.
-            Darum bauen wir Chapters: lokale, offene Sprechstunden (z. B. in Stadtteilen, Kommunen,
-            Regionen), in denen Anliegen analog aufgenommen werden – und anschließend digital so
-            strukturiert werden, dass sie prüfbar und abstimmbar sind.
-          </p>
-
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
-            {[
-              "Anliegen aufnehmen (vor Ort oder online)",
-              "Dossier erstellen (Begriffe, Quellen, Optionen, offene Fragen)",
-              "Mehrheiten bilden (Abstimmen + transparente Ergebnis- und Umsetzungsübersicht)",
-            ].map((step) => (
-              <div
-                key={step}
-                className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-300"
-              >
-                {step}
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/chapter" className="btn btn-primary">
-              Chapter starten
-            </Link>
-            <Link href="#mitmachen" className="btn btn-ghost">
-              Mitmachen
-            </Link>
-            <Link
-              href="/initiatives?kind=org"
-              className="btn btn-ghost"
-            >
-              Organisation anmelden
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="dossier-beispiel" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Beispiel-Dossier
-          </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-100">
-            Beispiel-Dossier: Direkte Demokratie
-          </h2>
-          <p className="mt-2 text-sm text-slate-300">
-            Ein Dossier bündelt Behauptungen, Quellen, Gegenpositionen, offene Fragen und
-            Varianten – damit Mehrheiten auf belastbaren Grundlagen entscheiden.
-          </p>
-
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
-            {[
-              "Was braucht direkte Demokratie, damit sie fair bleibt – auch bei Kampagnen?",
-              "Welche Mindest-Standards müssen Abstimmungen erfüllen (Identität, Transparenz, Schutz vor Manipulation)?",
-              "Wie bleibt Verantwortung sichtbar: Wer setzt Mehrheiten um – und was passiert bei Nichterfüllung?",
-            ].map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-300"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/dossier/direkte-demokratie" className="btn btn-primary">
-              Dossier öffnen
-            </Link>
-            <Link
-              href="/initiatives"
-              className="btn btn-ghost"
-            >
-              Beitrag einreichen
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section id="vergleich" className="mx-auto mt-12 max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Systemvergleich
-          </p>
-          <h2 className="mt-2 text-2xl font-bold text-slate-100">
-            Warum das heutige System oft blockiert – und was wir anders machen
-          </h2>
-
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
-            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                Heute (parlamentarisch)
-              </p>
-              <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>Zuständigkeiten verschwimmen (Kommune/Land/Bund/EU).</li>
-                <li>Debatten belohnen Taktik statt Nachvollziehbarkeit.</li>
-                <li>Konsequenzen wirken unklar oder folgenlos.</li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-sky-300">
-                Neu (Mehrheitsprinzip mit Dossier)
-              </p>
-              <ul className="mt-3 space-y-2 text-sm text-slate-300">
-                <li>Optionen & Quellen sind offen (prüfbar statt „Glauben“).</li>
-                <li>Mehrheiten sind dokumentiert (mit Kontext, nicht nur Prozent).</li>
-                <li>Umsetzung wird sichtbar (Status, Zuständigkeit, nächste Schritte).</li>
-              </ul>
-              <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-sky-300">
-                {[
-                  "1. Check",
-                  "2. Dossier",
-                  "3. Beteiligung",
-                ].map((step) => (
-                  <span
-                    key={step}
-                    className="rounded-full border border-slate-700 bg-slate-950/70 px-3 py-1"
-                  >
-                    {step}
-                  </span>
-                ))}
               </div>
             </div>
           </div>
@@ -741,60 +542,61 @@ export default function HomeClient() {
               />
 
               <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-slate-700">
-                      Motivation (optional)
-                    </label>
-                    <span className="text-[11px] text-slate-500">
-                      {supporterNote.length}/{MOTIVATION_MAX}
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {MOTIVATION_PRESETS.map((preset) => (
-                      <button
-                        key={preset}
-                        type="button"
-                        onClick={() =>
-                          setSupporterNote(
-                            applyMotivationTemplate(preset, city).slice(0, MOTIVATION_MAX),
-                          )
-                        }
-                        className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-semibold text-slate-700 hover:border-sky-300 hover:text-sky-700"
-                      >
-                        Vorschlag
-                      </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => setSupporterNote("")}
-                      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-semibold text-slate-500 hover:text-slate-700"
-                    >
-                      Leeren
-                    </button>
-                  </div>
-                  <textarea
-                    rows={3}
-                    maxLength={MOTIVATION_MAX}
-                    value={supporterNote}
-                    onChange={(e) => setSupporterNote(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
-                    placeholder="Warum bist du Teil der Community?"
-                  />
-                  <p className="text-[11px] text-slate-500">
-                    Öffentlich sichtbar nur, wenn du als Unterstützer aktiviert bist. Bitte keine Kontaktdaten.
-                  </p>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-slate-300">
+                    Motivation (optional)
+                  </label>
+                  <span className="text-[11px] text-slate-400">
+                    {supporterNote.length}/{MOTIVATION_MAX}
+                  </span>
                 </div>
+                <div className="flex flex-wrap gap-2">
+                  {MOTIVATION_PRESETS.map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() =>
+                        setSupporterNote(
+                          applyMotivationTemplate(preset, city).slice(0, MOTIVATION_MAX),
+                        )
+                      }
+                      className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1 text-[11px] font-semibold text-slate-200 hover:border-sky-300 hover:text-sky-200"
+                    >
+                      Vorschlag
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setSupporterNote("")}
+                    className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1 text-[11px] font-semibold text-slate-400 hover:text-slate-200"
+                  >
+                    Leeren
+                  </button>
+                </div>
+                <textarea
+                  rows={3}
+                  maxLength={MOTIVATION_MAX}
+                  value={supporterNote}
+                  onChange={(e) => setSupporterNote(e.target.value)}
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                  placeholder="Warum bist du Teil der Community?"
+                />
+                <p className="text-[11px] text-slate-400">
+                  Öffentlich sichtbar nur, wenn du als Unterstützer aktiviert bist. Bitte keine
+                  Kontaktdaten.
+                </p>
+              </div>
 
               {publicSupporter && supporterMode === "separate" && memberType === "organisation" && (
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-700">
+                  <label className="text-xs font-medium text-slate-300">
                     Unterstützer-Bild (optional)
                   </label>
                   <input
                     type="url"
                     value={supporterImageUrl}
                     onChange={(e) => setSupporterImageUrl(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                     placeholder="https://"
                   />
                 </div>
@@ -802,7 +604,7 @@ export default function HomeClient() {
 
               {publicSupporter && supporterMode === "separate" && memberType === "person" && (
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-slate-700">
+                  <label className="text-xs font-medium text-slate-300">
                     Unterstützer-Bild (optional)
                   </label>
                   <input
@@ -816,58 +618,58 @@ export default function HomeClient() {
                         setSupporterImageFileName,
                       )
                     }
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100"
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   />
                   {supporterImageFileName && (
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-slate-400">
                       Ausgewählt: {supporterImageFileName}
                     </p>
                   )}
-                  <p className="text-[11px] text-slate-500">Max. 2 MB, JPG/PNG.</p>
+                  <p className="text-[11px] text-slate-400">Max. 2 MB, JPG/PNG.</p>
                 </div>
               )}
             </div>
 
-            <label id="newsletter" className="flex items-start gap-2 text-xs text-slate-600">
+            <label id="newsletter" className="flex items-start gap-2 text-xs text-slate-300">
               <input
                 type="checkbox"
                 checked={wantsNewsletter}
                 onChange={(e) => setWantsNewsletter(e.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-slate-300 text-sky-600"
+                className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
               />
               <span>Newsletter-Updates zu VoiceOpenGov (optional)</span>
             </label>
-            <label className="flex items-start gap-2 text-xs text-slate-600">
+            <label className="flex items-start gap-2 text-xs text-slate-300">
               <input
                 type="checkbox"
                 checked={wantsNewsletterEdDebatte}
                 onChange={(e) => setWantsNewsletterEdDebatte(e.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-slate-300 text-sky-600"
+                className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
               />
               <span>Updates zu eDebatte (Werkzeug) (optional)</span>
             </label>
 
-            <div className="space-y-2 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-              <p className="text-xs font-medium text-slate-700">Initiative unterstützen</p>
-              <p className="text-xs text-slate-500">
-                Freiwillige Unterstützung hält Infrastruktur, Recherche und Chapters am Laufen. Keine Stimmvorteile.
+            <div className="space-y-2 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-xs font-medium text-slate-300">Initiative unterstützen</p>
+              <p className="text-xs text-slate-400">
+                Freiwillige Unterstützung hält Infrastruktur, Recherche und Moderation am Laufen. Keine Stimmvorteile.
               </p>
               <Link href="/unterstuetzen" className="btn btn-ghost">
                 Unterstützungswege ansehen
               </Link>
             </div>
 
-            <label className="flex items-start gap-2 text-xs text-slate-600">
+            <label className="flex items-start gap-2 text-xs text-slate-300">
               <input
                 type="checkbox"
                 checked={privacyAccepted}
                 onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                className="mt-1 h-4 w-4 rounded border-slate-300 text-sky-600"
+                className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
                 required
               />
               <span>
                 Ich akzeptiere die{" "}
-                <Link href="/datenschutz" className="font-semibold text-slate-900 underline underline-offset-2">
+                <Link href="/datenschutz" className="font-semibold text-slate-100 underline underline-offset-2">
                   Datenschutzhinweise
                 </Link>{" "}
                 und den Double-Opt-In Hinweis.
@@ -880,7 +682,7 @@ export default function HomeClient() {
               </button>
               {notice && (
                 <span
-                  className={`text-xs ${notice.ok ? "text-sky-700" : "text-red-600"}`}
+                  className={`text-xs ${notice.ok ? "text-sky-300" : "text-red-400"}`}
                   role="status"
                 >
                   {notice.msg}
@@ -889,16 +691,16 @@ export default function HomeClient() {
             </div>
           </form>
 
-          <div className="mt-4 space-y-2 text-xs text-slate-600">
+          <div className="mt-4 space-y-2 text-xs text-slate-300">
             <p>Mitgliedschaft ist kostenfrei.</p>
             <p>
-              Unterstützung ist freiwillig und hilft beim Aufbau von Chapters, Moderation, Dossiers
-              und Infrastruktur. Details findest du unter{" "}
-              <Link href="/unterstuetzen" className="font-semibold text-slate-900 underline underline-offset-2">
+              Unterstützung ist freiwillig und hilft beim Aufbau von Moderation, Dossiers und
+              Infrastruktur. Details findest du unter{" "}
+              <Link href="/unterstuetzen" className="font-semibold text-slate-100 underline underline-offset-2">
                 Unterstützen
               </Link>{" "}
               oder per Mail an{" "}
-              <a href="mailto:members@voiceopengov.org" className="font-semibold text-slate-900">
+              <a href="mailto:members@voiceopengov.org" className="font-semibold text-slate-100">
                 members@voiceopengov.org
               </a>
               .
@@ -909,16 +711,16 @@ export default function HomeClient() {
       </section>
 
       <section id="unterstuetzen" className="mx-auto mt-14 max-w-6xl px-4 pb-10">
-        <div className="rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Unterstützen</p>
-              <h3 className="text-xl font-semibold text-slate-900">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Unterstützen</p>
+              <h3 className="text-xl font-semibold text-slate-100">
                 Unterstütze die Initiative – transparent und ohne Stimmvorteile.
               </h3>
-              <p className="text-sm text-slate-700">
-                Unterstützung ermöglicht Infrastruktur, Recherche, Übersetzungen und lokale Chapters.
-                Wir halten alles nachvollziehbar und offen dokumentiert.
+              <p className="text-sm text-slate-300">
+                Unterstützung ermöglicht Infrastruktur, Recherche und Übersetzungen. Wir halten
+                alles nachvollziehbar und offen dokumentiert.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

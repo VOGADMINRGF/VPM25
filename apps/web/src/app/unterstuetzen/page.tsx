@@ -38,18 +38,13 @@ export default async function SupportPage({
         <header className="space-y-4 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Unterstützen</p>
           <h1
-            className="text-3xl md:text-4xl font-extrabold leading-tight"
-            style={{
-              backgroundImage: "linear-gradient(90deg,var(--brand-cyan),var(--brand-blue))",
-              WebkitBackgroundClip: "text",
-              color: "transparent",
-            }}
+            className="text-3xl md:text-4xl font-extrabold leading-tight headline-gradient"
           >
             Infrastruktur für prüfbare Mehrheiten sichern
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-            Unterstützung stärkt Aufbau, Recherche, Übersetzung, Moderation und lokale Chapters.
-            Sie ist freiwillig, transparent dokumentiert und bringt keine Stimmvorteile.
+            Unterstützung stärkt Aufbau, Recherche, Übersetzung und Moderation. Sie ist freiwillig,
+            transparent dokumentiert und bringt keine Stimmvorteile.
           </p>
         </header>
 
@@ -65,7 +60,7 @@ export default async function SupportPage({
             },
             {
               title: "Institutionelle Partnerschaft",
-              body: "Unterstützung durch Organisationen für lokale Chapters und Standards.",
+              body: "Unterstützung durch Organisationen für Standards und Infrastruktur.",
             },
             {
               title: "Sachleistungen",

@@ -59,33 +59,33 @@ export function VogCookieBanner({ strings, initialConsent }: VogCookieBannerProp
 
   return (
     <div className="pointer-events-none fixed bottom-4 left-0 right-0 z-50 flex justify-center px-3">
-    <div className="pointer-events-auto w-full max-w-4xl rounded-2xl border border-sky-100 bg-white/95 shadow-[0_20px_60px_rgba(14,165,233,0.18)] backdrop-blur">
+    <div className="pointer-events-auto w-full max-w-4xl rounded-2xl border border-slate-800 bg-slate-950/95 shadow-[0_20px_60px_rgba(2,6,23,0.65)] backdrop-blur">
         <div className="grid gap-4 p-4 md:grid-cols-[1.4fr_1fr] md:p-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-800">
+            <div className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-sky-200">
               {strings.banner.title}
             </div>
-            <p className="text-sm text-slate-700">{strings.banner.lead}</p>
-            <div className="flex flex-wrap gap-4 text-xs text-slate-600">
-              <Link href="/datenschutz" className="font-semibold text-sky-700 underline underline-offset-2">
+            <p className="text-sm text-slate-300">{strings.banner.lead}</p>
+            <div className="flex flex-wrap gap-4 text-xs text-slate-400">
+              <Link href="/datenschutz" className="font-semibold text-sky-300 underline underline-offset-2">
                 {strings.banner.links.privacy}
               </Link>
-              <Link href="/impressum" className="font-semibold text-sky-700 underline underline-offset-2">
+              <Link href="/impressum" className="font-semibold text-sky-300 underline underline-offset-2">
                 {strings.banner.links.imprint}
               </Link>
             </div>
           </div>
 
-          <div className="space-y-3 rounded-xl border border-sky-100 bg-sky-50/70 p-4">
+          <div className="space-y-3 rounded-xl border border-slate-800 bg-slate-900/70 p-4">
             <div className="space-y-1">
-              <p className="text-xs font-semibold text-sky-900">{strings.banner.essentialTitle}</p>
-              <p className="text-xs text-sky-800">{strings.banner.essentialBody}</p>
+              <p className="text-xs font-semibold text-sky-100">{strings.banner.essentialTitle}</p>
+              <p className="text-xs text-slate-300">{strings.banner.essentialBody}</p>
             </div>
-            <div className="space-y-2 rounded-lg border border-white/40 bg-white/70 p-3">
+            <div className="space-y-2 rounded-lg border border-slate-800 bg-slate-950/60 p-3">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-semibold text-sky-900">{strings.banner.analyticsTitle}</p>
-                  <p className="text-[11px] text-sky-800">{strings.banner.analyticsBody}</p>
+                  <p className="text-xs font-semibold text-sky-100">{strings.banner.analyticsTitle}</p>
+                  <p className="text-[11px] text-slate-300">{strings.banner.analyticsBody}</p>
                 </div>
                 <label className="relative inline-flex cursor-pointer items-center">
                   <input
@@ -94,17 +94,17 @@ export function VogCookieBanner({ strings, initialConsent }: VogCookieBannerProp
                     checked={analyticsOptIn}
                     onChange={(e) => setAnalyticsOptIn(e.target.checked)}
                   />
-                  <div className="h-6 w-11 rounded-full bg-sky-200 transition peer-checked:bg-sky-500" />
-                  <div className="absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow transition peer-checked:translate-x-5" />
+                  <div className="h-6 w-11 rounded-full bg-slate-700 transition peer-checked:bg-sky-500" />
+                  <div className="absolute left-1 top-1 h-4 w-4 rounded-full bg-slate-200 shadow transition peer-checked:translate-x-5" />
                 </label>
               </div>
               {settingsOpen && (
-                <p className="text-[11px] text-sky-700">
+                <p className="text-[11px] text-slate-300">
                   {strings.dialog.intro}
                 </p>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-sky-900">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-sky-100">
               <button
                 type="button"
                 className="flex-1 rounded-full bg-sky-600 px-4 py-2 text-white shadow hover:brightness-110"
@@ -114,21 +114,21 @@ export function VogCookieBanner({ strings, initialConsent }: VogCookieBannerProp
               </button>
               <button
                 type="button"
-                className="flex-1 rounded-full border border-sky-300 bg-white px-4 py-2 text-sky-800 hover:bg-sky-50"
+                className="flex-1 rounded-full border border-slate-700 bg-slate-950/60 px-4 py-2 text-sky-200 hover:bg-slate-950"
                 onClick={() => persistConsent({ essential: true, analytics: false })}
               >
                 {strings.banner.buttons.onlyEssential}
               </button>
               <button
                 type="button"
-                className="rounded-full border border-transparent px-3 py-2 text-sky-800 underline underline-offset-2"
+                className="rounded-full border border-transparent px-3 py-2 text-sky-200 underline underline-offset-2"
                 onClick={() => setSettingsOpen((prev) => !prev)}
               >
                 {strings.banner.buttons.settings}
               </button>
             </div>
             {settingsOpen && (
-              <div className="space-y-1 rounded-lg bg-white/60 p-3 text-[11px] text-sky-800">
+              <div className="space-y-1 rounded-lg bg-slate-950/60 p-3 text-[11px] text-slate-300">
                 <p className="font-semibold">{strings.dialog.title}</p>
                 <p>{strings.dialog.intro}</p>
               </div>

@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 
 export default function ChapterPage() {
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
+    <main className="mx-auto max-w-6xl px-6 py-10 text-slate-100">
       <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
         <section>
-          <h1 className="text-4xl font-semibold tracking-tight text-slate-900">
+          <h1 className="text-4xl font-semibold tracking-tight headline-gradient">
             Chapter starten - lokal verankert, weltweit vergleichbar.
           </h1>
-          <p className="mt-4 text-lg text-slate-600">
+          <p className="mt-4 text-lg text-slate-300">
             Chapter sind regionale Ankerpunkte: Themen sammeln, Optionen prüfen, Mehrheiten
             nachvollziehbar machen. Überparteilich. Transparent. Skalierbar.
           </p>
@@ -26,9 +26,9 @@ export default function ChapterPage() {
               { t: "2) Region wählen", d: "Ort/Bezirk und Sichtbarkeit festlegen." },
               { t: "3) Launch-Kit", d: "Vorlagen, Regeln, QR-Material und Support." },
             ].map((x) => (
-              <div key={x.t} className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm">
-                <div className="text-sm font-semibold text-slate-900">{x.t}</div>
-                <div className="mt-1 text-sm text-slate-600">{x.d}</div>
+              <div key={x.t} className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 shadow-sm">
+                <div className="text-sm font-semibold text-slate-100">{x.t}</div>
+                <div className="mt-1 text-sm text-slate-300">{x.d}</div>
               </div>
             ))}
           </div>
@@ -36,19 +36,19 @@ export default function ChapterPage() {
           <div className="mt-6 flex gap-3">
             <a
               href="#vormerken"
-              className="rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700"
+              className="rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500"
             >
               Sich vormerken lassen
             </a>
             <Link
               href="/"
-              className="rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-50"
+              className="rounded-full border border-slate-700 bg-slate-900 px-6 py-3 text-sm font-semibold text-slate-100 shadow-sm hover:bg-slate-800"
             >
               Zurück
             </Link>
           </div>
 
-          <div className="mt-2 text-xs text-slate-500">
+          <div className="mt-2 text-xs text-slate-400">
             Öffentlich nur Orts-Summen - keine Einzelprofile
           </div>
         </section>
@@ -57,16 +57,16 @@ export default function ChapterPage() {
       </div>
 
       <section className="mt-10 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-6">
-          <div className="text-sm font-semibold text-slate-900">Was ein Chapter ist</div>
-          <p className="mt-2 text-sm text-slate-600">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+          <div className="text-sm font-semibold text-slate-100">Was ein Chapter ist</div>
+          <p className="mt-2 text-sm text-slate-300">
             Ein Chapter bringt lokale Themen in eine saubere Struktur: Fakten, Optionen,
             Konsequenzen, Mehrheiten.
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-6">
-          <div className="text-sm font-semibold text-slate-900">Was wir nicht sind</div>
-          <p className="mt-2 text-sm text-slate-600">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+          <div className="text-sm font-semibold text-slate-100">Was wir nicht sind</div>
+          <p className="mt-2 text-sm text-slate-300">
             Keine Partei, kein Lobby-Instrument. Inhalte sind offen dokumentiert - nachvollziehbar
             statt taktisch.
           </p>

@@ -248,27 +248,27 @@ export function WorldPanoramaMap() {
   const placesCount = mergedPoints.length;
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white/80 shadow-sm backdrop-blur">
+    <div className="rounded-3xl border border-slate-800 bg-slate-900/80 shadow-sm backdrop-blur">
       <div className="flex items-start justify-between gap-4 px-5 pt-4">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             WELTKARTE (AGGREGIERT)
           </div>
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-slate-400">
             Start in Deutschland (Berlin). Zoombar, mit Grenzen.
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           {loading ? (
-            <div className="text-xs text-slate-500">lädt...</div>
+            <div className="text-xs text-slate-400">lädt...</div>
           ) : placesCount > 0 ? (
-            <div className="text-xs text-slate-500">Aggregierte Standorte: {placesCount}</div>
+            <div className="text-xs text-slate-400">Aggregierte Standorte: {placesCount}</div>
           ) : null}
           <button
             type="button"
             onClick={resetView}
-            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+            className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1 text-xs font-semibold text-slate-200 hover:bg-slate-900"
           >
             Zurück
           </button>
@@ -279,7 +279,7 @@ export function WorldPanoramaMap() {
         <svg
           ref={svgRef}
           viewBox={`0 0 ${W} ${H}`}
-          className="vog-map-svg h-[260px] w-full select-none rounded-2xl bg-[radial-gradient(1200px_500px_at_50%_10%,rgba(14,165,233,0.08),transparent_60%),linear-gradient(180deg,rgba(2,6,23,0.02),rgba(2,6,23,0.00))]"
+          className="vog-map-svg h-[260px] w-full select-none rounded-2xl bg-[radial-gradient(1200px_500px_at_50%_10%,rgba(14,165,233,0.16),transparent_60%),linear-gradient(180deg,rgba(2,6,23,0.4),rgba(2,6,23,0.0))]"
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

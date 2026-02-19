@@ -148,30 +148,30 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
   return (
     <section
       id="kontaktformular"
-      className="mt-6 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm ring-1 ring-slate-100"
+      className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-5 shadow-sm ring-1 ring-slate-800"
     >
-      <h2 className="text-base font-semibold text-slate-900 text-center">Kontaktformular</h2>
-      <p className="mt-1 text-center text-xs text-slate-600">
+      <h2 className="text-base font-semibold text-slate-100 text-center">Kontaktformular</h2>
+      <p className="mt-1 text-center text-xs text-slate-400">
         Wir routen dein Anliegen intern an die passende Stelle.
       </p>
       {sent && (
-        <div className="mt-3 rounded-xl border border-sky-100 bg-sky-50/80 px-4 py-3 text-sm text-sky-800">
+        <div className="mt-3 rounded-xl border border-sky-900/60 bg-sky-950/40 px-4 py-3 text-sm text-sky-200">
           Danke! Deine Nachricht ist bei uns angekommen. Wir freuen uns über jedes Feedback und
           melden uns zeitnah.
         </div>
       )}
       {displayError && (
-        <div className="mt-3 rounded-xl border border-rose-100 bg-rose-50/80 px-4 py-3 text-sm text-rose-700">
+        <div className="mt-3 rounded-xl border border-rose-900/60 bg-rose-950/40 px-4 py-3 text-sm text-rose-200">
           {displayError}
         </div>
       )}
       {!sent && turnstileError && showTurnstile && (
-        <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800">
+        <div className="mt-3 rounded-xl border border-amber-900/60 bg-amber-950/40 px-4 py-3 text-xs text-amber-200">
           Die Schutzabfrage konnte nicht geladen werden. Du kannst das Formular trotzdem absenden
           oder uns direkt per Mail an{" "}
           <a
             href="mailto:kontakt@voiceopengov.org"
-            className="font-semibold text-amber-900 underline underline-offset-4"
+            className="font-semibold text-amber-200 underline underline-offset-4"
           >
             kontakt@voiceopengov.org
           </a>{" "}
@@ -194,14 +194,14 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
         </div>
 
         <div>
-          <label htmlFor="category" className="block text-xs font-semibold text-slate-700">
+          <label htmlFor="category" className="block text-xs font-semibold text-slate-300">
             Worum geht es?
           </label>
           <select
             id="category"
             name="category"
             required
-            className="mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="mt-1 block w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
           >
             <option value="">Bitte auswählen …</option>
             <option value="juristisch">Juristische / rechtliche Anfrage</option>
@@ -215,7 +215,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
-            <label htmlFor="name" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="name" className="block text-xs font-semibold text-slate-300">
               Name
             </label>
             <input
@@ -224,11 +224,11 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
               type="text"
               autoComplete="name"
               required
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             />
           </div>
           <div className="space-y-1">
-            <label htmlFor="email" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="email" className="block text-xs font-semibold text-slate-300">
               E-Mail
             </label>
             <input
@@ -237,13 +237,13 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
               type="email"
               autoComplete="email"
               required
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             />
           </div>
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="phone" className="block text-xs font-semibold text-slate-700">
+          <label htmlFor="phone" className="block text-xs font-semibold text-slate-300">
             Telefon (optional)
           </label>
           <input
@@ -251,27 +251,27 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             name="phone"
             type="tel"
             autoComplete="tel"
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             placeholder="Wenn du einen Rückruf wünschst, gib bitte eine Nummer an."
           />
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="subject" className="block text-xs font-semibold text-slate-700">
+          <label htmlFor="subject" className="block text-xs font-semibold text-slate-300">
             Betreff (optional)
           </label>
           <input
             id="subject"
             name="subject"
             type="text"
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             placeholder="Worum geht es in einem Satz?"
             maxLength={200}
           />
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="message" className="block text-xs font-semibold text-slate-700">
+          <label htmlFor="message" className="block text-xs font-semibold text-slate-300">
             Nachricht
           </label>
           <textarea
@@ -279,19 +279,19 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             name="message"
             required
             rows={6}
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             placeholder="Wie können wir dir helfen?"
             maxLength={5000}
           />
         </div>
 
-        <div className="space-y-3 rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-50 px-4 py-4 shadow-sm">
+        <div className="space-y-3 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-4 shadow-sm">
           <div className="flex flex-col gap-1">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
               Human Check
             </p>
-            <p className="text-sm text-slate-700">
-              Bitte den <span className="font-semibold text-slate-900">blauen Kreis</span> auswählen
+            <p className="text-sm text-slate-300">
+              Bitte den <span className="font-semibold text-slate-100">blauen Kreis</span> auswählen
               und die Farbe ins Feld schreiben. Hinweis: Rechteck ist türkis, Dreieck ist grün.
             </p>
           </div>
@@ -299,11 +299,11 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
           <div className="grid gap-3 md:grid-cols-2">
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-3">
-                <p className="text-[11px] font-semibold text-slate-600">Klickcheck</p>
+                <p className="text-[11px] font-semibold text-slate-400">Klickcheck</p>
                 <button
                   type="button"
                   onClick={reshuffleShapes}
-                  className="text-[11px] font-semibold text-sky-700 hover:text-sky-900 underline underline-offset-4"
+                  className="text-[11px] font-semibold text-sky-300 hover:text-sky-200 underline underline-offset-4"
                 >
                   Challenge neu mischen
                 </button>
@@ -319,7 +319,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
                       className="peer sr-only"
                       aria-label={`${shape.label} (${shape.hint})`}
                     />
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm transition hover:border-sky-200 hover:shadow-md peer-checked:border-sky-500 peer-checked:ring-2 peer-checked:ring-sky-100">
+                    <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 shadow-sm transition hover:border-sky-500/60 hover:shadow-md peer-checked:border-sky-500 peer-checked:ring-2 peer-checked:ring-sky-800/40">
                       <span className="flex h-10 w-10 items-center justify-center">
                         {shape.shape === "circle" && (
                           <span className={`block h-8 w-8 rounded-full ${shape.gradient} shadow-inner`} />
@@ -335,8 +335,8 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
                         )}
                       </span>
                       <div className="leading-tight">
-                        <div className="text-sm font-semibold text-slate-900">{shape.label}</div>
-                        <div className="text-[11px] text-slate-500">
+                        <div className="text-sm font-semibold text-slate-100">{shape.label}</div>
+                        <div className="text-[11px] text-slate-400">
                           {shape.hint} {shape.value === "kreis" ? "(anklicken)" : "(nicht auswählen)"}
                         </div>
                       </div>
@@ -347,10 +347,10 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="humanAnswer" className="text-[11px] font-semibold text-slate-600">
+              <label htmlFor="humanAnswer" className="text-[11px] font-semibold text-slate-400">
                 Kurze Schreibfrage
               </label>
-              <p className="text-[11px] text-slate-600">
+              <p className="text-[11px] text-slate-400">
                 Schreibe die Farbe des angeklickten Kreises ins Feld (Tipp: blau).
               </p>
               <input
@@ -359,7 +359,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
                 type="text"
                 autoComplete="off"
                 required
-                className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+                className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
                 placeholder='Bitte "blau" eintragen'
               />
             </div>
@@ -367,8 +367,8 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
         </div>
 
         {showTurnstile && (
-          <div className="rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-3">
-            <p className="text-[11px] text-slate-600">
+          <div className="rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-3">
+            <p className="text-[11px] text-slate-400">
               Kurze Bestätigung, dass du kein Bot bist:
             </p>
             <div ref={widgetRef} className="mt-2" aria-live="polite" />
@@ -380,15 +380,15 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
             id="newsletterOptIn"
             name="newsletterOptIn"
             type="checkbox"
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+            className="mt-0.5 h-4 w-4 rounded border-slate-500 text-sky-500 focus:ring-sky-500"
           />
-          <label htmlFor="newsletterOptIn" className="text-[11px] leading-snug text-slate-600">
+          <label htmlFor="newsletterOptIn" className="text-[11px] leading-snug text-slate-400">
             Ich möchte gelegentlich Updates und Informationen zu VoiceOpenGov erhalten (Newsletter).
             Du kannst dich jederzeit wieder abmelden.
           </label>
         </div>
 
-        <p className="text-[11px] text-slate-500">
+        <p className="text-[11px] text-slate-400">
           Mit dem Absenden erklärst du dich einverstanden, dass wir deine Angaben zur Bearbeitung
           deiner Anfrage verarbeiten. Vollständige Datenschutz-Hinweise folgen nach
           Gesellschaftseintragung.
@@ -404,7 +404,7 @@ export default function KontaktForm({ sent, error, challenge }: Props) {
 
           <Link
             href="mailto:kontakt@voiceopengov.org"
-            className="w-full rounded-full border border-sky-200 bg-sky-50/60 px-4 py-3 text-center text-sm font-semibold text-sky-700 shadow-[0_6px_18px_rgba(14,165,233,0.15)] transition hover:border-sky-400 hover:bg-white hover:text-sky-900 md:w-auto"
+            className="w-full rounded-full border border-sky-700/60 bg-slate-950/60 px-4 py-3 text-center text-sm font-semibold text-sky-200 shadow-[0_6px_18px_rgba(14,165,233,0.15)] transition hover:border-sky-400 hover:bg-slate-950 hover:text-sky-100 md:w-auto"
           >
             Oder direkt per E-Mail schreiben
           </Link>

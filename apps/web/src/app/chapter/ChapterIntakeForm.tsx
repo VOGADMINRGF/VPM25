@@ -129,13 +129,13 @@ export default function ChapterIntakeForm({
   return (
     <section
       id={id}
-      className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-sm ${
+      className={`rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-sm ${
         className ?? ""
       }`}
     >
       <div className="space-y-2">
-        <h2 className="text-xl font-semibold text-slate-900">Sich vormerken lassen</h2>
-        <p className="text-sm text-slate-700">
+        <h2 className="text-xl font-semibold text-slate-100">Sich vormerken lassen</h2>
+        <p className="text-sm text-slate-300">
           Wir melden uns mit dem Chapter-Launch-Kit und den nächsten Schritten.
         </p>
       </div>
@@ -144,8 +144,8 @@ export default function ChapterIntakeForm({
         <div
           className={`mt-4 rounded-xl border px-4 py-3 text-sm ${
             notice.ok
-              ? "border-sky-100 bg-sky-50/80 text-sky-800"
-              : "border-rose-100 bg-rose-50/80 text-rose-700"
+              ? "border-sky-900/60 bg-sky-950/40 text-sky-200"
+              : "border-rose-900/60 bg-rose-950/40 text-rose-200"
           }`}
         >
           {notice.msg}
@@ -168,7 +168,7 @@ export default function ChapterIntakeForm({
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
-            <label htmlFor="contactName" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="contactName" className="block text-xs font-semibold text-slate-300">
               Name
             </label>
             <input
@@ -179,11 +179,11 @@ export default function ChapterIntakeForm({
               required
               value={contactName}
               onChange={(event) => setContactName(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             />
           </div>
           <div className="space-y-1">
-            <label htmlFor="contactEmail" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="contactEmail" className="block text-xs font-semibold text-slate-300">
               E-Mail
             </label>
             <input
@@ -194,14 +194,14 @@ export default function ChapterIntakeForm({
               required
               value={contactEmail}
               onChange={(event) => setContactEmail(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             />
           </div>
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
-            <label htmlFor="orgName" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="orgName" className="block text-xs font-semibold text-slate-300">
               Organisation (optional)
             </label>
             <input
@@ -210,12 +210,12 @@ export default function ChapterIntakeForm({
               type="text"
               value={orgName}
               onChange={(event) => setOrgName(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
               placeholder="Name der Organisation/Initiative"
             />
           </div>
           <div className="space-y-1">
-            <label htmlFor="location" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="location" className="block text-xs font-semibold text-slate-300">
               Ort / Region
             </label>
             <input
@@ -225,21 +225,21 @@ export default function ChapterIntakeForm({
               required
               value={location}
               onChange={(event) => setLocation(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
               placeholder="z. B. Berlin, Leipzig, Rhein-Main"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Interesse
           </p>
           <div className="grid gap-2 md:grid-cols-2">
             {INTEREST_OPTIONS.map((option) => (
               <label
                 key={option.value}
-                className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm transition hover:border-sky-200"
+                className="flex items-start gap-3 rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-300 shadow-sm transition hover:border-sky-500/60"
               >
                 <input
                   type="checkbox"
@@ -247,11 +247,11 @@ export default function ChapterIntakeForm({
                   value={option.value}
                   checked={interests.includes(option.value)}
                   onChange={() => toggleInterest(option.value)}
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+                  className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500 focus:ring-sky-500"
                 />
                 <span>
-                  <span className="block font-semibold text-slate-900">{option.label}</span>
-                  <span className="text-[11px] text-slate-500">{option.hint}</span>
+                  <span className="block font-semibold text-slate-100">{option.label}</span>
+                  <span className="text-[11px] text-slate-400">{option.hint}</span>
                 </span>
               </label>
             ))}
@@ -260,7 +260,7 @@ export default function ChapterIntakeForm({
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
-            <label htmlFor="spaceAvailable" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="spaceAvailable" className="block text-xs font-semibold text-slate-300">
               Räumlichkeiten vorhanden?
             </label>
             <select
@@ -268,7 +268,7 @@ export default function ChapterIntakeForm({
               name="spaceAvailable"
               value={spaceAvailable}
               onChange={(event) => setSpaceAvailable(event.target.value)}
-              className="mt-1 block w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="mt-1 block w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             >
               <option value="">Bitte auswählen ...</option>
               <option value="yes">Ja, Raum vorhanden</option>
@@ -277,7 +277,7 @@ export default function ChapterIntakeForm({
             </select>
           </div>
           <div className="space-y-1">
-            <label htmlFor="spaceNotes" className="block text-xs font-semibold text-slate-700">
+            <label htmlFor="spaceNotes" className="block text-xs font-semibold text-slate-300">
               Raum-Details (optional)
             </label>
             <input
@@ -286,14 +286,14 @@ export default function ChapterIntakeForm({
               type="text"
               value={spaceNotes}
               onChange={(event) => setSpaceNotes(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
               placeholder="z. B. Kapazität, Verfügbarkeit"
             />
           </div>
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="notes" className="block text-xs font-semibold text-slate-700">
+          <label htmlFor="notes" className="block text-xs font-semibold text-slate-300">
             Weitere Hinweise (optional)
           </label>
           <textarea
@@ -302,7 +302,7 @@ export default function ChapterIntakeForm({
             rows={4}
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
-            className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100"
+            className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-800/40"
             placeholder="Mitstreiter, lokale Besonderheiten, Zeithorizont ..."
           />
         </div>
@@ -321,11 +321,11 @@ export default function ChapterIntakeForm({
             type="checkbox"
             checked={privacyAccepted}
             onChange={(event) => setPrivacyAccepted(event.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+            className="mt-0.5 h-4 w-4 rounded border-slate-500 text-sky-500 focus:ring-sky-500"
           />
-          <label htmlFor="privacyAccepted" className="text-[11px] leading-snug text-slate-600">
+          <label htmlFor="privacyAccepted" className="text-[11px] leading-snug text-slate-400">
             Ich akzeptiere die{" "}
-            <Link href="/datenschutz" className="font-semibold text-sky-700 underline underline-offset-4">
+            <Link href="/datenschutz" className="font-semibold text-sky-300 underline underline-offset-4">
               Datenschutzhinweise
             </Link>
             .
@@ -343,7 +343,7 @@ export default function ChapterIntakeForm({
 
           <a
             href="mailto:kontakt@voiceopengov.org"
-            className="w-full rounded-full border border-sky-200 bg-sky-50/60 px-4 py-3 text-center text-sm font-semibold text-sky-700 shadow-[0_6px_18px_rgba(14,165,233,0.15)] transition hover:border-sky-400 hover:bg-white hover:text-sky-900 md:w-auto"
+            className="w-full rounded-full border border-sky-700/60 bg-slate-950/60 px-4 py-3 text-center text-sm font-semibold text-sky-200 shadow-[0_6px_18px_rgba(14,165,233,0.15)] transition hover:border-sky-400 hover:bg-slate-950 hover:text-sky-100 md:w-auto"
           >
             Oder per E-Mail
           </a>
