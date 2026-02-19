@@ -379,6 +379,75 @@ export default function HomeClient() {
         </div>
       </section>
 
+      <section className="mx-auto mt-16 max-w-6xl px-4">
+        <div className="space-y-4 text-center">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+            {strings.foundations.label}
+          </p>
+          <h2 className="text-2xl font-bold text-slate-100 headline-gradient">
+            {strings.foundations.title}
+          </h2>
+          <p className="mx-auto max-w-2xl text-sm text-slate-400">
+            {strings.foundations.subtitle}
+          </p>
+          <p className="text-base font-semibold text-slate-100">
+            {strings.foundations.bandLine}
+          </p>
+          <p className="mx-auto max-w-2xl text-sm text-slate-400">
+            {strings.foundations.bandHint}
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {strings.foundations.items.map((item) => (
+            <div
+              key={item.title}
+              className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {strings.foundations.bandLabel}
+              </p>
+              <h3 className="mt-2 text-lg font-semibold text-slate-100">{item.title}</h3>
+              <p className="mt-3 text-sm text-slate-300">{item.body}</p>
+              <Link
+                href={item.href}
+                className="mt-4 inline-block text-sm font-semibold text-sky-300 hover:underline"
+              >
+                {item.cta}
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-xs text-slate-400">
+          {strings.foundations.footerNote}
+        </p>
+
+        <div className="mt-12 text-center">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+            {strings.foundations.architectureLabel}
+          </p>
+          <p className="mt-4 flex flex-wrap justify-center gap-3 text-sm text-slate-300">
+            {strings.foundations.architectureFlow.join(" → ")} →{" "}
+            <span className="text-slate-100 font-semibold">
+              {strings.foundations.architectureStrong}
+            </span>
+          </p>
+        </div>
+
+        <div className="mt-10 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-center shadow-sm">
+          <h3 className="text-lg font-semibold text-slate-100">
+            {strings.foundations.ctaTitle}
+          </h3>
+          <p className="mt-2 text-sm text-slate-300">
+            {strings.foundations.ctaBody}
+          </p>
+          <Link href="/#mitmachen" className="btn btn-primary mt-4">
+            {strings.foundations.ctaButton}
+          </Link>
+        </div>
+      </section>
+
       <section id="mitmachen" className="mx-auto mt-12 max-w-6xl px-4">
         <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">

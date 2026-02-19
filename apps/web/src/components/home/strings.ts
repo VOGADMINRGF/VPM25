@@ -31,6 +31,22 @@ type HomeStrings = {
     learnMore: string;
     cards: Array<{ title: string; body: string }>;
   };
+  foundations: {
+    label: string;
+    title: string;
+    subtitle: string;
+    bandLine: string;
+    bandHint: string;
+    bandLabel: string;
+    items: Array<{ title: string; body: string; href: string; cta: string }>;
+    footerNote: string;
+    architectureLabel: string;
+    architectureFlow: string[];
+    architectureStrong: string;
+    ctaTitle: string;
+    ctaBody: string;
+    ctaButton: string;
+  };
   decisionCard: {
     label: string;
     tag: string;
@@ -187,6 +203,47 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Warum, wofür, mit welchen Folgen – transparent dokumentiert.",
         },
       ],
+    },
+    foundations: {
+      label: "Grundlagen",
+      title: "Die veröffentlichten Grundlagen",
+      subtitle:
+        "VoiceOpenGov basiert auf drei offenen Textbänden. Alle Inhalte sind frei zugänglich.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Theorie, Modell und Methode – offen dokumentiert und frei zugänglich.",
+      bandLabel: "Band",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Analyse struktureller Herausforderungen moderner Beteiligung – institutionelle Überlastung, Informationsfragmentierung und fehlende Status-Transparenz.",
+          href: "/grundlagen/weissbuch",
+          cta: "Online lesen →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Ein Governance-Modell für prüfbare Entscheidungen, dokumentierte Entscheidungsdimensionen und nachvollziehbare Verantwortung.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Online lesen →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Methodische Operationalisierung: Check → Dossier → Beteiligung → Status – als formalisierte Entscheidungslogik.",
+          href: "/grundlagen/repro",
+          cta: "Online lesen →",
+        },
+      ],
+      footerNote:
+        "Frei zugänglich · Keine Paywall · Wenn es hilft, freuen wir uns über Unterstützung/Spenden. Unabhängig, ohne Investor.",
+      architectureLabel: "Architektur",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "Vom Modell zur Mitwirkung",
+      ctaBody:
+        "Die veröffentlichte Architektur wird in VoiceOpenGov operationalisiert – mobil, nachvollziehbar und statusgeführt.",
+      ctaButton: "Jetzt am Smartphone mitwirken",
     },
     decisionCard: {
       label: "Entscheidungslogik",
@@ -378,6 +435,46 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
       ],
     },
+    foundations: {
+      label: "Foundations",
+      title: "The published foundations",
+      subtitle: "VoiceOpenGov is based on three open volumes. All content is freely accessible.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Theory, model and method — openly documented and freely accessible.",
+      bandLabel: "Volume",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Analysis of structural challenges of modern participation — institutional overload, fragmented information, and missing status transparency.",
+          href: "/grundlagen/weissbuch",
+          cta: "Read online →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "A governance model for verifiable decisions, documented decision dimensions, and accountable responsibility.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Read online →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Methodical operationalization: Check → Dossier → Participation → Status — as a formal decision logic.",
+          href: "/grundlagen/repro",
+          cta: "Read online →",
+        },
+      ],
+      footerNote:
+        "Free access · No paywall · If it helps, we appreciate support/donations. Independent, no investors.",
+      architectureLabel: "Architecture",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "From model to participation",
+      ctaBody:
+        "The published architecture is operationalized in VoiceOpenGov — mobile, traceable, and status-guided.",
+      ctaButton: "Participate on mobile now",
+    },
     decisionCard: {
       label: "Decision logic",
       tag: "Civic level",
@@ -568,6 +665,47 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Pourquoi, pour quoi, avec quelles conséquences - documenté en transparence.",
         },
       ],
+    },
+    foundations: {
+      label: "Fondations",
+      title: "Les fondements publiés",
+      subtitle:
+        "VoiceOpenGov s'appuie sur trois volumes ouverts. Tous les contenus sont librement accessibles.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Théorie, modèle et méthode — documentés ouvertement et librement accessibles.",
+      bandLabel: "Volume",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Analyse des défis structurels de la participation moderne — surcharge institutionnelle, fragmentation de l'information et manque de transparence du statut.",
+          href: "/grundlagen/weissbuch",
+          cta: "Lire en ligne →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Un modèle de gouvernance pour des décisions vérifiables, des dimensions de décision documentées et une responsabilité traçable.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Lire en ligne →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Opérationnalisation méthodique : Check → Dossier → Participation → Statut — comme logique décisionnelle formalisée.",
+          href: "/grundlagen/repro",
+          cta: "Lire en ligne →",
+        },
+      ],
+      footerNote:
+        "Accès libre · Pas de paywall · Si cela aide, nous apprécions les soutiens/dons. Indépendant, sans investisseurs.",
+      architectureLabel: "Architecture",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "Du modèle à la participation",
+      ctaBody:
+        "L'architecture publiée est opérationnalisée dans VoiceOpenGov — mobile, traçable et orientée statut.",
+      ctaButton: "Participer depuis le mobile",
     },
     decisionCard: {
       label: "Logique de décision",
@@ -761,6 +899,47 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
       ],
     },
+    foundations: {
+      label: "Podstawy",
+      title: "Opublikowane podstawy",
+      subtitle:
+        "VoiceOpenGov opiera się na trzech otwartych tomach. Wszystkie treści są ogólnie dostępne.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Teoria, model i metoda — otwarcie udokumentowane i ogólnodostępne.",
+      bandLabel: "Tom",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Analiza strukturalnych wyzwań nowoczesnego uczestnictwa — przeciążenie instytucji, fragmentacja informacji i brak przejrzystości statusu.",
+          href: "/grundlagen/weissbuch",
+          cta: "Czytaj online →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Model zarządzania dla weryfikowalnych decyzji, udokumentowanych wymiarów decyzji i odpowiedzialności.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Czytaj online →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Metodyczna operacjonalizacja: Check → Dossier → Uczestnictwo → Status — jako sformalizowana logika decyzji.",
+          href: "/grundlagen/repro",
+          cta: "Czytaj online →",
+        },
+      ],
+      footerNote:
+        "Dostępne bezpłatnie · Bez paywalla · Jeśli to pomaga, będziemy wdzięczni za wsparcie/darowizny. Niezależnie, bez inwestorów.",
+      architectureLabel: "Architektura",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "Od modelu do udziału",
+      ctaBody:
+        "Opublikowana architektura jest operacjonalizowana w VoiceOpenGov — mobilnie, weryfikowalnie i z prowadzeniem statusu.",
+      ctaButton: "Dołącz przez telefon",
+    },
     decisionCard: {
       label: "Logika decyzji",
       tag: "Poziom obywatelski",
@@ -951,6 +1130,47 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Por qué, para qué, con qué consecuencias - documentado con transparencia.",
         },
       ],
+    },
+    foundations: {
+      label: "Fundamentos",
+      title: "Los fundamentos publicados",
+      subtitle:
+        "VoiceOpenGov se basa en tres volúmenes abiertos. Todo el contenido es de libre acceso.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Teoría, modelo y método — documentados de forma abierta y accesibles.",
+      bandLabel: "Volumen",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Análisis de los desafíos estructurales de la participación moderna: sobrecarga institucional, fragmentación de la información y falta de transparencia de estado.",
+          href: "/grundlagen/weissbuch",
+          cta: "Leer en línea →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Un modelo de gobernanza para decisiones verificables, dimensiones de decisión documentadas y responsabilidad trazable.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Leer en línea →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Operacionalización metodológica: Check → Dossier → Participación → Estado — como lógica de decisión formalizada.",
+          href: "/grundlagen/repro",
+          cta: "Leer en línea →",
+        },
+      ],
+      footerNote:
+        "Acceso libre · Sin paywall · Si ayuda, agradecemos el apoyo/donaciones. Independientes, sin inversores.",
+      architectureLabel: "Arquitectura",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "Del modelo a la participación",
+      ctaBody:
+        "La arquitectura publicada se operacionaliza en VoiceOpenGov — móvil, trazable y guiada por el estado.",
+      ctaButton: "Participa desde el móvil",
     },
     decisionCard: {
       label: "Lógica de decisión",
@@ -1143,6 +1363,47 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
       ],
     },
+    foundations: {
+      label: "Fondamenti",
+      title: "I fondamenti pubblicati",
+      subtitle:
+        "VoiceOpenGov si basa su tre volumi aperti. Tutti i contenuti sono liberamente accessibili.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Teoria, modello e metodo — documentati apertamente e accessibili.",
+      bandLabel: "Volume",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Analisi delle sfide strutturali della partecipazione moderna — sovraccarico istituzionale, frammentazione dell'informazione e mancanza di trasparenza sullo stato.",
+          href: "/grundlagen/weissbuch",
+          cta: "Leggi online →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Un modello di governance per decisioni verificabili, dimensioni decisionali documentate e responsabilità tracciabile.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Leggi online →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Operazionalizzazione metodica: Check → Dossier → Partecipazione → Stato — come logica decisionale formalizzata.",
+          href: "/grundlagen/repro",
+          cta: "Leggi online →",
+        },
+      ],
+      footerNote:
+        "Accesso libero · Nessun paywall · Se è utile, apprezziamo supporto/donazioni. Indipendenti, senza investitori.",
+      architectureLabel: "Architettura",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "Dal modello alla partecipazione",
+      ctaBody:
+        "L'architettura pubblicata è operazionalizzata in VoiceOpenGov — mobile, tracciabile e guidata dallo stato.",
+      ctaButton: "Partecipa da smartphone",
+    },
     decisionCard: {
       label: "Logica decisionale",
       tag: "Livello civico",
@@ -1334,6 +1595,46 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
       ],
     },
+    foundations: {
+      label: "Temeller",
+      title: "Yayınlanan temeller",
+      subtitle: "VoiceOpenGov üç açık cilt üzerine kurulur. Tüm içerikler serbestçe erişilebilir.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Teori, model ve yöntem — açıkça belgelenmiş ve erişilebilir.",
+      bandLabel: "Cilt",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Modern katılımın yapısal zorluklarının analizi — kurumsal aşırı yük, bilgi parçalanması ve statü şeffaflığının eksikliği.",
+          href: "/grundlagen/weissbuch",
+          cta: "Çevrimiçi oku →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Doğrulanabilir kararlar, belgelenmiş karar boyutları ve izlenebilir sorumluluk için bir yönetişim modeli.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Çevrimiçi oku →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Yöntemsel operasyonelleştirme: Check → Dossier → Katılım → Statü — biçimsel karar mantığı olarak.",
+          href: "/grundlagen/repro",
+          cta: "Çevrimiçi oku →",
+        },
+      ],
+      footerNote:
+        "Ücretsiz erişim · Paywall yok · Faydalıysa destek/bağış memnuniyetle. Bağımsız, yatırımcı yok.",
+      architectureLabel: "Mimari",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "Modelden katılıma",
+      ctaBody:
+        "Yayınlanan mimari VoiceOpenGov içinde operasyonelleştirilir — mobil, izlenebilir ve statü odaklı.",
+      ctaButton: "Telefondan katıl",
+    },
     decisionCard: {
       label: "Karar mantığı",
       tag: "Sivil seviye",
@@ -1523,6 +1824,46 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "لماذا، لأي غرض، وبأي نتائج - موثق بشفافية.",
         },
       ],
+    },
+    foundations: {
+      label: "الأسس",
+      title: "الأسس المنشورة",
+      subtitle: "يعتمد VoiceOpenGov على ثلاثة مجلدات مفتوحة. كل المحتوى متاح بحرية.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "نظرية، نموذج ومنهج — موثقة بشكل مفتوح ومتاحة للجميع.",
+      bandLabel: "مجلد",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "تحليل التحديات البنيوية للمشاركة الحديثة — ضغط المؤسسات، تجزؤ المعلومات، وغياب شفافية الحالة.",
+          href: "/grundlagen/weissbuch",
+          cta: "اقرأ عبر الإنترنت →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "نموذج حوكمة لقرارات قابلة للتحقق، وأبعاد قرار موثقة، ومسؤولية قابلة للتتبع.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "اقرأ عبر الإنترنت →",
+        },
+        {
+          title: "RePro",
+          body:
+            "تشغيل منهجي: Check → Dossier → مشاركة → حالة — كمنطق قرار مُقنن.",
+          href: "/grundlagen/repro",
+          cta: "اقرأ عبر الإنترنت →",
+        },
+      ],
+      footerNote:
+        "متاح للجميع · بدون جدار دفع · إذا كان مفيدًا فنحن نقدر الدعم/التبرعات. مستقلون بلا مستثمرين.",
+      architectureLabel: "الهندسة",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "من النموذج إلى المشاركة",
+      ctaBody:
+        "تُشغَّل البنية المنشورة داخل VoiceOpenGov — عبر المحمول، قابلة للتتبع وموجهة بالحالة.",
+      ctaButton: "شارك من الهاتف",
     },
     decisionCard: {
       label: "منطق القرار",
@@ -1715,6 +2056,46 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
       ],
     },
+    foundations: {
+      label: "Основы",
+      title: "Опубликованные основы",
+      subtitle: "VoiceOpenGov основан на трех открытых томах. Весь контент доступен свободно.",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "Теория, модель и метод — открыто документированы и свободно доступны.",
+      bandLabel: "Том",
+      items: [
+        {
+          title: "Weißbuch",
+          body:
+            "Анализ структурных вызовов современной вовлеченности — институциональная перегрузка, фрагментация информации и отсутствие прозрачности статуса.",
+          href: "/grundlagen/weissbuch",
+          cta: "Читать онлайн →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body:
+            "Модель управления для проверяемых решений, документированных измерений решения и подотчетной ответственности.",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "Читать онлайн →",
+        },
+        {
+          title: "RePro",
+          body:
+            "Методическая операционализация: Check → Dossier → Участие → Статус — как формализованная логика решений.",
+          href: "/grundlagen/repro",
+          cta: "Читать онлайн →",
+        },
+      ],
+      footerNote:
+        "Свободный доступ · Без paywall · Если это полезно, будем рады поддержке/пожертвованиям. Независимы, без инвесторов.",
+      architectureLabel: "Архитектура",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "От модели к участию",
+      ctaBody:
+        "Опубликованная архитектура реализуется в VoiceOpenGov — мобильная, проверяемая и ориентированная на статус.",
+      ctaButton: "Участвовать с телефона",
+    },
     decisionCard: {
       label: "Логика решения",
       tag: "Гражданский уровень",
@@ -1903,6 +2284,43 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "为什么、为了什么、带来哪些后果——透明记录。",
         },
       ],
+    },
+    foundations: {
+      label: "基础",
+      title: "公开的基础",
+      subtitle: "VoiceOpenGov 基于三部开放文本。所有内容均可自由访问。",
+      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandHint: "理论、模型与方法——开放记录并自由访问。",
+      bandLabel: "卷",
+      items: [
+        {
+          title: "Weißbuch",
+          body: "分析现代参与的结构性挑战——制度负荷、信息碎片化与状态透明度不足。",
+          href: "/grundlagen/weissbuch",
+          cta: "在线阅读 →",
+        },
+        {
+          title: "Legitimation 2.0",
+          body: "用于可验证决策、记录决策维度与可追责责任的治理模型。",
+          href: "/grundlagen/legitimation-2-0",
+          cta: "在线阅读 →",
+        },
+        {
+          title: "RePro",
+          body:
+            "方法化落地：Check → Dossier → 参与 → 状态——作为规范化的决策逻辑。",
+          href: "/grundlagen/repro",
+          cta: "在线阅读 →",
+        },
+      ],
+      footerNote:
+        "自由访问 · 无付费墙 · 如果有帮助，感谢支持/捐助。独立运营，无投资方。",
+      architectureLabel: "架构",
+      architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
+      architectureStrong: "VoiceOpenGov",
+      ctaTitle: "从模型到参与",
+      ctaBody: "公开的架构在 VoiceOpenGov 中被操作化——移动端、可追踪、状态驱动。",
+      ctaButton: "手机端参与",
     },
     decisionCard: {
       label: "决策逻辑",
