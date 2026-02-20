@@ -1,11 +1,14 @@
-"use client";
-
-import { useLocale } from "@/context/LocaleContext";
+import { getRequestLocale } from "@/lib/locale";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getPrivacyStrings } from "./strings";
 
-export default function DatenschutzPage() {
-  const { locale } = useLocale();
-  const strings = getPrivacyStrings(locale);
+export default async function DatenschutzPage() {
+  const locale = await getRequestLocale();
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getPrivacyStrings("de"),
+    getPrivacyStrings(locale),
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">

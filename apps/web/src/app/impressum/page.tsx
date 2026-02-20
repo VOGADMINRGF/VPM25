@@ -1,11 +1,14 @@
-"use client";
-
-import { useLocale } from "@/context/LocaleContext";
+import { getRequestLocale } from "@/lib/locale";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getImpressumStrings } from "./strings";
 
-export default function ImpressumPage() {
-  const { locale } = useLocale();
-  const strings = getImpressumStrings(locale);
+export default async function ImpressumPage() {
+  const locale = await getRequestLocale();
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getImpressumStrings("de"),
+    getImpressumStrings(locale),
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">

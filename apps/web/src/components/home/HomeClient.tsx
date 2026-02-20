@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SupporterSection } from "@/components/join/SupporterSection";
 import { useLocale } from "@/context/LocaleContext";
 import { getCountryOptions } from "@/lib/countries";
+import { getBand } from "@/app/grundlagen/bands";
 import { getHomeStrings } from "./strings";
 
 type Notice = { ok: boolean; msg: string } | null;
@@ -265,8 +266,13 @@ export default function HomeClient() {
         <div className="mx-auto max-w-6xl px-4 pb-14 pt-12">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-7">
-              <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-sky-300">
-                {strings.hero.badge}
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-sky-300">
+                  {strings.hero.badge}
+                </div>
+                <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-slate-200">
+                  Private Initiative
+                </div>
               </div>
               <div className="space-y-4">
                 <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
@@ -275,26 +281,21 @@ export default function HomeClient() {
                   </span>
                   <span className="block text-slate-100">{strings.hero.subtitle}</span>
                 </h1>
+                <p className="max-w-2xl text-sm font-semibold text-slate-100 md:text-base">
+                  VoiceOpenGov ist eine private, unabhängige Initiative.
+                </p>
                 <p className="max-w-2xl text-lg text-slate-300 md:text-xl">
-                  {strings.hero.lead.pre}{" "}
-                  <span className="text-slate-100 font-semibold">
-                    {strings.hero.lead.highlight1}
-                  </span>{" "}
-                  {strings.hero.lead.mid1}{" "}
-                  <span className="text-slate-100 font-semibold">
-                    {strings.hero.lead.highlight2}
-                  </span>{" "}
-                  {strings.hero.lead.mid2}{" "}
-                  <span className="text-slate-100 font-semibold">
-                    {strings.hero.lead.highlight3}
-                  </span>{" "}
-                  {strings.hero.lead.post}
+                  Mit{" "}
+                  <span className="font-semibold text-slate-100">eDebatte</span> entwickeln wir eine{" "}
+                  <span className="font-semibold text-slate-100">Informationsarchitektur</span> für Beteiligung:
+                  klare Optionen, dokumentierte Begründungen und Status – damit Mitwirkung zwischen Wahlterminen
+                  nachvollziehbar funktioniert.
                 </p>
                 <p className="max-w-2xl text-sm text-slate-400">
-                  {strings.hero.focus}
+                  Gemeinwohlorientiert und unabhängig – mit dem Ziel einer tragfähigen Trägerstruktur.
                 </p>
-                <p className="max-w-2xl text-sm text-slate-400">
-                  {strings.hero.scalable}
+                <p className="max-w-2xl text-xs text-slate-400">
+                  Wenn du dich einbringen willst: sachlich, respektvoll und quellenorientiert – gern mobil am Smartphone.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link href="/#mitmachen" className="btn btn-primary">
@@ -308,12 +309,7 @@ export default function HomeClient() {
                   </Link>
                 </div>
                 <p className="mt-3 max-w-2xl text-xs text-slate-400">
-                  <span className="block">
-                    {strings.hero.micro.line1}
-                  </span>
-                  <span className="mt-1 block">
-                    {strings.hero.micro.line2}
-                  </span>
+                  3 Minuten • Double-Opt-In • Öffentlich = nur Orts-Summen • Keine Einzelprofile • Keine Stimmvorteile durch Unterstützung
                 </p>
                 <div className="mt-6 grid gap-3 md:grid-cols-4">
                   {strings.hero.steps.map((item) => (
@@ -399,15 +395,26 @@ export default function HomeClient() {
         </div>
 
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {strings.foundations.items.map((item) => (
+          {strings.foundations.items.map((item) => {
+            const slug = String(item.href || "").split("/").pop() || "";
+            const band = getBand(slug);
+            const showBandSubtitle = !item.subtitle && locale === "de";
+            return (
             <div
               key={item.title}
               className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm"
             >
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                {strings.foundations.bandLabel}
+                {strings.foundations.bandLabel} {band?.roman ?? ""}
               </p>
-              <h3 className="mt-2 text-lg font-semibold text-slate-100">{item.title}</h3>
+              <h3 className="mt-2 text-lg font-semibold text-slate-100">
+                {band?.title ?? item.title}
+              </h3>
+              {item.subtitle ? (
+                <p className="mt-1 text-sm text-slate-400">{item.subtitle}</p>
+              ) : showBandSubtitle && band?.subtitle ? (
+                <p className="mt-1 text-sm text-slate-400">{band.subtitle}</p>
+              ) : null}
               <p className="mt-3 text-sm text-slate-300">{item.body}</p>
               <Link
                 href={item.href}
@@ -416,7 +423,7 @@ export default function HomeClient() {
                 {item.cta}
               </Link>
             </div>
-          ))}
+          )})}
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400">

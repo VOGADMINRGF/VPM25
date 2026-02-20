@@ -18,17 +18,125 @@ export type GrundlagenEntry = {
 type GrundlagenStrings = {
   label: string;
   tocLabel: string;
+  volumeLabel: string;
+  translation: {
+    notice: string;
+    originalButton: string;
+    translatedButton: string;
+    loading: string;
+    unavailable: string;
+  };
+  release: {
+    label: string;
+    versionLabel: string;
+    statusDraft: string;
+    statusStable: string;
+    changelogLabel: string;
+  };
+  citation: {
+    label: string;
+    note: string;
+    copy: string;
+    copied: string;
+  };
+  download: {
+    label: string;
+    md: string;
+    txt: string;
+  };
+  overview: {
+    meta: { title: string; description: string };
+    header: { title: string; subtitle: string; note: string };
+    bandCtas: { read: string; md: string; txt: string };
+    contribute: {
+      title: string;
+      body: string;
+      ctas: {
+        join: string;
+        statements: string;
+        vote: string;
+        support: string;
+      };
+      hint: string;
+    };
+  };
   supportNote: string;
+  order: {
+    title: string;
+    body: string;
+    cta: string;
+  };
   ctas: { join: string; support: string };
   entries: GrundlagenEntry[];
 };
 
-const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
+const STRINGS: Record<SupportedLocale, Partial<GrundlagenStrings>> = {
   de: {
     label: "Grundlagen",
     tocLabel: "Inhaltsübersicht",
-    supportNote:
-      "Alle Texte sind kostenfrei. Wenn es hilft, freuen wir uns über Unterstützung/Spenden – wir bauen unabhängig ohne Investor.",
+    volumeLabel: "Band",
+    translation: {
+      notice: "Automatische Übersetzung (Beta). Original: Deutsch.",
+      originalButton: "Original anzeigen",
+      translatedButton: "Übersetzung anzeigen",
+      loading: "Übersetzung wird geladen...",
+      unavailable: "Übersetzung derzeit nicht verfügbar.",
+    },
+    release: {
+      label: "Stand",
+      versionLabel: "Version",
+      statusDraft: "Entwurf",
+      statusStable: "Stabil",
+      changelogLabel: "Änderungen",
+    },
+    citation: {
+      label: "Zitierhinweis",
+      note: "Permalink & Stand. Bitte zitieren mit Version und Datum.",
+      copy: "Zitat kopieren",
+      copied: "Kopiert",
+    },
+    download: {
+      label: "Download",
+      md: "Download (MD)",
+      txt: "Download (TXT)",
+    },
+    overview: {
+      meta: {
+        title: "Grundlagen – Band I–III – VoiceOpenGov",
+        description:
+          "Drei offene Bände (Weißbuch, Legitimation 2.0, RePro) – kostenfrei, versioniert, zitierfähig. Mitmachen per Smartphone.",
+      },
+      header: {
+        title: "Die offene Referenzreihe",
+        subtitle:
+          "Drei Bände – kostenfrei, versioniert und zitierfähig. Für eine direktdemokratische Beteiligung, die zwischen Wahlterminen sichtbar, prüfbar und mobil wird – direkt am Smartphone.",
+        note: "Kostenfrei lesen · Keine Paywall · Unterstützung ist freiwillig",
+      },
+      bandCtas: {
+        read: "Online lesen",
+        md: "MD",
+        txt: "TXT",
+      },
+      contribute: {
+        title: "So bringst du dich ein",
+        body:
+          "VoiceOpenGov macht Beteiligung niedrigschwellig: lesen → prüfen → beitragen → abstimmen. In wenigen Minuten startklar – direkt am Smartphone.",
+        ctas: {
+          join: "Kostenfrei beitreten",
+          statements: "Statement einreichen",
+          vote: "Abstimmen",
+          support: "Unterstützen (optional)",
+        },
+        hint:
+          "Du musst kein Experte sein. Wichtig ist: fair, nachvollziehbar, quellenorientiert.",
+      },
+    },
+    supportNote: "Alle Texte sind kostenfrei. Wenn es hilft, freuen wir uns über Unterstützung – wir bauen unabhängig ohne Investor.",
+    order: {
+      title: "Print-Edition bestellen",
+      body: "Gedruckte Ausgabe auf Anfrage. Bestellung per E-Mail.",
+      cta: "Print-Edition anfragen",
+    },
     ctas: {
       join: "Jetzt mitwirken",
       support: "Initiative unterstützen",
@@ -37,11 +145,11 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
       {
         slug: "weissbuch",
         title: "Weißbuch",
-        subtitle: "Analyse des Problemraums",
+        subtitle: "Problemraum & Anforderungen",
         intro:
           "Das Weißbuch bündelt den Problemraum moderner Beteiligung und beschreibt, warum nachvollziehbare Prozesse heute fehlen.",
         meta: {
-          title: "Weißbuch – Grundlagen – VoiceOpenGov",
+          title: "Band I – Weißbuch: Problemraum & Anforderungen – VoiceOpenGov",
           description: "Analyse struktureller Herausforderungen moderner Beteiligung.",
         },
         sections: [
@@ -65,11 +173,11 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
       {
         slug: "legitimation-2-0",
         title: "Legitimation 2.0",
-        subtitle: "Governance-Modell für nachvollziehbare Entscheidungen",
+        subtitle: "Governance-Modell & Legitimationslogik",
         intro:
           "Legitimation 2.0 beschreibt, wie Verantwortlichkeiten, Rollen und Entscheidungsdimensionen sichtbar werden.",
         meta: {
-          title: "Legitimation 2.0 – Grundlagen – VoiceOpenGov",
+          title: "Band II – Legitimation 2.0: Governance-Modell & Legitimationslogik – VoiceOpenGov",
           description: "Governance-Modell für prüfbare und nachvollziehbare Entscheidungen.",
         },
         sections: [
@@ -92,11 +200,11 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
       {
         slug: "repro",
         title: "RePro",
-        subtitle: "Methode und Operationalisierung",
+        subtitle: "Referenzprozess & Operationalisierung",
         intro:
           "RePro übersetzt das Modell in einen klaren Prozess, der in VoiceOpenGov umgesetzt wird.",
         meta: {
-          title: "RePro – Grundlagen – VoiceOpenGov",
+          title: "Band III – RePro: Referenzprozess & Operationalisierung – VoiceOpenGov",
           description: "Methodische Operationalisierung von Check, Dossier, Beteiligung und Status.",
         },
         sections: [
@@ -121,8 +229,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   en: {
     label: "Foundations",
     tocLabel: "Table of contents",
-    supportNote:
-      "All texts are free to read. If it helps, we appreciate support/donations — we build independently, without investors.",
+    volumeLabel: "Volume",
+    translation: {
+      notice: "Automatic translation (beta). Original: German.",
+      originalButton: "Show original",
+      translatedButton: "Show translation",
+      loading: "Loading translation...",
+      unavailable: "Translation not available.",
+    },
+    supportNote: "All texts are free to read. If it helps, we appreciate support — we build independently, without investors.",
+    order: {
+      title: "Order print edition",
+      body: "Printed edition on request. Order via email.",
+      cta: "Request print edition",
+    },
     ctas: {
       join: "Participate now",
       support: "Support the initiative",
@@ -215,8 +335,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   fr: {
     label: "Fondations",
     tocLabel: "Sommaire",
-    supportNote:
-      "Tous les textes sont en accès libre. Si cela aide, nous apprécions les soutiens/dons — nous construisons de manière indépendante, sans investisseurs.",
+    volumeLabel: "Volume",
+    translation: {
+      notice: "Traduction automatique (bêta). Original : allemand.",
+      originalButton: "Afficher l’original",
+      translatedButton: "Afficher la traduction",
+      loading: "Chargement de la traduction...",
+      unavailable: "Traduction indisponible.",
+    },
+    supportNote: "Tous les textes sont en accès libre. Si cela aide, nous apprécions le soutien — nous construisons de manière indépendante, sans investisseurs.",
+    order: {
+      title: "Commander l’édition imprimée",
+      body: "Édition imprimée sur demande. Commande par e-mail.",
+      cta: "Demander l’édition imprimée",
+    },
     ctas: {
       join: "Participer maintenant",
       support: "Soutenir l'initiative",
@@ -309,8 +441,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   pl: {
     label: "Podstawy",
     tocLabel: "Spis treści",
-    supportNote:
-      "Wszystkie teksty są bezpłatne. Jeśli to pomaga, będziemy wdzięczni za wsparcie/darowizny — działamy niezależnie, bez inwestorów.",
+    volumeLabel: "Tom",
+    translation: {
+      notice: "Tłumaczenie automatyczne (beta). Oryginał: niemiecki.",
+      originalButton: "Pokaż oryginał",
+      translatedButton: "Pokaż tłumaczenie",
+      loading: "Ładowanie tłumaczenia...",
+      unavailable: "Tłumaczenie niedostępne.",
+    },
+    supportNote: "Wszystkie teksty są bezpłatne. Jeśli to pomaga, doceniamy wsparcie — budujemy niezależnie, bez inwestorów.",
+    order: {
+      title: "Zamów wydanie drukowane",
+      body: "Wydanie drukowane na zamówienie. Zamówienie e-mailem.",
+      cta: "Poproś o wydanie drukowane",
+    },
     ctas: {
       join: "Dołącz teraz",
       support: "Wesprzyj inicjatywę",
@@ -403,8 +547,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   es: {
     label: "Fundamentos",
     tocLabel: "Índice",
-    supportNote:
-      "Todos los textos son gratuitos. Si ayuda, agradecemos el apoyo/donaciones — trabajamos de forma independiente, sin inversores.",
+    volumeLabel: "Volumen",
+    translation: {
+      notice: "Traducción automática (beta). Original: alemán.",
+      originalButton: "Ver original",
+      translatedButton: "Ver traducción",
+      loading: "Cargando traducción...",
+      unavailable: "Traducción no disponible.",
+    },
+    supportNote: "Todos los textos son gratuitos. Si ayuda, agradecemos el apoyo — trabajamos de forma independiente, sin inversores.",
+    order: {
+      title: "Pedir edición impresa",
+      body: "Edición impresa bajo pedido. Pedido por correo electrónico.",
+      cta: "Solicitar edición impresa",
+    },
     ctas: {
       join: "Participa ahora",
       support: "Apoyar la iniciativa",
@@ -497,8 +653,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   it: {
     label: "Fondamenti",
     tocLabel: "Indice",
-    supportNote:
-      "Tutti i testi sono gratuiti. Se è utile, apprezziamo supporto/donazioni — lavoriamo in modo indipendente, senza investitori.",
+    volumeLabel: "Volume",
+    translation: {
+      notice: "Traduzione automatica (beta). Originale: tedesco.",
+      originalButton: "Mostra originale",
+      translatedButton: "Mostra traduzione",
+      loading: "Caricamento traduzione...",
+      unavailable: "Traduzione non disponibile.",
+    },
+    supportNote: "Tutti i testi sono gratuiti. Se è utile, apprezziamo il supporto — lavoriamo in modo indipendente, senza investitori.",
+    order: {
+      title: "Ordinare l’edizione stampata",
+      body: "Edizione stampata su richiesta. Ordine via email.",
+      cta: "Richiedi edizione stampata",
+    },
     ctas: {
       join: "Partecipa ora",
       support: "Sostieni l'iniziativa",
@@ -591,8 +759,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   tr: {
     label: "Temeller",
     tocLabel: "İçindekiler",
-    supportNote:
-      "Tüm metinler ücretsizdir. Faydalıysa destek/bağış memnuniyetle — bağımsız çalışıyoruz, yatırımcı yok.",
+    volumeLabel: "Cilt",
+    translation: {
+      notice: "Otomatik çeviri (beta). Orijinal: Almanca.",
+      originalButton: "Orijinali göster",
+      translatedButton: "Çeviriyi göster",
+      loading: "Çeviri yükleniyor...",
+      unavailable: "Çeviri kullanılamıyor.",
+    },
+    supportNote: "Tüm metinler ücretsizdir. Fayda sağlıyorsa desteğinizi takdir ederiz — yatırımcısız, bağımsız inşa ediyoruz.",
+    order: {
+      title: "Basılı sürüm siparişi",
+      body: "Basılı sürüm talep üzerine. Sipariş e-posta ile.",
+      cta: "Basılı sürümü iste",
+    },
     ctas: {
       join: "Hemen katıl",
       support: "Girişimi destekle",
@@ -685,8 +865,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   ar: {
     label: "الأسس",
     tocLabel: "المحتويات",
-    supportNote:
-      "جميع النصوص مجانية للقراءة. إذا كان ذلك مفيدًا فنحن نقدر الدعم/التبرعات — نعمل باستقلالية دون مستثمرين.",
+    volumeLabel: "مجلد",
+    translation: {
+      notice: "ترجمة آلية (نسخة تجريبية). الأصل: الألمانية.",
+      originalButton: "عرض الأصل",
+      translatedButton: "عرض الترجمة",
+      loading: "جارٍ تحميل الترجمة...",
+      unavailable: "الترجمة غير متاحة.",
+    },
+    supportNote: "جميع النصوص مجانية. إذا كان ذلك مفيدًا فنحن نقدر الدعم — نبني بشكل مستقل دون مستثمرين.",
+    order: {
+      title: "طلب النسخة المطبوعة",
+      body: "النسخة المطبوعة حسب الطلب. الطلب عبر البريد الإلكتروني.",
+      cta: "اطلب النسخة المطبوعة",
+    },
     ctas: {
       join: "شارك الآن",
       support: "ادعم المبادرة",
@@ -779,8 +971,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   ru: {
     label: "Основы",
     tocLabel: "Содержание",
-    supportNote:
-      "Все тексты бесплатны. Если это полезно, будем рады поддержке/пожертвованиям — мы работаем независимо, без инвесторов.",
+    volumeLabel: "Том",
+    translation: {
+      notice: "Автоперевод (бета). Оригинал: немецкий.",
+      originalButton: "Показать оригинал",
+      translatedButton: "Показать перевод",
+      loading: "Загрузка перевода...",
+      unavailable: "Перевод недоступен.",
+    },
+    supportNote: "Все тексты доступны бесплатно. Если это помогает, мы ценим поддержку — мы строим независимо, без инвесторов.",
+    order: {
+      title: "Заказать печатное издание",
+      body: "Печатное издание по запросу. Заказ по электронной почте.",
+      cta: "Запросить печатное издание",
+    },
     ctas: {
       join: "Участвовать сейчас",
       support: "Поддержать инициативу",
@@ -873,8 +1077,20 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   zh: {
     label: "基础",
     tocLabel: "目录",
-    supportNote:
-      "所有文本均可免费阅读。如果有帮助，感谢支持/捐助——我们独立运作，没有投资方。",
+    volumeLabel: "卷",
+    translation: {
+      notice: "自动翻译（测试版）。原文：德语。",
+      originalButton: "查看原文",
+      translatedButton: "查看翻译",
+      loading: "正在加载翻译...",
+      unavailable: "翻译不可用。",
+    },
+    supportNote: "所有文本均可免费阅读。如有帮助，我们感谢支持——我们独立建设，无投资人。",
+    order: {
+      title: "订购纸质版",
+      body: "纸质版按需提供。通过电子邮件订购。",
+      cta: "申请纸质版",
+    },
     ctas: {
       join: "立即参与",
       support: "支持该倡议",
@@ -966,9 +1182,40 @@ const STRINGS: Record<SupportedLocale, GrundlagenStrings> = {
   },
 };
 
+function mergeDeep<T>(base: T, override: Partial<T>): T {
+  if (Array.isArray(base)) {
+    return (Array.isArray(override) ? override : base) as T;
+  }
+  if (!base || typeof base !== "object") {
+    return (override ?? base) as T;
+  }
+  const result: any = { ...(base as Record<string, unknown>) };
+  const overrideObj = (override || {}) as Record<string, unknown>;
+  Object.keys(overrideObj).forEach((key) => {
+    const baseVal = (base as any)[key];
+    const overrideVal = overrideObj[key];
+    if (overrideVal === undefined) return;
+    if (
+      baseVal &&
+      typeof baseVal === "object" &&
+      !Array.isArray(baseVal) &&
+      overrideVal &&
+      typeof overrideVal === "object" &&
+      !Array.isArray(overrideVal)
+    ) {
+      result[key] = mergeDeep(baseVal, overrideVal);
+      return;
+    }
+    result[key] = overrideVal;
+  });
+  return result as T;
+}
+
 export function getGrundlagenStrings(locale: SupportedLocale | string): GrundlagenStrings {
   const normalized = (locale || DEFAULT_LOCALE) as SupportedLocale;
-  return STRINGS[normalized] ?? STRINGS[DEFAULT_LOCALE];
+  const base = STRINGS[DEFAULT_LOCALE] as GrundlagenStrings;
+  const override = STRINGS[normalized] ?? {};
+  return mergeDeep(base, override as Partial<GrundlagenStrings>);
 }
 
 export function getGrundlagenEntry(locale: SupportedLocale | string, slug: string) {
@@ -977,4 +1224,9 @@ export function getGrundlagenEntry(locale: SupportedLocale | string, slug: strin
   if (entry) return entry;
   const fallback = STRINGS[DEFAULT_LOCALE].entries.find((item) => item.slug === slug);
   return fallback ?? null;
+}
+
+export function getGrundlagenSourceEntry(slug: string) {
+  const entry = STRINGS[DEFAULT_LOCALE].entries.find((item) => item.slug === slug);
+  return entry ?? null;
 }

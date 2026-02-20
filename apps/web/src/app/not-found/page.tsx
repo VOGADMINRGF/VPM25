@@ -1,9 +1,14 @@
 import { getRequestLocale } from "@/lib/locale";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getNotFoundStrings } from "./strings";
 
 export default async function NotfoundPage() {
   const locale = await getRequestLocale();
-  const strings = getNotFoundStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getNotFoundStrings("de"),
+    getNotFoundStrings(locale),
+  );
 
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-16 text-slate-100">

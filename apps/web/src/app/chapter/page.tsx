@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import ChapterIntakeForm from "./ChapterIntakeForm";
 import { getChapterStrings } from "./strings";
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
-  const strings = getChapterStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getChapterStrings("de"),
+    getChapterStrings(locale),
+  );
   return {
     title: strings.meta.title,
     description: strings.meta.description,
@@ -14,7 +19,11 @@ export async function generateMetadata() {
 
 export default async function ChapterPage() {
   const locale = await getRequestLocale();
-  const strings = getChapterStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getChapterStrings("de"),
+    getChapterStrings(locale),
+  );
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10 text-slate-100">

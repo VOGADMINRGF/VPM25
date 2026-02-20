@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { pickHumanChallenge } from "@/lib/spam/humanChallenge";
 import { getRequestLocale } from "@/lib/locale";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import KontaktForm from "./KontaktForm";
 import { getKontaktStrings } from "./strings";
 
@@ -12,7 +13,11 @@ export default async function KontaktPage({
   searchParams?: { sent?: string; error?: string };
 }) {
   const locale = await getRequestLocale();
-  const strings = getKontaktStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getKontaktStrings("de"),
+    getKontaktStrings(locale),
+  );
   const sent = searchParams?.sent === "1";
   const error = searchParams?.error;
   const challenge = pickHumanChallenge();

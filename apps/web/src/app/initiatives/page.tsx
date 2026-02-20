@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import { getInitiativesStrings } from "./strings";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
-  const strings = getInitiativesStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getInitiativesStrings("de"),
+    getInitiativesStrings(locale),
+  );
   return {
     title: strings.meta.title,
     description: strings.meta.description,
@@ -13,7 +18,11 @@ export async function generateMetadata() {
 
 export default async function InitiativesPage() {
   const locale = await getRequestLocale();
-  const strings = getInitiativesStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getInitiativesStrings("de"),
+    getInitiativesStrings(locale),
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">

@@ -38,7 +38,7 @@ type HomeStrings = {
     bandLine: string;
     bandHint: string;
     bandLabel: string;
-    items: Array<{ title: string; body: string; href: string; cta: string }>;
+    items: Array<{ title: string; subtitle?: string; body: string; href: string; cta: string }>;
     footerNote: string;
     architectureLabel: string;
     architectureFlow: string[];
@@ -142,29 +142,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   de: {
     hero: {
       badge: "Strukturierte Beteiligung",
-      title: "Entscheidungen, die man prüfen kann.",
-      subtitle: "Neutral, nachvollziehbar, verantwortbar.",
+      title: "Beteiligung, die nachvollziehbar bleibt.",
+      subtitle: "Neutral, strukturiert, statusgeführt.",
       lead: {
         pre: "VoiceOpenGov ist eine",
         highlight1: "Informationsarchitektur",
-        mid1: "für Beteiligung: klare Optionen, dokumentierte Begründungen und Status-Tracking – damit Entscheidungen",
-        highlight2: "prüfbar",
-        mid2: "und Verantwortlichkeiten",
-        highlight3: "zuordenbar",
-        post: "werden.",
+        mid1: "für Beteiligung: Optionen,",
+        highlight2: "Begründung",
+        mid2: "und",
+        highlight3: "Status",
+        post: "werden sichtbar.",
       },
-      focus: "Fokus: Struktur statt Kommentarflut. Sachlich, respektvoll, lösungsorientiert.",
-      scalable:
-        "Skalierbar statt Ausnahmeformat: Beteiligung wird dokumentiert, vergleichbar und wiederverwendbar.",
+      focus: "Beteiligung zwischen Wahlterminen – als Informationsarchitektur: Optionen, Begründung, Status.",
+      scalable: "Dokumentiert, vergleichbar, wiederverwendbar.",
       ctas: {
-        join: "Jetzt kostenfrei mitmachen",
+        join: "Kostenfrei am Smartphone mitwirken",
         how: "So funktioniert’s",
         support: "Initiative unterstützen",
       },
       micro: {
-        line1:
-          "Zwischen Wahlterminen entstehen Prioritäten, Zielkonflikte und Umsetzung. VoiceOpenGov macht Beteiligung dafür als Prozess und Status sichtbar – prüfbar statt laut.",
-        line2: "3 Minuten • Double-Opt-In • Öffentlich: nur Orts-Summen • Keine Einzelprofile",
+        line1: "Mobil in 3 Minuten • Double-Opt-In • Öffentlich: nur Orts-Summen",
+        line2: "Keine Einzelprofile • Keine Rohdaten",
       },
       steps: [
         {
@@ -191,16 +189,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Mehr erfahren →",
       cards: [
         {
-          title: "Entscheidung als Datenmodell",
-          body: "Optionen, Begründungen, Evidenz, Status – formal dokumentiert.",
+          title: "Strukturierte Entscheidungsdimensionen",
+          body: "Ziel, Wirkung, Kosten, Zeit, Risiken, Zuständigkeit.",
         },
         {
-          title: "Governance-Modell sichtbar",
-          body: "Zuständigkeiten, Verantwortung, Prüfpfade – nachvollziehbar abgebildet.",
+          title: "Klare Verantwortungszuordnung",
+          body: "Verantwortliche Stellen werden benannt und dokumentiert.",
         },
         {
-          title: "Abwägungen werden sichtbar",
-          body: "Warum, wofür, mit welchen Folgen – transparent dokumentiert.",
+          title: "Formaler Berichtsteil",
+          body: "Beschluss, Begründung, Status – nachvollziehbar im Bericht.",
         },
       ],
     },
@@ -209,12 +207,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       title: "Die veröffentlichten Grundlagen",
       subtitle:
         "VoiceOpenGov basiert auf drei offenen Textbänden. Alle Inhalte sind frei zugänglich.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Band I · Band II · Band III",
       bandHint: "Theorie, Modell und Methode – offen dokumentiert und frei zugänglich.",
       bandLabel: "Band",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Problemraum & Anforderungen",
           body:
             "Analyse struktureller Herausforderungen moderner Beteiligung – institutionelle Überlastung, Informationsfragmentierung und fehlende Status-Transparenz.",
           href: "/grundlagen/weissbuch",
@@ -222,6 +221,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Governance-Modell & Legitimationslogik",
           body:
             "Ein Governance-Modell für prüfbare Entscheidungen, dokumentierte Entscheidungsdimensionen und nachvollziehbare Verantwortung.",
           href: "/grundlagen/legitimation-2-0",
@@ -229,14 +229,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Referenzprozess & Operationalisierung",
           body:
             "Methodische Operationalisierung: Check → Dossier → Beteiligung → Status – als formalisierte Entscheidungslogik.",
           href: "/grundlagen/repro",
           cta: "Online lesen →",
         },
       ],
-      footerNote:
-        "Frei zugänglich · Keine Paywall · Wenn es hilft, freuen wir uns über Unterstützung/Spenden. Unabhängig, ohne Investor.",
+      footerNote: "Frei zugänglich · Keine Paywall · Wenn es hilft, freuen wir uns über Unterstützung. Unabhängig, ohne Investor.",
       architectureLabel: "Architektur",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -248,7 +248,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Entscheidungslogik",
       tag: "Civic-Level",
-      title: "Beteiligung in 5 klaren Stufen",
+      title: "Civic-Level: 5 Optionen",
       steps: [
         "1. Informieren",
         "2. Feedback einholen",
@@ -256,7 +256,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Entscheiden",
         "5. Umsetzung begleiten",
       ],
-      note: "Transparenz: Beiträge, Reichweite und Status werden im Bericht ausgewiesen.",
+      note: "Realistische Zahlen: Beiträge, Reichweite und Status werden im Bericht ausgewiesen.",
     },
     membership: {
       label: "Mitgliedschaft",
@@ -288,7 +288,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Profilfoto hochladen (optional)",
       previewLabel: "Vorschau",
       selectedLabel: "Ausgewählt: {name}",
-      imageHint: "Max. 2 MB, JPG/PNG.",
+      imageHint: "Max. 2 MB, JPG/PNG. Hinweis: Base64 vergrößert den Upload.",
       motivation: "Motivation (optional)",
       motivationPlaceholder: "Warum bist du Teil der Community?",
       motivationHint:
@@ -372,30 +372,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   en: {
     hero: {
       badge: "Structured participation",
-      title: "Decisions you can verify.",
-      subtitle: "Neutral, traceable, accountable.",
+      title: "Participation that stays traceable.",
+      subtitle: "Neutral, structured, status-led.",
       lead: {
         pre: "VoiceOpenGov is an",
         highlight1: "information architecture",
-        mid1:
-          "for participation: clear options, documented reasoning, and status tracking — so decisions are",
-        highlight2: "verifiable",
-        mid2: "and responsibilities",
-        highlight3: "assignable",
-        post: ".",
+        mid1: "for participation: options,",
+        highlight2: "reasoning",
+        mid2: "and",
+        highlight3: "status",
+        post: "are made visible.",
       },
-      focus: "Focus: structure over comment noise. Factual, respectful, solution-oriented.",
-      scalable:
-        "Scalable instead of exceptional: participation is documented, comparable, and reusable.",
+      focus: "Participation between elections — as information architecture: options, reasoning, status.",
+      scalable: "Documented, comparable, reusable.",
       ctas: {
-        join: "Join for free",
+        join: "Join free on mobile",
         how: "How it works",
         support: "Support the initiative",
       },
       micro: {
-        line1:
-          "Between elections, priorities, trade-offs, and implementation emerge. VoiceOpenGov makes participation visible as process and status — verifiable instead of loud.",
-        line2: "3 minutes • Double opt-in • Public: only city totals • No individual profiles",
+        line1: "Mobile in 3 minutes • Double opt-in • Public: city totals only",
+        line2: "No individual profiles • No raw data",
       },
       steps: [
         {
@@ -422,16 +419,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Learn more →",
       cards: [
         {
-          title: "Decision as data model",
-          body: "Options, reasoning, evidence, status — formally documented.",
+          title: "Structured decision dimensions",
+          body: "Goal, impact, cost, time, risks, responsibility.",
         },
         {
-          title: "Governance model visible",
-          body: "Responsibilities, accountability, review paths — clearly mapped.",
+          title: "Clear responsibility assignment",
+          body: "Responsible entities are named and documented.",
         },
         {
-          title: "Trade-offs become visible",
-          body: "Why, for what, with which consequences — transparently documented.",
+          title: "Formal report section",
+          body: "Decision, reasoning, status — traceable in the report.",
         },
       ],
     },
@@ -439,12 +436,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       label: "Foundations",
       title: "The published foundations",
       subtitle: "VoiceOpenGov is based on three open volumes. All content is freely accessible.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Volume I · Volume II · Volume III",
       bandHint: "Theory, model and method — openly documented and freely accessible.",
       bandLabel: "Volume",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Problem space & requirements",
           body:
             "Analysis of structural challenges of modern participation — institutional overload, fragmented information, and missing status transparency.",
           href: "/grundlagen/weissbuch",
@@ -452,6 +450,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Governance model & legitimacy logic",
           body:
             "A governance model for verifiable decisions, documented decision dimensions, and accountable responsibility.",
           href: "/grundlagen/legitimation-2-0",
@@ -459,14 +458,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Reference process & operationalization",
           body:
             "Methodical operationalization: Check → Dossier → Participation → Status — as a formal decision logic.",
           href: "/grundlagen/repro",
           cta: "Read online →",
         },
       ],
-      footerNote:
-        "Free access · No paywall · If it helps, we appreciate support/donations. Independent, no investors.",
+      footerNote: "Free access · No paywall · If it helps, we appreciate support. Independent, no investors.",
       architectureLabel: "Architecture",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -478,7 +477,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Decision logic",
       tag: "Civic level",
-      title: "Participation in 5 clear stages",
+      title: "Civic level: 5 options",
       steps: [
         "1. Inform",
         "2. Gather feedback",
@@ -486,7 +485,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Decide",
         "5. Follow implementation",
       ],
-      note: "Transparency: contributions, reach, and status are shown in the report.",
+      note: "Realistic figures: contributions, reach, and status are reported.",
     },
     membership: {
       label: "Membership",
@@ -518,7 +517,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Upload profile photo (optional)",
       previewLabel: "Preview",
       selectedLabel: "Selected: {name}",
-      imageHint: "Max. 2 MB, JPG/PNG.",
+      imageHint: "Max. 2 MB, JPG/PNG. Note: Base64 increases payload size.",
       motivation: "Motivation (optional)",
       motivationPlaceholder: "Why are you part of the community?",
       motivationHint:
@@ -602,31 +601,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   fr: {
     hero: {
       badge: "Participation structurée",
-      title: "Des décisions vérifiables.",
-      subtitle: "Neutre, traçable, responsable.",
+      title: "Une participation qui reste traçable.",
+      subtitle: "Neutre, structurée, pilotée par le statut.",
       lead: {
         pre: "VoiceOpenGov est une",
-        highlight1: "architecture d'information",
-        mid1:
-          "pour la participation : options claires, justifications documentées et suivi d'état - afin que les décisions soient",
-        highlight2: "vérifiables",
-        mid2: "et les responsabilités",
-        highlight3: "attribuables",
-        post: ".",
+        highlight1: "architecture de l'information",
+        mid1: "pour la participation : options,",
+        highlight2: "justification",
+        mid2: "et",
+        highlight3: "statut",
+        post: "sont rendus visibles.",
       },
-      focus: "Priorité : la structure plutôt que le bruit. Factuel, respectueux, orienté solutions.",
-      scalable:
-        "Évolutif plutôt qu'exceptionnel : la participation est documentée, comparable et réutilisable.",
+      focus: "Participation entre les élections — comme architecture d'information : options, justification, statut.",
+      scalable: "Documentée, comparable, réutilisable.",
       ctas: {
-        join: "Rejoindre gratuitement",
+        join: "Participer gratuitement sur mobile",
         how: "Comment ça marche",
         support: "Soutenir l'initiative",
       },
       micro: {
-        line1:
-          "Entre les élections, naissent priorités, arbitrages et mise en œuvre. VoiceOpenGov rend la participation visible comme processus et statut - vérifiable plutôt que bruyante.",
-        line2:
-          "3 minutes • Double opt-in • Public : seulement des totaux par ville • Aucun profil individuel",
+        line1: "Mobile en 3 minutes • Double opt-in • Public : totaux par ville",
+        line2: "Aucun profil individuel • Aucune donnée brute",
       },
       steps: [
         {
@@ -653,16 +648,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "En savoir plus →",
       cards: [
         {
-          title: "Décision comme modèle de données",
-          body: "Options, justifications, preuves, statut - documentés formellement.",
+          title: "Dimensions de décision structurées",
+          body: "Objectif, impact, coût, temps, risques, responsabilité.",
         },
         {
-          title: "Gouvernance visible",
-          body: "Responsabilités, redevabilité, parcours de vérification - clairement cartographiés.",
+          title: "Responsabilités clairement attribuées",
+          body: "Les entités responsables sont nommées et documentées.",
         },
         {
-          title: "Les arbitrages deviennent visibles",
-          body: "Pourquoi, pour quoi, avec quelles conséquences - documenté en transparence.",
+          title: "Section de rapport formel",
+          body: "Décision, justification, statut — traçables dans le rapport.",
         },
       ],
     },
@@ -671,12 +666,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       title: "Les fondements publiés",
       subtitle:
         "VoiceOpenGov s'appuie sur trois volumes ouverts. Tous les contenus sont librement accessibles.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Volume I · Volume II · Volume III",
       bandHint: "Théorie, modèle et méthode — documentés ouvertement et librement accessibles.",
       bandLabel: "Volume",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Espace-problème & exigences",
           body:
             "Analyse des défis structurels de la participation moderne — surcharge institutionnelle, fragmentation de l'information et manque de transparence du statut.",
           href: "/grundlagen/weissbuch",
@@ -684,6 +680,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Modèle de gouvernance & logique de légitimation",
           body:
             "Un modèle de gouvernance pour des décisions vérifiables, des dimensions de décision documentées et une responsabilité traçable.",
           href: "/grundlagen/legitimation-2-0",
@@ -691,14 +688,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Processus de référence & opérationnalisation",
           body:
             "Opérationnalisation méthodique : Check → Dossier → Participation → Statut — comme logique décisionnelle formalisée.",
           href: "/grundlagen/repro",
           cta: "Lire en ligne →",
         },
       ],
-      footerNote:
-        "Accès libre · Pas de paywall · Si cela aide, nous apprécions les soutiens/dons. Indépendant, sans investisseurs.",
+      footerNote: "Accès libre · Pas de paywall · Si cela aide, nous apprécions le soutien. Indépendant, sans investisseurs.",
       architectureLabel: "Architecture",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -710,7 +707,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Logique de décision",
       tag: "Niveau civique",
-      title: "Participation en 5 étapes claires",
+      title: "Niveau civique : 5 options",
       steps: [
         "1. Informer",
         "2. Recueillir des retours",
@@ -718,7 +715,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Décider",
         "5. Suivre la mise en œuvre",
       ],
-      note: "Transparence : contributions, portée et statut sont indiqués dans le rapport.",
+      note: "Chiffres réalistes : contributions, portée et statut sont indiqués dans le rapport.",
     },
     membership: {
       label: "Adhésion",
@@ -750,7 +747,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Téléverser une photo de profil (optionnel)",
       previewLabel: "Aperçu",
       selectedLabel: "Sélectionné : {name}",
-      imageHint: "Max. 2 Mo, JPG/PNG.",
+      imageHint: "Max. 2 Mo, JPG/PNG. Note : le Base64 augmente la taille de l'envoi.",
       motivation: "Motivation (optionnelle)",
       motivationPlaceholder: "Pourquoi faites-vous partie de la communauté ?",
       motivationHint:
@@ -835,31 +832,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   pl: {
     hero: {
       badge: "Ustrukturyzowany udział",
-      title: "Decyzje, które można zweryfikować.",
-      subtitle: "Neutralne, przejrzyste, odpowiedzialne.",
+      title: "Udział, który pozostaje śledzalny.",
+      subtitle: "Neutralny, uporządkowany, z widocznym statusem.",
       lead: {
         pre: "VoiceOpenGov to",
         highlight1: "architektura informacji",
-        mid1:
-          "dla udziału: jasne opcje, udokumentowane uzasadnienia i śledzenie statusu - aby decyzje były",
-        highlight2: "weryfikowalne",
-        mid2: "a odpowiedzialności",
-        highlight3: "przypisywalne",
-        post: ".",
+        mid1: "dla udziału: opcje,",
+        highlight2: "uzasadnienie",
+        mid2: "i",
+        highlight3: "status",
+        post: "stają się widoczne.",
       },
-      focus: "Fokus: struktura zamiast szumu komentarzy. Rzeczowo, z szacunkiem, rozwiązaniowo.",
-      scalable:
-        "Skalowalne zamiast wyjątkowe: udział jest dokumentowany, porównywalny i wielokrotnego użytku.",
+      focus: "Udział między wyborami — jako architektura informacji: opcje, uzasadnienie, status.",
+      scalable: "Udokumentowane, porównywalne, wielokrotnego użytku.",
       ctas: {
-        join: "Dołącz bezpłatnie",
+        join: "Dołącz bezpłatnie na smartfonie",
         how: "Jak to działa",
         support: "Wesprzyj inicjatywę",
       },
       micro: {
-        line1:
-          "Między wyborami powstają priorytety, konflikty i wdrożenia. VoiceOpenGov pokazuje udział jako proces i status - weryfikowalny zamiast głośny.",
-        line2:
-          "3 minuty • Double opt-in • Publicznie: tylko sumy miast • Brak profili indywidualnych",
+        line1: "Mobilnie w 3 minuty • Double opt-in • Publicznie: tylko sumy miast",
+        line2: "Bez profili indywidualnych • Bez surowych danych",
       },
       steps: [
         {
@@ -886,16 +879,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Dowiedz się więcej →",
       cards: [
         {
-          title: "Decyzja jako model danych",
-          body: "Opcje, uzasadnienia, dowody, status - formalnie udokumentowane.",
+          title: "Strukturalne wymiary decyzji",
+          body: "Cel, wpływ, koszt, czas, ryzyka, odpowiedzialność.",
         },
         {
-          title: "Widoczny model zarządzania",
-          body: "Odpowiedzialność, rozliczalność, ścieżki weryfikacji - jasno opisane.",
+          title: "Jasne przypisanie odpowiedzialności",
+          body: "Odpowiedzialne podmioty są wskazane i udokumentowane.",
         },
         {
-          title: "Widoczne kompromisy",
-          body: "Dlaczego, po co, z jakimi konsekwencjami - przejrzyście udokumentowane.",
+          title: "Formalna część raportu",
+          body: "Decyzja, uzasadnienie, status — w raporcie.",
         },
       ],
     },
@@ -904,12 +897,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       title: "Opublikowane podstawy",
       subtitle:
         "VoiceOpenGov opiera się na trzech otwartych tomach. Wszystkie treści są ogólnie dostępne.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Tom I · Tom II · Tom III",
       bandHint: "Teoria, model i metoda — otwarcie udokumentowane i ogólnodostępne.",
       bandLabel: "Tom",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Przestrzeń problemu i wymagania",
           body:
             "Analiza strukturalnych wyzwań nowoczesnego uczestnictwa — przeciążenie instytucji, fragmentacja informacji i brak przejrzystości statusu.",
           href: "/grundlagen/weissbuch",
@@ -917,6 +911,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Model zarządzania i logika legitymizacji",
           body:
             "Model zarządzania dla weryfikowalnych decyzji, udokumentowanych wymiarów decyzji i odpowiedzialności.",
           href: "/grundlagen/legitimation-2-0",
@@ -924,14 +919,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Proces referencyjny i operacjonalizacja",
           body:
             "Metodyczna operacjonalizacja: Check → Dossier → Uczestnictwo → Status — jako sformalizowana logika decyzji.",
           href: "/grundlagen/repro",
           cta: "Czytaj online →",
         },
       ],
-      footerNote:
-        "Dostępne bezpłatnie · Bez paywalla · Jeśli to pomaga, będziemy wdzięczni za wsparcie/darowizny. Niezależnie, bez inwestorów.",
+      footerNote: "Dostęp wolny · Bez paywalla · Jeśli to pomaga, doceniamy wsparcie. Niezależnie, bez inwestorów.",
       architectureLabel: "Architektura",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -943,7 +938,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Logika decyzji",
       tag: "Poziom obywatelski",
-      title: "Udział w 5 jasnych etapach",
+      title: "Poziom obywatelski: 5 opcji",
       steps: [
         "1. Informuj",
         "2. Zbieraj opinie",
@@ -951,7 +946,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Decyduj",
         "5. Śledź wdrożenie",
       ],
-      note: "Transparentność: wkład, zasięg i status są pokazane w raporcie.",
+      note: "Realistyczne liczby: wkłady, zasięg i status są wykazywane w raporcie.",
     },
     membership: {
       label: "Członkostwo",
@@ -983,7 +978,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Prześlij zdjęcie profilowe (opcjonalnie)",
       previewLabel: "Podgląd",
       selectedLabel: "Wybrano: {name}",
-      imageHint: "Maks. 2 MB, JPG/PNG.",
+      imageHint: "Maks. 2 MB, JPG/PNG. Uwaga: Base64 zwiększa rozmiar.",
       motivation: "Motywacja (opcjonalnie)",
       motivationPlaceholder: "Dlaczego jesteś częścią społeczności?",
       motivationHint:
@@ -1067,31 +1062,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   es: {
     hero: {
       badge: "Participación estructurada",
-      title: "Decisiones que se pueden verificar.",
-      subtitle: "Neutras, trazables, responsables.",
+      title: "Participación que se mantiene trazable.",
+      subtitle: "Neutral, estructurada, guiada por el estado.",
       lead: {
         pre: "VoiceOpenGov es una",
         highlight1: "arquitectura de información",
-        mid1:
-          "para la participación: opciones claras, fundamentos documentados y seguimiento de estado - para que las decisiones sean",
-        highlight2: "verificables",
-        mid2: "y las responsabilidades",
-        highlight3: "asignables",
-        post: ".",
+        mid1: "para la participación: opciones,",
+        highlight2: "justificación",
+        mid2: "y",
+        highlight3: "estado",
+        post: "quedan visibles.",
       },
-      focus: "Enfoque: estructura en lugar de ruido. Factual, respetuoso, orientado a soluciones.",
-      scalable:
-        "Escalable en lugar de excepcional: la participación se documenta, compara y reutiliza.",
+      focus: "Participación entre elecciones — como arquitectura de información: opciones, justificación, estado.",
+      scalable: "Documentada, comparable, reutilizable.",
       ctas: {
-        join: "Unirse gratis",
+        join: "Participar gratis en móvil",
         how: "Cómo funciona",
         support: "Apoyar la iniciativa",
       },
       micro: {
-        line1:
-          "Entre elecciones surgen prioridades, conflictos y ejecución. VoiceOpenGov hace visible la participación como proceso y estado - verificable en lugar de ruidosa.",
-        line2:
-          "3 minutos • Double opt-in • Público: solo totales por ciudad • Sin perfiles individuales",
+        line1: "Móvil en 3 minutos • Double opt-in • Público: solo totales por ciudad",
+        line2: "Sin perfiles individuales • Sin datos brutos",
       },
       steps: [
         {
@@ -1118,16 +1109,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Más información →",
       cards: [
         {
-          title: "Decisión como modelo de datos",
-          body: "Opciones, fundamentos, evidencia, estado - documentado formalmente.",
+          title: "Dimensiones de decisión estructuradas",
+          body: "Objetivo, impacto, costo, tiempo, riesgos, responsabilidad.",
         },
         {
-          title: "Modelo de gobernanza visible",
-          body: "Responsabilidades, rendición de cuentas, rutas de revisión - claramente mapeadas.",
+          title: "Asignación clara de responsabilidades",
+          body: "Las entidades responsables se nombran y documentan.",
         },
         {
-          title: "Los compromisos se vuelven visibles",
-          body: "Por qué, para qué, con qué consecuencias - documentado con transparencia.",
+          title: "Sección formal de informe",
+          body: "Decisión, justificación, estado — trazables en el informe.",
         },
       ],
     },
@@ -1136,12 +1127,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       title: "Los fundamentos publicados",
       subtitle:
         "VoiceOpenGov se basa en tres volúmenes abiertos. Todo el contenido es de libre acceso.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Volumen I · Volumen II · Volumen III",
       bandHint: "Teoría, modelo y método — documentados de forma abierta y accesibles.",
       bandLabel: "Volumen",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Espacio del problema y requisitos",
           body:
             "Análisis de los desafíos estructurales de la participación moderna: sobrecarga institucional, fragmentación de la información y falta de transparencia de estado.",
           href: "/grundlagen/weissbuch",
@@ -1149,6 +1141,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Modelo de gobernanza y lógica de legitimación",
           body:
             "Un modelo de gobernanza para decisiones verificables, dimensiones de decisión documentadas y responsabilidad trazable.",
           href: "/grundlagen/legitimation-2-0",
@@ -1156,14 +1149,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Proceso de referencia y operacionalización",
           body:
             "Operacionalización metodológica: Check → Dossier → Participación → Estado — como lógica de decisión formalizada.",
           href: "/grundlagen/repro",
           cta: "Leer en línea →",
         },
       ],
-      footerNote:
-        "Acceso libre · Sin paywall · Si ayuda, agradecemos el apoyo/donaciones. Independientes, sin inversores.",
+      footerNote: "Acceso libre · Sin paywall · Si ayuda, agradecemos el apoyo. Independientes, sin inversores.",
       architectureLabel: "Arquitectura",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1175,7 +1168,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Lógica de decisión",
       tag: "Nivel cívico",
-      title: "Participación en 5 etapas claras",
+      title: "Nivel cívico: 5 opciones",
       steps: [
         "1. Informar",
         "2. Recoger feedback",
@@ -1183,7 +1176,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Decidir",
         "5. Seguir implementación",
       ],
-      note: "Transparencia: aportes, alcance y estado se muestran en el informe.",
+      note: "Cifras realistas: aportes, alcance y estado se informan en el reporte.",
     },
     membership: {
       label: "Membresía",
@@ -1215,7 +1208,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Subir foto de perfil (opcional)",
       previewLabel: "Vista previa",
       selectedLabel: "Seleccionado: {name}",
-      imageHint: "Máx. 2 MB, JPG/PNG.",
+      imageHint: "Máx. 2 MB, JPG/PNG. Nota: Base64 aumenta el tamaño.",
       motivation: "Motivación (opcional)",
       motivationPlaceholder: "¿Por qué eres parte de la comunidad?",
       motivationHint:
@@ -1299,31 +1292,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   it: {
     hero: {
       badge: "Partecipazione strutturata",
-      title: "Decisioni verificabili.",
-      subtitle: "Neutrali, tracciabili, responsabili.",
+      title: "Partecipazione che resta tracciabile.",
+      subtitle: "Neutrale, strutturata, guidata dallo stato.",
       lead: {
         pre: "VoiceOpenGov è un'",
         highlight1: "architettura dell'informazione",
-        mid1:
-          "per la partecipazione: opzioni chiare, motivazioni documentate e tracciamento dello stato - così le decisioni sono",
-        highlight2: "verificabili",
-        mid2: "e le responsabilità",
-        highlight3: "attribuibili",
-        post: ".",
+        mid1: "per la partecipazione: opzioni,",
+        highlight2: "motivazione",
+        mid2: "e",
+        highlight3: "stato",
+        post: "diventano visibili.",
       },
-      focus: "Focus: struttura invece del rumore. Fattuale, rispettoso, orientato alle soluzioni.",
-      scalable:
-        "Scalabile invece che eccezionale: la partecipazione è documentata, comparabile e riutilizzabile.",
+      focus: "Partecipazione tra elezioni — come architettura dell'informazione: opzioni, motivazione, stato.",
+      scalable: "Documentata, comparabile, riutilizzabile.",
       ctas: {
-        join: "Unisciti gratis",
+        join: "Partecipa gratis da mobile",
         how: "Come funziona",
         support: "Sostieni l'iniziativa",
       },
       micro: {
-        line1:
-          "Tra le elezioni emergono priorità, conflitti e attuazione. VoiceOpenGov rende la partecipazione visibile come processo e stato - verificabile invece che rumorosa.",
-        line2:
-          "3 minuti • Double opt-in • Pubblico: solo totali per città • Nessun profilo individuale",
+        line1: "Mobile in 3 minuti • Double opt-in • Pubblico: solo totali per città",
+        line2: "Nessun profilo individuale • Nessun dato grezzo",
       },
       steps: [
         {
@@ -1350,16 +1339,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Scopri di più →",
       cards: [
         {
-          title: "Decisione come modello dati",
-          body: "Opzioni, motivazioni, evidenze, stato - documentati formalmente.",
+          title: "Dimensioni decisionali strutturate",
+          body: "Obiettivo, impatto, costo, tempo, rischi, responsabilità.",
         },
         {
-          title: "Modello di governance visibile",
-          body: "Responsabilità, accountability, percorsi di verifica - mappati chiaramente.",
+          title: "Assegnazione chiara delle responsabilità",
+          body: "Le entità responsabili sono nominate e documentate.",
         },
         {
-          title: "I compromessi diventano visibili",
-          body: "Perché, per cosa, con quali conseguenze - documentato in modo trasparente.",
+          title: "Sezione di report formale",
+          body: "Decisione, motivazione, stato — tracciabili nel report.",
         },
       ],
     },
@@ -1368,12 +1357,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       title: "I fondamenti pubblicati",
       subtitle:
         "VoiceOpenGov si basa su tre volumi aperti. Tutti i contenuti sono liberamente accessibili.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Volume I · Volume II · Volume III",
       bandHint: "Teoria, modello e metodo — documentati apertamente e accessibili.",
       bandLabel: "Volume",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Spazio del problema e requisiti",
           body:
             "Analisi delle sfide strutturali della partecipazione moderna — sovraccarico istituzionale, frammentazione dell'informazione e mancanza di trasparenza sullo stato.",
           href: "/grundlagen/weissbuch",
@@ -1381,6 +1371,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Modello di governance e logica di legittimazione",
           body:
             "Un modello di governance per decisioni verificabili, dimensioni decisionali documentate e responsabilità tracciabile.",
           href: "/grundlagen/legitimation-2-0",
@@ -1388,14 +1379,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Processo di riferimento e operazionalizzazione",
           body:
             "Operazionalizzazione metodica: Check → Dossier → Partecipazione → Stato — come logica decisionale formalizzata.",
           href: "/grundlagen/repro",
           cta: "Leggi online →",
         },
       ],
-      footerNote:
-        "Accesso libero · Nessun paywall · Se è utile, apprezziamo supporto/donazioni. Indipendenti, senza investitori.",
+      footerNote: "Accesso libero · Nessun paywall · Se è utile, apprezziamo il supporto. Indipendenti, senza investitori.",
       architectureLabel: "Architettura",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1407,7 +1398,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Logica decisionale",
       tag: "Livello civico",
-      title: "Partecipazione in 5 fasi chiare",
+      title: "Livello civico: 5 opzioni",
       steps: [
         "1. Informare",
         "2. Raccogliere feedback",
@@ -1415,7 +1406,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Decidere",
         "5. Seguire l'attuazione",
       ],
-      note: "Trasparenza: contributi, portata e stato sono mostrati nel rapporto.",
+      note: "Numeri realistici: contributi, portata e stato sono riportati nel report.",
     },
     membership: {
       label: "Iscrizione",
@@ -1447,7 +1438,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Carica foto profilo (opzionale)",
       previewLabel: "Anteprima",
       selectedLabel: "Selezionato: {name}",
-      imageHint: "Max 2 MB, JPG/PNG.",
+      imageHint: "Max 2 MB, JPG/PNG. Nota: Base64 aumenta la dimensione.",
       motivation: "Motivazione (opzionale)",
       motivationPlaceholder: "Perché fai parte della community?",
       motivationHint:
@@ -1531,31 +1522,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   tr: {
     hero: {
       badge: "Yapılandırılmış katılım",
-      title: "Denetlenebilir kararlar.",
-      subtitle: "Tarafsız, izlenebilir, sorumlu.",
+      title: "İzlenebilir kalan katılım.",
+      subtitle: "Tarafsız, yapılandırılmış, durum odaklı.",
       lead: {
-        pre: "VoiceOpenGov,",
-        highlight1: "bilgi mimarisi",
-        mid1:
-          "ile katılımı düzenler: net seçenekler, belgelenmiş gerekçeler ve durum takibi - böylece kararlar",
-        highlight2: "denetlenebilir",
-        mid2: "ve sorumluluklar",
-        highlight3: "atanabilir",
-        post: "olur.",
+        pre: "VoiceOpenGov bir",
+        highlight1: "bilgi mimarisidir",
+        mid1: "katılım için: seçenekler,",
+        highlight2: "gerekçe",
+        mid2: "ve",
+        highlight3: "durum",
+        post: "görünür olur.",
       },
-      focus: "Odak: yorum gürültüsü yerine yapı. Olgusal, saygılı, çözüm odaklı.",
-      scalable:
-        "İstisna değil ölçeklenebilir: katılım belgelenir, karşılaştırılır ve yeniden kullanılabilir.",
+      focus: "Seçimler arasında katılım — bilgi mimarisi olarak: seçenekler, gerekçe, durum.",
+      scalable: "Belgelenmiş, karşılaştırılabilir, yeniden kullanılabilir.",
       ctas: {
-        join: "Ücretsiz katıl",
+        join: "Mobilde ücretsiz katıl",
         how: "Nasıl çalışır",
         support: "Girişimi destekle",
       },
       micro: {
-        line1:
-          "Seçimler arasında öncelikler, çatışmalar ve uygulama ortaya çıkar. VoiceOpenGov katılımı süreç ve statü olarak görünür kılar - gürültü değil doğrulanabilirlik.",
-        line2:
-          "3 dakika • Double opt-in • Kamu: yalnızca şehir toplamları • Bireysel profil yok",
+        line1: "Mobilde 3 dakikada • Double opt-in • Herkese açık: sadece şehir toplamları",
+        line2: "Bireysel profil yok • Ham veri yok",
       },
       steps: [
         {
@@ -1582,16 +1569,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Daha fazla bilgi →",
       cards: [
         {
-          title: "Veri modeli olarak karar",
-          body: "Seçenekler, gerekçeler, kanıt, durum - resmi olarak belgelenir.",
+          title: "Yapılandırılmış karar boyutları",
+          body: "Hedef, etki, maliyet, süre, riskler, sorumluluk.",
         },
         {
-          title: "Görünür yönetişim modeli",
-          body: "Sorumluluklar, hesap verebilirlik, inceleme yolları - açıkça haritalanır.",
+          title: "Net sorumluluk ataması",
+          body: "Sorumlu birimler belirtilir ve belgelenir.",
         },
         {
-          title: "Dengeler görünür olur",
-          body: "Neden, ne için, hangi sonuçlarla - şeffaf belgelenir.",
+          title: "Resmi rapor bölümü",
+          body: "Karar, gerekçe, durum — raporda izlenebilir.",
         },
       ],
     },
@@ -1599,12 +1586,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       label: "Temeller",
       title: "Yayınlanan temeller",
       subtitle: "VoiceOpenGov üç açık cilt üzerine kurulur. Tüm içerikler serbestçe erişilebilir.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Cilt I · Cilt II · Cilt III",
       bandHint: "Teori, model ve yöntem — açıkça belgelenmiş ve erişilebilir.",
       bandLabel: "Cilt",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Sorun alanı ve gereksinimler",
           body:
             "Modern katılımın yapısal zorluklarının analizi — kurumsal aşırı yük, bilgi parçalanması ve statü şeffaflığının eksikliği.",
           href: "/grundlagen/weissbuch",
@@ -1612,6 +1600,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Yönetişim modeli ve meşruiyet mantığı",
           body:
             "Doğrulanabilir kararlar, belgelenmiş karar boyutları ve izlenebilir sorumluluk için bir yönetişim modeli.",
           href: "/grundlagen/legitimation-2-0",
@@ -1619,14 +1608,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Referans süreç ve operasyonelleştirme",
           body:
             "Yöntemsel operasyonelleştirme: Check → Dossier → Katılım → Statü — biçimsel karar mantığı olarak.",
           href: "/grundlagen/repro",
           cta: "Çevrimiçi oku →",
         },
       ],
-      footerNote:
-        "Ücretsiz erişim · Paywall yok · Faydalıysa destek/bağış memnuniyetle. Bağımsız, yatırımcı yok.",
+      footerNote: "Ücretsiz erişim · Paywall yok · Fayda sağlıyorsa desteğinizi önemsiyoruz. Bağımsız, yatırımcısız.",
       architectureLabel: "Mimari",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1638,7 +1627,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Karar mantığı",
       tag: "Sivil seviye",
-      title: "5 net aşamada katılım",
+      title: "Sivil seviye: 5 seçenek",
       steps: [
         "1. Bilgilendir",
         "2. Geri bildirim al",
@@ -1646,7 +1635,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Karar ver",
         "5. Uygulamayı izle",
       ],
-      note: "Şeffaflık: katkılar, erişim ve durum raporda gösterilir.",
+      note: "Gerçekçi sayılar: katkılar, erişim ve durum raporda gösterilir.",
     },
     membership: {
       label: "Üyelik",
@@ -1678,7 +1667,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Profil fotoğrafı yükle (isteğe bağlı)",
       previewLabel: "Önizleme",
       selectedLabel: "Seçildi: {name}",
-      imageHint: "Maks. 2 MB, JPG/PNG.",
+      imageHint: "Maks. 2 MB, JPG/PNG. Not: Base64 boyutu artırır.",
       motivation: "Motivasyon (isteğe bağlı)",
       motivationPlaceholder: "Topluluğun parçası olma nedenin?",
       motivationHint:
@@ -1762,30 +1751,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   ar: {
     hero: {
       badge: "مشاركة منظمة",
-      title: "قرارات يمكن التحقق منها.",
-      subtitle: "محايدة، قابلة للتتبع، مسؤولة.",
+      title: "مشاركة يمكن تتبعها.",
+      subtitle: "محايدة، منظمة، ومبنية على الحالة.",
       lead: {
         pre: "VoiceOpenGov هي",
-        highlight1: "بنية معلومات",
-        mid1:
-          "للمشاركة: خيارات واضحة، مبررات موثقة، وتتبع للحالة - بحيث تكون القرارات",
-        highlight2: "قابلة للتحقق",
-        mid2: "وتكون المسؤوليات",
-        highlight3: "قابلة للإسناد",
-        post: ".",
+        highlight1: "معمارية معلومات",
+        mid1: "للمشاركة: خيارات،",
+        highlight2: "تبرير",
+        mid2: "و",
+        highlight3: "حالة",
+        post: "تظهر بوضوح.",
       },
-      focus: "التركيز: بنية بدل ضجيج التعليقات. موضوعية، محترمة، موجهة للحلول.",
-      scalable:
-        "قابلة للتوسع بدل الاستثناء: المشاركة موثقة وقابلة للمقارنة وإعادة الاستخدام.",
+      focus: "مشاركة بين الانتخابات — كمعمارية معلومات: خيارات، تبرير، حالة.",
+      scalable: "موثقة، قابلة للمقارنة، وقابلة لإعادة الاستخدام.",
       ctas: {
-        join: "انضم مجانا",
+        join: "شارك مجاناً عبر الهاتف",
         how: "كيف يعمل",
         support: "ادعم المبادرة",
       },
       micro: {
-        line1:
-          "بين الانتخابات تظهر الأولويات والتعارضات والتنفيذ. تجعل VoiceOpenGov المشاركة مرئية كعملية وحالة - قابلة للتحقق بدل الضجيج.",
-        line2: "3 دقائق • Double opt-in • عام: مجاميع المدن فقط • دون ملفات فردية",
+        line1: "الهاتف خلال 3 دقائق • Double opt-in • علني: إجماليات المدن فقط",
+        line2: "لا ملفات فردية • لا بيانات خام",
       },
       steps: [
         {
@@ -1812,16 +1798,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "اعرف المزيد →",
       cards: [
         {
-          title: "القرار كنموذج بيانات",
-          body: "الخيارات والمبررات والأدلة والحالة - موثقة رسميا.",
+          title: "أبعاد قرار منظمة",
+          body: "الهدف، الأثر، التكلفة، الوقت، المخاطر، المسؤولية.",
         },
         {
-          title: "نموذج الحوكمة مرئي",
-          body: "المسؤوليات والمساءلة ومسارات المراجعة - موضحة بوضوح.",
+          title: "تحديد واضح للمسؤوليات",
+          body: "يتم تسمية الجهات المسؤولة وتوثيقها.",
         },
         {
-          title: "تظهر المفاضلات",
-          body: "لماذا، لأي غرض، وبأي نتائج - موثق بشفافية.",
+          title: "قسم تقرير رسمي",
+          body: "القرار، التبرير، الحالة — قابلة للتتبع في التقرير.",
         },
       ],
     },
@@ -1829,12 +1815,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       label: "الأسس",
       title: "الأسس المنشورة",
       subtitle: "يعتمد VoiceOpenGov على ثلاثة مجلدات مفتوحة. كل المحتوى متاح بحرية.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "مجلد I · مجلد II · مجلد III",
       bandHint: "نظرية، نموذج ومنهج — موثقة بشكل مفتوح ومتاحة للجميع.",
       bandLabel: "مجلد",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "حيّز المشكلة والمتطلبات",
           body:
             "تحليل التحديات البنيوية للمشاركة الحديثة — ضغط المؤسسات، تجزؤ المعلومات، وغياب شفافية الحالة.",
           href: "/grundlagen/weissbuch",
@@ -1842,6 +1829,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "نموذج الحوكمة ومنطق الشرعية",
           body:
             "نموذج حوكمة لقرارات قابلة للتحقق، وأبعاد قرار موثقة، ومسؤولية قابلة للتتبع.",
           href: "/grundlagen/legitimation-2-0",
@@ -1849,14 +1837,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "العملية المرجعية والتشغيل",
           body:
             "تشغيل منهجي: Check → Dossier → مشاركة → حالة — كمنطق قرار مُقنن.",
           href: "/grundlagen/repro",
           cta: "اقرأ عبر الإنترنت →",
         },
       ],
-      footerNote:
-        "متاح للجميع · بدون جدار دفع · إذا كان مفيدًا فنحن نقدر الدعم/التبرعات. مستقلون بلا مستثمرين.",
+      footerNote: "وصول مجاني · بدون جدار دفع · إذا كان مفيداً فنحن نقدر الدعم. مستقلون بلا مستثمرين.",
       architectureLabel: "الهندسة",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1868,7 +1856,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "منطق القرار",
       tag: "المستوى المدني",
-      title: "المشاركة في 5 مراحل واضحة",
+      title: "المستوى المدني: 5 خيارات",
       steps: [
         "1. الاطلاع",
         "2. جمع الملاحظات",
@@ -1876,7 +1864,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. اتخاذ القرار",
         "5. متابعة التنفيذ",
       ],
-      note: "الشفافية: تُعرض المساهمات والمدى والحالة في التقرير.",
+      note: "أرقام واقعية: المساهمات والنطاق والحالة مذكورة في التقرير.",
     },
     membership: {
       label: "العضوية",
@@ -1908,7 +1896,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "رفع صورة الملف (اختياري)",
       previewLabel: "معاينة",
       selectedLabel: "تم الاختيار: {name}",
-      imageHint: "الحد الأقصى 2 ميغابايت، JPG/PNG.",
+      imageHint: "حد أقصى 2 ميغابايت، JPG/PNG. ملاحظة: Base64 يزيد الحجم.",
       motivation: "الدافع (اختياري)",
       motivationPlaceholder: "لماذا أنت جزء من المجتمع؟",
       motivationHint:
@@ -1992,31 +1980,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   ru: {
     hero: {
       badge: "Структурированное участие",
-      title: "Решения, которые можно проверить.",
-      subtitle: "Нейтрально, прозрачно, ответственно.",
+      title: "Участие, которое остается отслеживаемым.",
+      subtitle: "Нейтрально, структурированно, со статусом.",
       lead: {
-        pre: "VoiceOpenGov - это",
+        pre: "VoiceOpenGov — это",
         highlight1: "информационная архитектура",
-        mid1:
-          "для участия: четкие варианты, документированные обоснования и отслеживание статуса - чтобы решения были",
-        highlight2: "проверяемыми",
-        mid2: "а ответственность",
-        highlight3: "распределяемой",
-        post: ".",
+        mid1: "для участия: варианты,",
+        highlight2: "обоснование",
+        mid2: "и",
+        highlight3: "статус",
+        post: "становятся видимыми.",
       },
-      focus: "Фокус: структура вместо шума. Фактологично, уважительно, с ориентацией на решения.",
-      scalable:
-        "Масштабируемо вместо исключения: участие документируется, сопоставимо и переиспользуемо.",
+      focus: "Участие между выборами — как информационная архитектура: варианты, обоснование, статус.",
+      scalable: "Документировано, сопоставимо, повторно используемо.",
       ctas: {
-        join: "Присоединиться бесплатно",
+        join: "Участвовать бесплатно с телефона",
         how: "Как это работает",
         support: "Поддержать инициативу",
       },
       micro: {
-        line1:
-          "Между выборами возникают приоритеты, конфликты и реализация. VoiceOpenGov делает участие видимым как процесс и статус - проверяемым, а не шумным.",
-        line2:
-          "3 минуты • Double opt-in • Публично: только суммы по городам • Без индивидуальных профилей",
+        line1: "Мобильно за 3 минуты • Double opt-in • Публично: только суммы по городам",
+        line2: "Без индивидуальных профилей • Без исходных данных",
       },
       steps: [
         {
@@ -2043,16 +2027,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "Узнать больше →",
       cards: [
         {
-          title: "Решение как модель данных",
-          body: "Варианты, обоснования, доказательства, статус - формально документировано.",
+          title: "Структурированные измерения решения",
+          body: "Цель, влияние, стоимость, время, риски, ответственность.",
         },
         {
-          title: "Видимая модель управления",
-          body: "Ответственности, подотчетность, пути проверки - четко обозначены.",
+          title: "Четкое распределение ответственности",
+          body: "Ответственные стороны названы и задокументированы.",
         },
         {
-          title: "Компромиссы становятся видимыми",
-          body: "Почему, для чего, с какими последствиями - прозрачно документировано.",
+          title: "Формальный раздел отчета",
+          body: "Решение, обоснование, статус — отслеживаемо в отчете.",
         },
       ],
     },
@@ -2060,12 +2044,13 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       label: "Основы",
       title: "Опубликованные основы",
       subtitle: "VoiceOpenGov основан на трех открытых томах. Весь контент доступен свободно.",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "Том I · Том II · Том III",
       bandHint: "Теория, модель и метод — открыто документированы и свободно доступны.",
       bandLabel: "Том",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "Проблемное поле и требования",
           body:
             "Анализ структурных вызовов современной вовлеченности — институциональная перегрузка, фрагментация информации и отсутствие прозрачности статуса.",
           href: "/grundlagen/weissbuch",
@@ -2073,6 +2058,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "Модель управления и логика легитимности",
           body:
             "Модель управления для проверяемых решений, документированных измерений решения и подотчетной ответственности.",
           href: "/grundlagen/legitimation-2-0",
@@ -2080,14 +2066,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         },
         {
           title: "RePro",
+          subtitle: "Эталонный процесс и операционализация",
           body:
             "Методическая операционализация: Check → Dossier → Участие → Статус — как формализованная логика решений.",
           href: "/grundlagen/repro",
           cta: "Читать онлайн →",
         },
       ],
-      footerNote:
-        "Свободный доступ · Без paywall · Если это полезно, будем рады поддержке/пожертвованиям. Независимы, без инвесторов.",
+      footerNote: "Свободный доступ · Без paywall · Если это помогает, мы ценим поддержку. Независимо, без инвесторов.",
       architectureLabel: "Архитектура",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -2099,7 +2085,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "Логика решения",
       tag: "Гражданский уровень",
-      title: "Участие в 5 понятных этапах",
+      title: "Гражданский уровень: 5 вариантов",
       steps: [
         "1. Информировать",
         "2. Собирать обратную связь",
@@ -2107,7 +2093,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. Принимать решение",
         "5. Отслеживать реализацию",
       ],
-      note: "Прозрачность: вклад, охват и статус отражаются в отчете.",
+      note: "Реалистичные цифры: вклад, охват и статус указаны в отчете.",
     },
     membership: {
       label: "Участие",
@@ -2139,7 +2125,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "Загрузить фото профиля (необязательно)",
       previewLabel: "Предпросмотр",
       selectedLabel: "Выбрано: {name}",
-      imageHint: "Макс. 2 МБ, JPG/PNG.",
+      imageHint: "Макс. 2 МБ, JPG/PNG. Примечание: Base64 увеличивает размер.",
       motivation: "Мотивация (необязательно)",
       motivationPlaceholder: "Почему вы часть сообщества?",
       motivationHint:
@@ -2223,29 +2209,27 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   zh: {
     hero: {
       badge: "结构化参与",
-      title: "可核查的决策。",
-      subtitle: "中立、可追溯、可负责。",
+      title: "可追踪的参与。",
+      subtitle: "中立、有结构、以状态为导向。",
       lead: {
-        pre: "VoiceOpenGov 是一套",
+        pre: "VoiceOpenGov 是一种",
         highlight1: "信息架构",
-        mid1:
-          "用于参与：清晰选项、记录在案的理由与状态追踪——使决策",
-        highlight2: "可核查",
-        mid2: "且责任",
-        highlight3: "可归属",
-        post: "。",
+        mid1: "用于参与：选项、",
+        highlight2: "理由",
+        mid2: "与",
+        highlight3: "状态",
+        post: "清晰可见。",
       },
-      focus: "重点：结构胜过噪音。客观、尊重、面向解决方案。",
-      scalable: "可扩展而非例外：参与被记录、可比较、可复用。",
+      focus: "选举之间的参与——作为信息架构：选项、理由、状态。",
+      scalable: "可记录、可比较、可复用。",
       ctas: {
-        join: "免费加入",
+        join: "免费手机参与",
         how: "如何运作",
         support: "支持该倡议",
       },
       micro: {
-        line1:
-          "在选举之间，优先级、冲突与执行不断出现。VoiceOpenGov 让参与以过程与状态可见——可核查而非喧闹。",
-        line2: "3 分钟 • Double opt-in • 公开：仅城市汇总 • 无个人档案",
+        line1: "3 分钟手机完成 • Double opt-in • 公开：仅城市汇总",
+        line2: "无个人档案 • 无原始数据",
       },
       steps: [
         {
@@ -2272,16 +2256,16 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       learnMore: "了解更多 →",
       cards: [
         {
-          title: "决策作为数据模型",
-          body: "选项、理由、证据、状态——正式记录。",
+          title: "结构化决策维度",
+          body: "目标、影响、成本、时间、风险、责任。",
         },
         {
-          title: "治理模型可见",
-          body: "责任、问责、审查路径——清晰呈现。",
+          title: "明确责任归属",
+          body: "明确责任主体并形成记录。",
         },
         {
-          title: "权衡可见",
-          body: "为什么、为了什么、带来哪些后果——透明记录。",
+          title: "正式报告部分",
+          body: "决定、理由、状态——在报告中可追踪。",
         },
       ],
     },
@@ -2289,32 +2273,34 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       label: "基础",
       title: "公开的基础",
       subtitle: "VoiceOpenGov 基于三部开放文本。所有内容均可自由访问。",
-      bandLine: "Weißbuch · Legitimation 2.0 · RePro",
+      bandLine: "卷 I · 卷 II · 卷 III",
       bandHint: "理论、模型与方法——开放记录并自由访问。",
       bandLabel: "卷",
       items: [
         {
           title: "Weißbuch",
+          subtitle: "问题空间与要求",
           body: "分析现代参与的结构性挑战——制度负荷、信息碎片化与状态透明度不足。",
           href: "/grundlagen/weissbuch",
           cta: "在线阅读 →",
         },
         {
           title: "Legitimation 2.0",
+          subtitle: "治理模型与合法性逻辑",
           body: "用于可验证决策、记录决策维度与可追责责任的治理模型。",
           href: "/grundlagen/legitimation-2-0",
           cta: "在线阅读 →",
         },
         {
           title: "RePro",
+          subtitle: "参考流程与操作化",
           body:
             "方法化落地：Check → Dossier → 参与 → 状态——作为规范化的决策逻辑。",
           href: "/grundlagen/repro",
           cta: "在线阅读 →",
         },
       ],
-      footerNote:
-        "自由访问 · 无付费墙 · 如果有帮助，感谢支持/捐助。独立运营，无投资方。",
+      footerNote: "免费访问 · 无付费墙 · 如有帮助，感谢支持。独立运作，无投资人。",
       architectureLabel: "架构",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -2325,7 +2311,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     decisionCard: {
       label: "决策逻辑",
       tag: "公民层级",
-      title: "五个清晰阶段的参与",
+      title: "公民级别：5 个选项",
       steps: [
         "1. 了解",
         "2. 收集反馈",
@@ -2333,7 +2319,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
         "4. 决策",
         "5. 跟踪落实",
       ],
-      note: "透明度：贡献、覆盖范围与状态在报告中呈现。",
+      note: "现实数据：贡献、触达与状态在报告中呈现。",
     },
     membership: {
       label: "成员",
@@ -2365,7 +2351,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       avatarUpload: "上传头像（可选）",
       previewLabel: "预览",
       selectedLabel: "已选择：{name}",
-      imageHint: "最大 2MB，JPG/PNG。",
+      imageHint: "最大 2MB，JPG/PNG。提示：Base64 会增大体积。",
       motivation: "动机（可选）",
       motivationPlaceholder: "为什么加入社区？",
       motivationHint: "仅在作为支持者展示时公开。请勿填写联系方式。",

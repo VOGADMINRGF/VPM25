@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
+import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getDossierStrings } from "./strings";
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
-  const strings = getDossierStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getDossierStrings("de"),
+    getDossierStrings(locale),
+  );
   return {
     title: strings.meta.title,
     description: strings.meta.description,
@@ -13,7 +18,11 @@ export async function generateMetadata() {
 
 export default async function DirekteDemokratieDossierPage() {
   const locale = await getRequestLocale();
-  const strings = getDossierStrings(locale);
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getDossierStrings("de"),
+    getDossierStrings(locale),
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">

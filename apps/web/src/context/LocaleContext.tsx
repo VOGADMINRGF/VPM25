@@ -8,7 +8,9 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from "react";
+import { useRouter } from "next/navigation";
 import {
   DEFAULT_LOCALE,
   type SupportedLocale,
@@ -32,9 +34,12 @@ export function LocaleProvider({
   children,
 }: ProviderProps) {
   const [locale, setLocaleState] = useState<SupportedLocale>(initialLocale);
+  const router = useRouter();
+  const didSync = useRef(false);
 
   // Hydrate from localStorage/query once on mount
   useEffect(() => {
+    if (didSync.current) return;
     try {
       const url = new URL(window.location.href);
       const urlLocale = url.searchParams.get("lang");
@@ -42,6 +47,10 @@ export function LocaleProvider({
         setLocaleState(urlLocale);
         persistLocale(urlLocale);
         updateHtmlAttrs(urlLocale);
+        didSync.current = true;
+        if (urlLocale !== initialLocale) {
+          router.refresh();
+        }
         return;
       }
     } catch {
@@ -59,7 +68,8 @@ export function LocaleProvider({
     } catch {
       updateHtmlAttrs(initialLocale);
     }
-  }, [initialLocale]);
+    didSync.current = true;
+  }, [initialLocale, router]);
 
   useEffect(() => {
     updateHtmlAttrs(locale);

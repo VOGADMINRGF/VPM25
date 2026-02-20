@@ -2,32 +2,40 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { getRequestLocale } from "@/lib/locale";
 import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
-import { SUPPORT_COOKIE, verifySupportCookie } from "@/lib/supportSession";
-import { loginSupporter, logoutSupporter } from "./actions";
-import { getSupportStrings } from "./strings";
+import { PAYMENTS_COOKIE, verifyPaymentsCookie } from "@/lib/paymentSession";
+import { loginPayments, logoutPayments } from "./actions";
+import { getPaymentsStrings, getPaymentsStringsOptional } from "./strings";
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(locale, getSupportStrings("de"), getSupportStrings(locale));
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getPaymentsStrings("de"),
+    getPaymentsStringsOptional(locale),
+  );
   return {
     title: strings.meta.title,
     description: strings.meta.description,
   };
 }
 
-export default async function SupportPage({
+export default async function PaymentsPage({
   searchParams,
 }: {
   searchParams?: { error?: string };
 }) {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(locale, getSupportStrings("de"), getSupportStrings(locale));
-  const supportSecret =
-    process.env.JWT_SECRET || process.env.EDITOR_TOKEN || "support-session";
+  const strings = await getAutoTranslatedStrings(
+    locale,
+    getPaymentsStrings("de"),
+    getPaymentsStringsOptional(locale),
+  );
+  const paymentsSecret =
+    process.env.JWT_SECRET || process.env.EDITOR_TOKEN || "payments-session";
   const cookieStore = await cookies();
-  const isAuthed = verifySupportCookie(
-    cookieStore.get(SUPPORT_COOKIE)?.value,
-    supportSecret,
+  const isAuthed = verifyPaymentsCookie(
+    cookieStore.get(PAYMENTS_COOKIE)?.value,
+    paymentsSecret,
   );
   const bankRecipient = process.env.VOG_PAYMENT_BANK_RECIPIENT;
   const bankIban = process.env.VOG_PAYMENT_BANK_IBAN;
@@ -39,6 +47,13 @@ export default async function SupportPage({
   const hasBankDetails = Boolean(bankRecipient && bankIban && bankBic && bankName);
   const error = searchParams?.error;
 
+  const manageSubject = encodeURIComponent("Dauerauftrag anpassen");
+  const manageBody = encodeURIComponent(
+    `Wunschbetrag: \nIntervall (monatlich/vierteljährlich/jährlich): \nHinweis:`,
+  );
+  const bookSubject = encodeURIComponent("Zahlung ankündigen");
+  const bookBody = encodeURIComponent(`Betrag: \nVerwendungszweck (optional):`);
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-100 pb-16">
       <section className="mx-auto max-w-4xl px-4 py-16 space-y-10">
@@ -46,44 +61,13 @@ export default async function SupportPage({
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
             {strings.header.label}
           </p>
-          <h1
-            className="text-3xl md:text-4xl font-extrabold leading-tight headline-gradient"
-          >
+          <h1 className="text-3xl md:text-4xl font-extrabold leading-tight headline-gradient">
             {strings.header.title}
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
             {strings.header.body}
           </p>
         </header>
-
-        <section className="grid gap-4 md:grid-cols-2">
-          {strings.cards.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300 shadow-sm"
-            >
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                {item.title}
-              </p>
-              <p className="mt-2 text-sm font-semibold text-slate-100">{item.body}</p>
-            </div>
-          ))}
-        </section>
-
-        <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-100">{strings.how.title}</h2>
-          <p className="mt-2 text-sm text-slate-300">
-            {strings.how.body}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-3">
-            <a href={`mailto:${contactEmail}`} className="btn btn-primary">
-              {strings.how.ctaPrimary}
-            </a>
-            <Link href="/kontakt" className="btn btn-ghost !bg-slate-900/70 !text-slate-100 !border-slate-700">
-              {strings.how.ctaSecondary}
-            </Link>
-          </div>
-        </section>
 
         <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -94,27 +78,27 @@ export default async function SupportPage({
               </p>
             </div>
             {isAuthed && (
-              <form action={logoutSupporter}>
+              <form action={logoutPayments}>
                 <button
                   type="submit"
                   className="btn btn-ghost !bg-slate-900/70 !text-slate-100 !border-slate-700"
                 >
-                  {strings.bank.logout}
+                  {strings.logout}
                 </button>
               </form>
             )}
           </div>
 
           {!isAuthed && (
-            <form action={loginSupporter} className="mt-4 space-y-3">
+            <form action={loginPayments} className="mt-4 space-y-3">
               {error === "invalid" && (
                 <p className="text-xs text-red-400">
-                  {strings.bank.login.invalid}
+                  {strings.login.invalid}
                 </p>
               )}
               {error === "unconfigured" && (
                 <p className="text-xs text-red-400">
-                  {strings.bank.login.unconfigured}
+                  {strings.login.unconfigured}
                 </p>
               )}
               <div className="flex flex-wrap gap-3">
@@ -122,16 +106,16 @@ export default async function SupportPage({
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  placeholder={strings.bank.login.placeholder}
+                  placeholder={strings.login.placeholder}
                   className="w-full max-w-xs rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
                   required
                 />
                 <button type="submit" className="btn btn-primary">
-                  {strings.bank.login.button}
+                  {strings.login.button}
                 </button>
               </div>
               <p className="text-xs text-slate-400">
-                {strings.bank.login.noAccess}{" "}
+                {strings.login.noAccess}{" "}
                 <a href={`mailto:${contactEmail}`} className="font-semibold text-slate-100">
                   {contactEmail}
                 </a>
@@ -142,6 +126,33 @@ export default async function SupportPage({
 
           {isAuthed && (
             <>
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                    {strings.manage.title}
+                  </p>
+                  <p className="mt-2 text-sm text-slate-100">{strings.manage.body}</p>
+                  <a
+                    href={`mailto:${contactEmail}?subject=${manageSubject}&body=${manageBody}`}
+                    className="mt-3 inline-flex text-sm font-semibold text-sky-300 hover:underline"
+                  >
+                    {strings.manage.cta}
+                  </a>
+                </div>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                    {strings.book.title}
+                  </p>
+                  <p className="mt-2 text-sm text-slate-100">{strings.book.body}</p>
+                  <a
+                    href={`mailto:${contactEmail}?subject=${bookSubject}&body=${bookBody}`}
+                    className="mt-3 inline-flex text-sm font-semibold text-sky-300 hover:underline"
+                  >
+                    {strings.book.cta}
+                  </a>
+                </div>
+              </div>
+
               {hasBankDetails ? (
                 <details
                   className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300"
@@ -194,21 +205,22 @@ export default async function SupportPage({
                   {strings.bank.noDetails}
                 </div>
               )}
-              <p className="mt-3 text-xs text-slate-400">
-                {strings.bank.afterNote}
-              </p>
+
+              <section className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-400">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                  {strings.hint.label}
+                </p>
+                <p className="mt-2">{strings.hint.body}</p>
+              </section>
             </>
           )}
         </section>
 
-        <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5 text-xs text-slate-400">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-            {strings.hint.label}
-          </p>
-          <p className="mt-2">
-            {strings.hint.body}
-          </p>
-        </section>
+        <div className="text-center">
+          <Link href="/" className="text-sm font-semibold text-sky-300 hover:underline">
+            VoiceOpenGov
+          </Link>
+        </div>
       </section>
     </main>
   );
