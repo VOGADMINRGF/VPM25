@@ -3,8 +3,25 @@ import { DEFAULT_LOCALE, type SupportedLocale } from "@/config/locales";
 type SupportStrings = {
   meta: { title: string; description: string };
   header: { label: string; title: string; body: string };
+  ctas: { support: string; edebatte: string; preorder: string };
   cards: Array<{ title: string; body: string }>;
   how: { title: string; body: string; ctaPrimary: string; ctaSecondary: string };
+  calculator: {
+    label: string;
+    title: string;
+    body: string;
+    net: string;
+    rent: string;
+    household: string;
+    interval: string;
+    monthly: string;
+    once: string;
+    presets: string;
+    suggestion: string;
+    perPerson: string;
+    total: string;
+    note: string;
+  };
   bank: {
     title: string;
     body: string;
@@ -44,6 +61,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Unterstützung stärkt Aufbau, Recherche, Übersetzung und Moderation. Sie ist freiwillig, transparent dokumentiert und bringt keine Stimmvorteile.",
     },
+    ctas: {
+      support: "Zum Beitragsrechner",
+      edebatte: "eDebatte eintragen",
+      preorder: "Trilogie vorbestellen",
+    },
     cards: [
       {
         title: "Finanzieller Beitrag",
@@ -69,10 +91,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Kontakt aufnehmen",
       ctaSecondary: "Kontaktformular",
     },
+    calculator: {
+      label: "Beitragsrechner",
+      title: "Orientierungsbeitrag berechnen",
+      body:
+        "Ein Richtwert auf Basis deines Haushalts. Mitgliedschaft bleibt kostenfrei; jeder Beitrag ist freiwillig.",
+      net: "Haushaltsnetto (monatlich)",
+      rent: "Warmmiete (monatlich)",
+      household: "Haushaltsgröße (ab 16 J.)",
+      interval: "Intervall",
+      monthly: "Monatlich",
+      once: "Einmalig",
+      presets: "Schnellwahl",
+      suggestion: "Vorschlag pro Person",
+      perPerson: "Betrag pro Person",
+      total: "Gesamtbeitrag",
+      note: "Richtwert, jederzeit anpassbar. Keine Stimmvorteile.",
+    },
     bank: {
       title: "Bankverbindung",
       body:
-        "Zugriff nur für angemeldete Unterstützer. Bitte im Verwendungszweck nur das Nötigste angeben.",
+        "Für deinen Beitrag. Bitte im Verwendungszweck nur das Nötigste angeben.",
       logout: "Abmelden",
       login: {
         invalid: "Zugangscode ist nicht korrekt.",
@@ -112,6 +151,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Support strengthens build-out, research, translation, and moderation. It is voluntary, transparently documented, and brings no voting advantages.",
     },
+    ctas: {
+      support: "Open contribution calculator",
+      edebatte: "Sign up for eDebatte",
+      preorder: "Preorder trilogy",
+    },
     cards: [
       {
         title: "Financial contribution",
@@ -137,10 +181,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Contact us",
       ctaSecondary: "Contact form",
     },
+    calculator: {
+      label: "Contribution calculator",
+      title: "Estimate a contribution",
+      body:
+        "A guideline based on your household. Membership stays free; every contribution is voluntary.",
+      net: "Household net income (monthly)",
+      rent: "Warm rent (monthly)",
+      household: "Household size (16+)",
+      interval: "Interval",
+      monthly: "Monthly",
+      once: "One-time",
+      presets: "Quick picks",
+      suggestion: "Suggested per person",
+      perPerson: "Amount per person",
+      total: "Total contribution",
+      note: "Guideline, adjustable anytime. No voting advantages.",
+    },
     bank: {
       title: "Bank details",
       body:
-        "Access only for approved supporters. Please keep the payment reference to the essentials.",
+        "For your contribution. Please keep the payment reference to the essentials.",
       logout: "Log out",
       login: {
         invalid: "Access code is incorrect.",
@@ -180,6 +241,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Le soutien renforce la mise en place, la recherche, la traduction et la modération. Il est volontaire, documenté de façon transparente et n'apporte aucun avantage de vote.",
     },
+    ctas: {
+      support: "Ouvrir le calculateur de contribution",
+      edebatte: "S'inscrire à eDebatte",
+      preorder: "Précommander la trilogie",
+    },
     cards: [
       {
         title: "Contribution financière",
@@ -205,10 +271,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Nous contacter",
       ctaSecondary: "Formulaire de contact",
     },
+    calculator: {
+      label: "Calculateur de contribution",
+      title: "Estimer une contribution",
+      body:
+        "Un repère basé sur ton foyer. L’adhésion reste gratuite; chaque contribution est volontaire.",
+      net: "Revenu net du foyer (mensuel)",
+      rent: "Loyer charges comprises (mensuel)",
+      household: "Taille du foyer (16+)",
+      interval: "Périodicité",
+      monthly: "Mensuel",
+      once: "Unique",
+      presets: "Choix rapides",
+      suggestion: "Suggestion par personne",
+      perPerson: "Montant par personne",
+      total: "Contribution totale",
+      note: "Repère ajustable à tout moment. Aucun avantage de vote.",
+    },
     bank: {
       title: "Coordonnées bancaires",
       body:
-        "Accès réservé aux soutiens approuvés. Merci de limiter le libellé au strict nécessaire.",
+        "Pour votre contribution. Merci de limiter le libellé au strict nécessaire.",
       logout: "Se déconnecter",
       login: {
         invalid: "Le code d'accès est incorrect.",
@@ -248,6 +331,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Wsparcie wzmacnia budowę, badania, tłumaczenia i moderację. Jest dobrowolne, transparentnie dokumentowane i nie daje korzyści wyborczych.",
     },
+    ctas: {
+      support: "Otwórz kalkulator składki",
+      edebatte: "Zapisz się do eDebatte",
+      preorder: "Zamów trylogię w przedsprzedaży",
+    },
     cards: [
       {
         title: "Wkład finansowy",
@@ -273,10 +361,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Skontaktuj się",
       ctaSecondary: "Formularz kontaktu",
     },
+    calculator: {
+      label: "Kalkulator składki",
+      title: "Oszacuj składkę",
+      body:
+        "Wskaźnik na podstawie gospodarstwa domowego. Członkostwo jest bezpłatne; każda składka jest dobrowolna.",
+      net: "Dochód netto gospodarstwa (miesięcznie)",
+      rent: "Czynsz z opłatami (miesięcznie)",
+      household: "Wielkość gospodarstwa (16+)",
+      interval: "Interwał",
+      monthly: "Miesięcznie",
+      once: "Jednorazowo",
+      presets: "Szybki wybór",
+      suggestion: "Propozycja na osobę",
+      perPerson: "Kwota na osobę",
+      total: "Łączna składka",
+      note: "Wskaźnik, do zmiany w każdej chwili. Bez przewagi w głosowaniu.",
+    },
     bank: {
       title: "Dane bankowe",
       body:
-        "Dostęp tylko dla zatwierdzonych wspierających. W tytule przelewu podaj tylko konieczne informacje.",
+        "Na Twój wkład. W tytule przelewu podaj tylko to, co konieczne.",
       logout: "Wyloguj",
       login: {
         invalid: "Kod dostępu jest nieprawidłowy.",
@@ -316,6 +421,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "El apoyo fortalece la construcción, la investigación, la traducción y la moderación. Es voluntario, se documenta de forma transparente y no ofrece ventajas de voto.",
     },
+    ctas: {
+      support: "Abrir calculadora de aportes",
+      edebatte: "Inscribirse en eDebatte",
+      preorder: "Preordenar la trilogía",
+    },
     cards: [
       {
         title: "Contribución financiera",
@@ -341,10 +451,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Contactar",
       ctaSecondary: "Formulario de contacto",
     },
+    calculator: {
+      label: "Calculadora de aportes",
+      title: "Estimar un aporte",
+      body:
+        "Una guía basada en tu hogar. La membresía sigue siendo gratuita; cada aporte es voluntario.",
+      net: "Ingreso neto del hogar (mensual)",
+      rent: "Alquiler con gastos (mensual)",
+      household: "Tamaño del hogar (16+)",
+      interval: "Intervalo",
+      monthly: "Mensual",
+      once: "Único",
+      presets: "Selección rápida",
+      suggestion: "Sugerencia por persona",
+      perPerson: "Monto por persona",
+      total: "Aporte total",
+      note: "Guía ajustable en cualquier momento. Sin ventajas de voto.",
+    },
     bank: {
       title: "Datos bancarios",
       body:
-        "Acceso solo para apoyos aprobados. En el concepto, indica solo lo imprescindible.",
+        "Para tu aporte. Mantén la referencia al mínimo necesario.",
       logout: "Cerrar sesión",
       login: {
         invalid: "El código de acceso es incorrecto.",
@@ -384,6 +511,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Il sostegno rafforza costruzione, ricerca, traduzione e moderazione. È volontario, documentato in modo trasparente e non dà vantaggi di voto.",
     },
+    ctas: {
+      support: "Apri il calcolatore del contributo",
+      edebatte: "Iscriviti a eDebatte",
+      preorder: "Preordina la trilogia",
+    },
     cards: [
       {
         title: "Contributo finanziario",
@@ -409,10 +541,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Contattaci",
       ctaSecondary: "Modulo di contatto",
     },
+    calculator: {
+      label: "Calcolatore del contributo",
+      title: "Stima un contributo",
+      body:
+        "Un riferimento basato sul tuo nucleo. L’adesione resta gratuita; ogni contributo è volontario.",
+      net: "Reddito netto familiare (mensile)",
+      rent: "Affitto tutto incluso (mensile)",
+      household: "Dimensione del nucleo (16+)",
+      interval: "Intervallo",
+      monthly: "Mensile",
+      once: "Una tantum",
+      presets: "Scelta rapida",
+      suggestion: "Suggerimento per persona",
+      perPerson: "Importo per persona",
+      total: "Contributo totale",
+      note: "Riferimento modificabile in qualsiasi momento. Nessun vantaggio di voto.",
+    },
     bank: {
       title: "Coordinate bancarie",
       body:
-        "Accesso solo per sostenitori approvati. Nella causale indica solo l'essenziale.",
+        "Per il tuo contributo. Nella causale indica solo l’essenziale.",
       logout: "Disconnetti",
       login: {
         invalid: "Il codice di accesso non è corretto.",
@@ -452,6 +601,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Destek; kurulum, araştırma, çeviri ve moderasyonu güçlendirir. Gönüllüdür, şeffaf biçimde belgelenir ve oy avantajı sağlamaz.",
     },
+    ctas: {
+      support: "Katkı hesaplayıcısını aç",
+      edebatte: "eDebatte’ye kaydol",
+      preorder: "Trilojiyi ön sipariş ver",
+    },
     cards: [
       {
         title: "Mali katkı",
@@ -477,10 +631,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "İletişime geç",
       ctaSecondary: "İletişim formu",
     },
+    calculator: {
+      label: "Katkı hesaplayıcı",
+      title: "Bir katkı tahmini",
+      body:
+        "Hanenize göre bir rehber. Üyelik ücretsizdir; her katkı gönüllüdür.",
+      net: "Hane net geliri (aylık)",
+      rent: "Isınma dahil kira (aylık)",
+      household: "Hane büyüklüğü (16+)",
+      interval: "Aralık",
+      monthly: "Aylık",
+      once: "Tek sefer",
+      presets: "Hızlı seçim",
+      suggestion: "Kişi başı öneri",
+      perPerson: "Kişi başı tutar",
+      total: "Toplam katkı",
+      note: "Rehber, istediğin zaman ayarlanır. Oy avantajı yok.",
+    },
     bank: {
       title: "Banka bilgileri",
       body:
-        "Yalnızca onaylı destekçiler için erişim. Açıklama kısmında sadece gerekli bilgileri yazın.",
+        "Katkın için. Açıklama kısmında sadece gerekli bilgileri yazın.",
       logout: "Çıkış",
       login: {
         invalid: "Erişim kodu yanlış.",
@@ -520,6 +691,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "الدعم يعزز البناء والبحث والترجمة والإشراف. هو طوعي، موثق بشفافية، ولا يمنح مزايا تصويت.",
     },
+    ctas: {
+      support: "فتح حاسبة المساهمة",
+      edebatte: "التسجيل في eDebatte",
+      preorder: "حجز ثلاثية الكتب مسبقًا",
+    },
     cards: [
       {
         title: "مساهمة مالية",
@@ -545,10 +721,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "تواصل معنا",
       ctaSecondary: "نموذج الاتصال",
     },
+    calculator: {
+      label: "حاسبة المساهمة",
+      title: "تقدير المساهمة",
+      body:
+        "مؤشر يعتمد على أسرتك. العضوية مجانية؛ كل مساهمة طوعية.",
+      net: "صافي دخل الأسرة (شهريًا)",
+      rent: "الإيجار شامل الخدمات (شهريًا)",
+      household: "حجم الأسرة (16+)",
+      interval: "الدورية",
+      monthly: "شهري",
+      once: "مرة واحدة",
+      presets: "اختيارات سريعة",
+      suggestion: "اقتراح للفرد",
+      perPerson: "المبلغ للفرد",
+      total: "إجمالي المساهمة",
+      note: "مؤشر قابل للتعديل في أي وقت. دون مزايا تصويت.",
+    },
     bank: {
       title: "بيانات الحساب",
       body:
-        "الوصول للمساندين المعتمدين فقط. يُرجى كتابة الحد الأدنى في خانة المرجع.",
+        "لمساهمتك. يرجى إبقاء المرجع في الحد الأدنى.",
       logout: "تسجيل الخروج",
       login: {
         invalid: "رمز الوصول غير صحيح.",
@@ -588,6 +781,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "Поддержка усиливает создание, исследования, переводы и модерацию. Она добровольна, прозрачно документируется и не дает преимуществ в голосовании.",
     },
+    ctas: {
+      support: "Открыть калькулятор взноса",
+      edebatte: "Записаться в eDebatte",
+      preorder: "Предзаказать трилогию",
+    },
     cards: [
       {
         title: "Финансовый вклад",
@@ -613,10 +811,27 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "Связаться",
       ctaSecondary: "Форма контакта",
     },
+    calculator: {
+      label: "Калькулятор взноса",
+      title: "Оценить взнос",
+      body:
+        "Ориентир на основе вашего домохозяйства. Участие бесплатное; каждый взнос доброволен.",
+      net: "Чистый доход домохозяйства (в месяц)",
+      rent: "Аренда с коммунальными (в месяц)",
+      household: "Размер домохозяйства (16+)",
+      interval: "Период",
+      monthly: "Ежемесячно",
+      once: "Разово",
+      presets: "Быстрый выбор",
+      suggestion: "Рекомендация на человека",
+      perPerson: "Сумма на человека",
+      total: "Общий взнос",
+      note: "Ориентир, можно менять в любое время. Без преимуществ в голосовании.",
+    },
     bank: {
       title: "Банковские реквизиты",
       body:
-        "Доступ только для одобренных поддерживающих. В назначении платежа указывайте только необходимое.",
+        "Для вашего взноса. В назначении указывайте только необходимое.",
       logout: "Выйти",
       login: {
         invalid: "Код доступа неверный.",
@@ -655,6 +870,11 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       body:
         "支持有助于建设、研究、翻译与审核。完全自愿、透明记录，不带来投票优势。",
     },
+    ctas: {
+      support: "打开贡献计算器",
+      edebatte: "登记 eDebatte",
+      preorder: "预订三部曲",
+    },
     cards: [
       {
         title: "资金支持",
@@ -680,9 +900,25 @@ const STRINGS: Record<SupportedLocale, SupportStrings> = {
       ctaPrimary: "联系我们",
       ctaSecondary: "联系表单",
     },
+    calculator: {
+      label: "贡献计算器",
+      title: "估算贡献",
+      body: "基于家庭情况的参考值。会员免费；每笔贡献自愿。",
+      net: "家庭净收入（每月）",
+      rent: "含费用租金（每月）",
+      household: "家庭人数（16+）",
+      interval: "周期",
+      monthly: "每月",
+      once: "一次性",
+      presets: "快捷选择",
+      suggestion: "每人建议",
+      perPerson: "每人金额",
+      total: "总贡献",
+      note: "参考值，可随时调整。无投票优势。",
+    },
     bank: {
       title: "银行信息",
-      body: "仅对已确认的支持者开放。附言请尽量简短。",
+      body: "用于你的贡献。附言请尽量简短。",
       logout: "退出",
       login: {
         invalid: "访问码不正确。",

@@ -4,6 +4,10 @@ import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getGrundlagenStrings } from "./strings";
 import { GRUNDLAGEN_BANDS, getBand } from "./bands";
 import { getLatestRelease } from "./versioning";
+import CoverLightbox from "@/components/media/CoverLightbox";
+import { getCovers } from "./covers";
+import { getLinks, KDP_SELECT_ENABLED, PRICES } from "./editions";
+import { VOG_SUPPORT_PATH } from "@/config/links";
 
 function formatDate(locale: string, value?: string) {
   if (!value) return "";
@@ -64,6 +68,15 @@ export default async function GrundlagenOverviewPage() {
   const slugs = Object.keys(GRUNDLAGEN_BANDS);
   const entriesBySlug = new Map(strings.entries.map((entry) => [entry.slug, entry]));
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voiceopengov.org";
+  const preorderEmail = process.env.VOG_PREORDER_EMAIL || "members@voiceopengov.org";
+  const bundleCovers = getCovers("bundle");
+  const bundleLinks = getLinks("bundle");
+
+  const mailto = (subject: string, body: string) => {
+    const s = encodeURIComponent(subject);
+    const b = encodeURIComponent(body);
+    return `mailto:${preorderEmail}?subject=${s}&body=${b}`;
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
@@ -81,12 +94,80 @@ export default async function GrundlagenOverviewPage() {
           <p className="text-xs text-slate-400">{strings.overview.header.note}</p>
         </header>
 
+        <section className="mt-10 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
+          <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+            <div>
+              {bundleCovers?.front ? (
+                <CoverLightbox
+                  frontSrc={bundleCovers.front}
+                  backSrc={bundleCovers.back}
+                  title="Bundle (Band I–III)"
+                  priority
+                />
+              ) : null}
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {strings.overview.bundle.label}
+              </p>
+              <h2 className="text-2xl font-bold text-slate-100">
+                {strings.overview.bundle.title}
+              </h2>
+              <p className="text-sm text-slate-300">{strings.overview.bundle.body}</p>
+
+              <div className="flex flex-wrap gap-3 pt-2">
+                {bundleLinks.kindleUrl ? (
+                  <a className="btn btn-primary" href={bundleLinks.kindleUrl} target="_blank" rel="noreferrer">
+                    {strings.overview.bundle.ctas.ebook} · {PRICES.ebookBundlePrice}
+                  </a>
+                ) : (
+                  <a
+                    className="btn btn-primary"
+                    href={mailto(
+                      "Vorbestellung – eBook-Bundle (Band I–III)",
+                      `Bitte eBook-Bundle vorbestellen.\nPreis: ${PRICES.ebookBundlePrice}\n\nName:\nE-Mail:\nHinweis (optional):`,
+                    )}
+                  >
+                    {strings.overview.bundle.ctas.ebook} · {PRICES.ebookBundlePrice}
+                  </a>
+                )}
+
+                {bundleLinks.printUrl ? (
+                  <a className="btn btn-ghost" href={bundleLinks.printUrl} target="_blank" rel="noreferrer">
+                    {strings.overview.bundle.ctas.print} · {PRICES.printBundlePrice}
+                  </a>
+                ) : (
+                  <a
+                    className="btn btn-ghost"
+                    href={mailto(
+                      "Vorbestellung – Print-Bundle (Band I–III)",
+                      `Bitte Print-Bundle vorbestellen.\nPreis: ${PRICES.printBundlePrice}\n\nName:\nE-Mail:\nLieferadresse:\nHinweis (optional):`,
+                    )}
+                  >
+                    {strings.overview.bundle.ctas.print} · {PRICES.printBundlePrice}
+                  </a>
+                )}
+
+                <Link href={VOG_SUPPORT_PATH} className="btn btn-ghost">
+                  {strings.overview.bundle.ctas.support}
+                </Link>
+              </div>
+
+              {KDP_SELECT_ENABLED ? (
+                <p className="text-xs text-slate-400">{strings.overview.bundle.note}</p>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {slugs.map((slug) => {
             const band = getBand(slug);
             const entry = entriesBySlug.get(slug);
             const release = getLatestRelease(slug);
             const href = `/grundlagen/${slug}`;
+            const covers = getCovers(slug);
             const statusLabel =
               release?.status === "stabil"
                 ? strings.release.statusStable
@@ -97,6 +178,15 @@ export default async function GrundlagenOverviewPage() {
                 key={slug}
                 className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm"
               >
+                {covers?.front ? (
+                  <div className="mb-4">
+                    <CoverLightbox
+                      frontSrc={covers.front}
+                      backSrc={covers.back}
+                      title={`${band?.title ?? entry?.title ?? slug}`}
+                    />
+                  </div>
+                ) : null}
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                     {strings.volumeLabel} {band?.roman ?? ""}
@@ -132,20 +222,6 @@ export default async function GrundlagenOverviewPage() {
                   <Link href={href} className="btn btn-primary">
                     {strings.overview.bandCtas.read}
                   </Link>
-                  <a
-                    href={`/api/grundlagen/${slug}/download?format=md`}
-                    className="btn btn-ghost"
-                    aria-label={`${strings.overview.bandCtas.md} ${slug}`}
-                  >
-                    {strings.overview.bandCtas.md}
-                  </a>
-                  <a
-                    href={`/api/grundlagen/${slug}/download?format=txt`}
-                    className="btn btn-ghost"
-                    aria-label={`${strings.overview.bandCtas.txt} ${slug}`}
-                  >
-                    {strings.overview.bandCtas.txt}
-                  </a>
                 </div>
 
                 <p className="mt-4 text-xs text-slate-500">
@@ -177,7 +253,7 @@ export default async function GrundlagenOverviewPage() {
             <Link href="/swipes" className="btn btn-ghost">
               {strings.overview.contribute.ctas.vote}
             </Link>
-            <Link href="/unterstuetzen" className="btn btn-ghost">
+            <Link href={VOG_SUPPORT_PATH} className="btn btn-ghost">
               {strings.overview.contribute.ctas.support}
             </Link>
           </div>

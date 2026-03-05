@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { VOG_SUPPORT_PATH } from "@/config/links";
 
 export const metadata: Metadata = {
   title: "Unterstützen – VoiceOpenGov",
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function DonatePage() {
-  redirect("/unterstuetzen");
+  redirect(VOG_SUPPORT_PATH);
 }

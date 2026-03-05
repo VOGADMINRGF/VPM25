@@ -1,9 +1,16 @@
 import { DEFAULT_LOCALE, type SupportedLocale } from "@/config/locales";
+import { VOG_SUPPORT_PATH } from "@/config/links";
 
 type HeaderStrings = {
   navItems: Array<{ href: string; label: string; description: string }>;
   navigationLabel: string;
+  localeLabel: string;
   menuLabel: string;
+  theme: {
+    label: string;
+    system: string;
+    light: string;
+  };
   aria: {
     localeSelect: string;
     openNav: string;
@@ -20,7 +27,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "In wenigen Sekunden eintragen und informiert bleiben.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Unterstützen",
         description: "Aufbau, Recherche und Community stärken.",
       },
@@ -41,7 +48,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Navigation",
+    localeLabel: "Sprache",
     menuLabel: "Menü",
+    theme: {
+      label: "Darstellung",
+      system: "System",
+      light: "Hell",
+    },
     aria: {
       localeSelect: "Sprache wählen (aktuell {label})",
       openNav: "Navigation öffnen",
@@ -56,7 +69,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Get listed in seconds and stay informed.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Support",
         description: "Strengthen build-up, research and community.",
       },
@@ -77,7 +90,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Navigation",
+    localeLabel: "Language",
     menuLabel: "Menu",
+    theme: {
+      label: "Appearance",
+      system: "System",
+      light: "Light",
+    },
     aria: {
       localeSelect: "Choose language (current {label})",
       openNav: "Open navigation",
@@ -92,7 +111,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Inscription rapide et infos à jour.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Soutenir",
         description: "Soutenir le déploiement, la recherche et la communauté.",
       },
@@ -113,7 +132,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Navigation",
+    localeLabel: "Langue",
     menuLabel: "Menu",
+    theme: {
+      label: "Apparence",
+      system: "Système",
+      light: "Clair",
+    },
     aria: {
       localeSelect: "Choisir la langue (actuellement {label})",
       openNav: "Ouvrir la navigation",
@@ -128,7 +153,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Zgłoszenie w kilka sekund i bieżące informacje.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Wesprzyj",
         description: "Wesprzyj rozwój, badania i społeczność.",
       },
@@ -149,7 +174,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Nawigacja",
+    localeLabel: "Język",
     menuLabel: "Menu",
+    theme: {
+      label: "Wygląd",
+      system: "System",
+      light: "Jasny",
+    },
     aria: {
       localeSelect: "Wybierz język (obecnie {label})",
       openNav: "Otwórz nawigację",
@@ -164,7 +195,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Registro en segundos y al día.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Apoyar",
         description: "Apoya el despliegue, la investigación y la comunidad.",
       },
@@ -185,7 +216,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Navegación",
+    localeLabel: "Idioma",
     menuLabel: "Menú",
+    theme: {
+      label: "Apariencia",
+      system: "Sistema",
+      light: "Claro",
+    },
     aria: {
       localeSelect: "Elegir idioma (actual {label})",
       openNav: "Abrir navegación",
@@ -200,7 +237,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Iscrizione in pochi secondi e aggiornamenti.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Sostieni",
         description: "Sostieni sviluppo, ricerca e community.",
       },
@@ -221,7 +258,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Navigazione",
+    localeLabel: "Lingua",
     menuLabel: "Menu",
+    theme: {
+      label: "Aspetto",
+      system: "Sistema",
+      light: "Chiaro",
+    },
     aria: {
       localeSelect: "Scegli la lingua (attuale {label})",
       openNav: "Apri navigazione",
@@ -236,7 +279,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Saniyeler içinde kayıt ve güncel kal.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Destekle",
         description: "Kurulum, araştırma ve topluluğu güçlendir.",
       },
@@ -257,7 +300,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Gezinme",
+    localeLabel: "Dil",
     menuLabel: "Menü",
+    theme: {
+      label: "Görünüm",
+      system: "Sistem",
+      light: "Açık",
+    },
     aria: {
       localeSelect: "Dil seç (şu an {label})",
       openNav: "Gezinmeyi aç",
@@ -272,7 +321,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "تسجيل سريع والبقاء على اطلاع.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "ادعم",
         description: "ادعم البناء والبحث والمجتمع.",
       },
@@ -293,7 +342,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "التنقل",
+    localeLabel: "اللغة",
     menuLabel: "القائمة",
+    theme: {
+      label: "المظهر",
+      system: "النظام",
+      light: "فاتح",
+    },
     aria: {
       localeSelect: "اختر اللغة (الحالية {label})",
       openNav: "افتح التنقل",
@@ -308,7 +363,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Регистрация за секунды и новости по делу.",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "Поддержать",
         description: "Поддержите развитие, исследования и сообщество.",
       },
@@ -329,7 +384,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "Навигация",
+    localeLabel: "Язык",
     menuLabel: "Меню",
+    theme: {
+      label: "Вид",
+      system: "Система",
+      light: "Светлый",
+    },
     aria: {
       localeSelect: "Выбрать язык (сейчас {label})",
       openNav: "Открыть навигацию",
@@ -344,7 +405,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "几秒钟登记并获取更新。",
       },
       {
-        href: "/unterstuetzen",
+        href: VOG_SUPPORT_PATH,
         label: "支持",
         description: "支持建设、研究与社群。",
       },
@@ -365,7 +426,13 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
       },
     ],
     navigationLabel: "导航",
+    localeLabel: "语言",
     menuLabel: "菜单",
+    theme: {
+      label: "外观",
+      system: "系统",
+      light: "浅色",
+    },
     aria: {
       localeSelect: "选择语言（当前 {label}）",
       openNav: "打开导航",

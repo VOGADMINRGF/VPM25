@@ -1,0 +1,331 @@
+---
+title: RePro
+subtitle: Referenzprozess & Operationalisierung
+intro: RePro operationalisiert Check → Dossier → Beteiligung → Monitoring als formale Falllogik: mit Statusmodell, Qualitätsgates, Evidenzgraph, Auditpfad und Telemetrie – umgesetzt in VoiceOpenGov.
+metaTitle: Band III – RePro: Referenzprozess & Operationalisierung – VoiceOpenGov
+metaDescription: Referenzprozess zur Operationalisierung prüfbarer Beteiligung: Artefaktmodell, Statusmodell, Qualitätsgates, Eventlog/Audittrail, Rollenplaybooks und Steuerungsmetriken.
+---
+
+## Lesanleitung
+RePro ist ein **Betriebshandbuch** und zugleich eine **formale Prozessspezifikation**. Es ist so geschrieben, dass drei Zielgruppen damit arbeiten können:
+
+- **Produkt & Plattform**: Was muss das System können (Artefakte, Status, Events)?
+- **Moderation/Redaktion**: Was ist in welcher Phase zu tun (Playbooks, Checklisten)?
+- **Audit/Transparenz**: Was muss nachweisbar sein (Audittrail, Begründungspflichten)?
+
+RePro ist bewusst themenneutral. Es geht nicht um „richtige“ Inhalte, sondern um eine **Informationsarchitektur**, die prüfbare Ergebnisse ermöglicht.
+
+---
+
+## 1. Problem, den RePro löst
+Digitale Beteiligung scheitert in der Praxis selten am Zugang, sondern an drei Engpässen:
+
+1) **institutionelle Überlastung**: zu viele Eingänge, zu wenig standardisierte Verarbeitung, zu viele Einzelfälle.  
+2) **Informationsfragmentierung**: Wissen zerfällt in Dokumenthaufen, ohne verbindende Struktur.  
+3) **fehlende Status-Transparenz**: Außenperspektive sieht Sprünge statt Wege; Legitimation wird implizit.
+
+RePro übersetzt diese Engpässe in Systemanforderungen:  
+**Standardisierung**, **Vergleichbarkeit**, **Auditfähigkeit** und **steuerbare Kapazität**.
+
+---
+
+## 2. Grundprinzipien (Operationalisierung)
+RePro folgt sechs Prinzipien, die als „Betriebsaxiome“ gelten:
+
+### 2.1 Transparenz-by-Design
+Status, Zuständigkeit und Begründung sind keine Zusatzfunktionen, sondern Kernbestandteile jedes Falls.
+
+### 2.2 Prüfbarkeit statt Behauptung
+Jede zentrale Aussage wird entweder
+- mit Quellen verknüpft
+oder
+- explizit als unklar/unbelegt markiert.
+
+### 2.3 Optionen statt Polarisierung
+Beteiligung arbeitet mit einem Optionsraum, nicht mit einem binären Reflex. Optionen werden vergleichbar gemacht (Impacts/Responsibilities).
+
+### 2.4 Governance-Modell als Entlastung
+Rollen, Qualitätsschwellen und Auditpfade reduzieren Reibung. Governance ist hier Funktionslogik gegen Überlastung.
+
+### 2.5 Versionierung als Normalzustand
+Inhalte ändern sich. Relevant ist, was sich wann warum geändert hat – und wie sich das auf den Fall auswirkt.
+
+### 2.6 Messbarkeit statt Bauchgefühl
+Durchlaufzeiten, Quellenabdeckung, Konfliktrate und Statusvollständigkeit werden gemessen, um Kapazität steuerbar zu machen.
+
+---
+
+## 3. Artefaktmodell (Case-Akte)
+RePro definiert eine Fallakte als minimalen „Container“ für prüfbare Beteiligung.
+
+### 3.1 Kernobjekte
+- **Case**: eindeutige Akte, in der alles zusammenläuft
+- **Statement**: prüfbarer Kern (These/Streitpunkt)
+- **Source**: Beleg mit Provenienz (Datum, Herausgeber, Kontext)
+- **Question**: offene Punkte, die die Bearbeitung steuern
+- **Option**: alternative Handlungswege (mindestens N, falls Beteiligung)
+- **Impact**: erwartete Folgen (inkl. Unsicherheit)
+- **Responsibility**: zuständige Akteure/Ebenen, Pfade/Abhängigkeiten
+- **EvidenceLink**: Beziehung Source ↔ Statement ↔ Konflikt/Unsicherheit
+- **AuditEvent**: Ereignis im Verlauf (Statuswechsel, Gate-Freigabe, Eingriff)
+
+### 3.2 Warum dieses Modell?
+Ohne diese Objekte bleibt Beteiligung eine Sammlung von Texten. Mit diesen Objekten entsteht:
+
+- **rekonstruierbarer Kontext** (Was ist der Kern?)
+- **prüfbarer Wissensstand** (Welche Evidenz?)
+- **vergleichbarer Optionsraum** (Welche Alternativen, welche Folgen?)
+- **auditierbarer Verlauf** (Wer tat was wann warum?)
+
+---
+
+## 4. Phasenmodell: Check → Dossier → Beteiligung → Monitoring
+RePro operationalisiert den Gesamtprozess als vier Phasen plus Intake.
+
+### 4.1 Intake (Fallbildung)
+**Ziel:** Eingänge werden nicht „weggeschoben“, sondern als Case standardisiert.
+
+**Pflichtoutput:**
+- Case-Titel + Kurzbeschreibung
+- initiales Statement (arbeitsfähig, ggf. „vorläufig“)
+- Startstatus
+- erste Tags (Thema, Ebene, Dringlichkeit optional)
+
+**Anti-Pattern:** „Wir posten erstmal und schauen später.“  
+RePro fordert: *erst Case*, dann Sichtbarkeit.
+
+---
+
+## 5. Check (Prüfbarkeit herstellen)
+### 5.1 Zweck
+Check transformiert Eingangssignale in einen prüfbaren Kern:
+
+- Was ist behauptet?
+- Worauf stützt es sich?
+- Was ist unklar?
+- Wo liegen Konflikte?
+
+### 5.2 Check-Artefakt (Checkcard)
+Eine Checkcard enthält mindestens:
+- Statement (Version)
+- Quellenliste (mit Provenienz)
+- offene Fragen (priorisiert)
+- Konflikt-/Unsicherheitsmarker
+- Statusereignis + Begründung
+
+### 5.3 Qualitätsgate: Check ready
+Ein Case ist „Check ready“, wenn:
+- Statement klar oder als unklar markiert ist
+- mind. 1 Quelle vorhanden ist **oder** „Quellen fehlen“ explizit gesetzt ist
+- Top-Fragen existieren (3–10)
+- Konflikte/Unsicherheit markiert sind (falls relevant)
+
+> Check ready heißt nicht „fertig“. Es heißt: **prüfbar genug**, um strukturiert weiterzubauen.
+
+### 5.4 Check-Playbook (kurz)
+1) Statement präzisieren (Zeit/Ort/Bezug)  
+2) Quellenminimum herstellen (Primärquelle bevorzugt; sonst robuste Sekundärquelle)  
+3) Fragenliste erzeugen (Was muss geklärt sein, bevor Optionen Sinn ergeben?)  
+4) Konflikte markieren (Widersprüche nicht glätten)  
+5) Status + Begründung protokollieren
+
+---
+
+## 6. Dossier (Wissen strukturieren & Optionsraum aufbauen)
+### 6.1 Zweck
+Das Dossier ist die konsolidierte Akte: Es macht Wissen **strukturierbar**, nicht nur auffindbar.
+
+### 6.2 Dossier-Komponenten
+- Dossier-Summary (zitierfähig)
+- Evidenzgraph (Beziehungen sichtbar)
+- Konfliktknoten (widersprüchliche Evidenz)
+- Optionsraum (≥ N)
+- Impacts/Responsibilities (pro Option)
+- Restfragen (priorisiert)
+
+### 6.3 Qualitätsgate: Dossier konsolidiert
+Ein Dossier gilt als konsolidiert, wenn:
+- zentrale Aussagen mit Quellen verknüpft sind (oder als offen markiert)
+- Konflikte als Konfliktknoten sichtbar sind
+- Optionen ≥ N vorhanden sind (typisch 3–5)
+- Impacts/Responsibilities pro Option erfasst sind (oder als offen markiert)
+- Zuständigkeit geklärt ist oder als offene Frage begründet offen bleibt
+
+### 6.4 Optionslogik: Mindeststandard
+RePro arbeitet nicht mit „dafür/dagegen“, sondern mit einem Optionsraum.
+
+**Optionen müssen:**
+- eindeutig formuliert sein
+- nicht redundant sein
+- vergleichbar sein (mindestens grobe Impacts/Responsibilities)
+
+**Optionstypen (Beispiele):**
+- Status quo / Nicht-Handeln
+- minimale Intervention
+- strukturelle Änderung
+- Pilot/Experiment
+- Alternative Zuständigkeits-/Umsetzungswege
+
+---
+
+## 7. Beteiligung (Output definieren, Kontext sichern)
+### 7.1 Output-Typen
+Vor Beginn muss feststehen, welches Ergebnis erzeugt werden soll:
+
+- **Stimmungsbild** (orientierend)
+- **Empfehlung** (begründet, kontextualisiert)
+- **Priorisierung** (Rangfolge)
+- **Entscheidung** (verbindlich im definierten Rahmen)
+
+Diese Festlegung ist Teil der **Legitimationslogik**.
+
+### 7.2 Vote Bundle
+Beteiligung operiert auf einem „Vote Bundle“:
+- Optionen + Kurzbegründungen
+- zentrale Quellen/Unsicherheiten
+- Impacts/Responsibilities (mindestens skizziert)
+- Beteiligungsregeln (Zeitraum, Modus, Auswertung)
+
+### 7.3 Qualitätsgate: Vote ready
+Vote ready bedeutet:
+- Dossier konsolidiert
+- Optionen sauber (keine Dubletten)
+- Kontextbundle vorhanden
+- Regeln transparent
+- Audittrail aktiv
+
+---
+
+## 8. Monitoring (Umsetzung & Rückkopplung)
+### 8.1 Zweck
+Ohne Monitoring entsteht ein Legitimationsbruch: Ergebnis bleibt „Endpunkt“, statt als Verlauf sichtbar zu werden.
+
+### 8.2 Monitoring-Artefakte
+- Statusupdates als Ereignisse (wer/was/wann/warum)
+- Blocker/Abweichungen als Impacts/Responsibilities-Updates
+- Folgefragen als Questions
+- Abschlussstatus (umgesetzt/teilweise/abgebrochen + Begründung)
+
+---
+
+## 9. Statusmodell (State Machine)
+Das Statusmodell ist der Kern der Vergleichbarkeit.
+
+### 9.1 Minimalstatus (empfohlen)
+- `neu`
+- `check_aktiv`
+- `dossier_in_aufbau`
+- `dossier_konsolidiert`
+- `beteiligung_aktiv`
+- `ergebnis_veroeffentlicht`
+- `monitoring`
+- `geschlossen`
+
+Zusatzmarker (parallel möglich):
+- `konflikt_markiert`
+- `sensitiv`
+- `audit_flag`
+
+### 9.2 Statusereignis: Pflichtfelder
+Jedes Statusereignis protokolliert:
+- Zeit
+- Rolle
+- Begründung
+- betroffene Artefakte (Statement/Source/Option/Report)
+- ggf. Risikomarker
+
+---
+
+## 10. Eventlog & Audittrail
+### 10.1 Warum Eventlog?
+Ein Audittrail ist nicht „Überwachung“, sondern der Nachweis der Legitimationskette.
+
+### 10.2 Ereignistypen (Minimalset)
+- `CASE_CREATED`
+- `STATEMENT_VERSIONED`
+- `SOURCE_ADDED`
+- `QUESTION_ADDED`
+- `CONFLICT_MARKED`
+- `OPTION_ADDED`
+- `GATE_PASSED` (Check ready / Dossier konsolidiert / Vote ready)
+- `STATUS_CHANGED`
+- `VOTE_STARTED` / `VOTE_ENDED`
+- `RESULT_PUBLISHED`
+- `MONITORING_UPDATE`
+- `AUDIT_NOTE`
+
+**Begründungspflicht:**  
+Jedes Gate und jeder Statuswechsel braucht eine Begründung, auch wenn sie kurz ist.
+
+---
+
+## 11. Rollenplaybooks (Betriebslogik)
+### 11.1 Moderation/Redaktion
+Aufgaben:
+- Case-Struktur herstellen
+- Dubletten reduzieren
+- Gate-Kriterien sichern
+- Statuspflege + Begründungen
+- Konflikt/Unsicherheit sichtbar halten
+
+### 11.2 Fachstellen (optional, aber anschlussfähig)
+Aufgaben:
+- Zuständigkeiten klären
+- Umsetzbarkeit bewerten (ohne Ergebnis vorwegzunehmen)
+- Normbezüge liefern (z. B. Leitlinien, Beschlusslage)
+
+### 11.3 Audit/Transparenz
+Aufgaben:
+- Stichproben prüfen
+- Gate-Disziplin kontrollieren
+- Missbrauchsindikatoren bewerten
+- Auditnotes veröffentlichen (wo möglich)
+
+---
+
+## 12. Telemetrie (Steuerung gegen Überlastung)
+RePro ist steuerbar, wenn es messbar ist.
+
+### 12.1 Kernmetriken
+- Cycle Time pro Phase
+- Quellenabdeckung (Statements mit Quelle)
+- Konfliktrate
+- Optionsdichte
+- Zuständigkeitsklarheit
+- Statusvollständigkeit
+- Audit-Findings-Rate
+
+### 12.2 Warum das wichtig ist
+Wenn institutionelle Überlastung strukturell ist, muss Steuerung strukturell sein: nicht über „mehr Druck“, sondern über Prozesssichtbarkeit.
+
+---
+
+## 13. Ausnahmefälle & Eskalation
+- Unklare Zuständigkeit → als Question priorisieren, ggf. Fachstelle
+- Hohe Konfliktlage → Konfliktknoten + Auditflag, keine „Glättung“
+- Missbrauchsindikatoren → Reviewroute + Transparenzmarker
+- Sensible Inhalte → Policy-Pfad + Schutzmaßnahmen
+
+---
+
+## Anhang A: Checklisten (Operational)
+### A1 Check ready
+- [ ] Statement klar oder als unklar markiert
+- [ ] mind. 1 Quelle oder „Quellen fehlen“
+- [ ] Top-Fragen (3–10)
+- [ ] Konflikt/Unsicherheit markiert
+- [ ] Status + Begründung protokolliert
+
+### A2 Dossier konsolidiert
+- [ ] Evidenzgraph brauchbar
+- [ ] Optionen ≥ N
+- [ ] Impacts/Responsibilities pro Option
+- [ ] Restfragen priorisiert
+- [ ] Summary zitierfähig
+
+### A3 Vote ready
+- [ ] Output-Typ festgelegt
+- [ ] Optionen konsistent
+- [ ] Kontextbundle vorhanden
+- [ ] Regeln transparent
+- [ ] Audittrail aktiv

@@ -67,6 +67,23 @@ body {
   background-attachment: fixed;
 }
 
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+html[data-theme="light"] body {
+  filter: invert(1) hue-rotate(180deg);
+  background-image: none;
+  background-color: #f8fafc;
+}
+
+html[data-theme="light"] img,
+html[data-theme="light"] video,
+html[data-theme="light"] svg,
+html[data-theme="light"] canvas {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .container-vog {
   max-width: var(--page-max);
   margin: 0 auto;

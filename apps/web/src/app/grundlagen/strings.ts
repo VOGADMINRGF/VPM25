@@ -48,6 +48,17 @@ type GrundlagenStrings = {
     meta: { title: string; description: string };
     header: { title: string; subtitle: string; note: string };
     bandCtas: { read: string; md: string; txt: string };
+    bundle: {
+      label: string;
+      title: string;
+      body: string;
+      note: string;
+      ctas: {
+        ebook: string;
+        print: string;
+        support: string;
+      };
+    };
     contribute: {
       title: string;
       body: string;
@@ -61,6 +72,25 @@ type GrundlagenStrings = {
     };
   };
   supportNote: string;
+  preview: {
+    coverLabel: string;
+    coverFallback: string;
+    executiveLabel: string;
+    executiveFallback: string;
+    executiveNote: string;
+    editionsLabel: string;
+    editionsBody: string;
+    chaptersLabel: string;
+    exclusivityNote: string;
+    ctas: {
+      kindleBuy: string;
+      kindlePreorder: string;
+      printBuy: string;
+      printPreorder: string;
+      bundleEbook: string;
+      bundlePrint: string;
+    };
+  };
   order: {
     title: string;
     body: string;
@@ -117,6 +147,18 @@ const STRINGS: Record<SupportedLocale, Partial<GrundlagenStrings>> = {
         md: "MD",
         txt: "TXT",
       },
+      bundle: {
+        label: "Bundle",
+        title: "Band I–III als Bundle",
+        body:
+          "Drei Bände als kuratierte Kindle-Edition oder als Print-Bundle. Kauf ist Unterstützung für Lektorat, Übersetzungen und Infrastruktur – ohne Stimmvorteile.",
+        note: "Kindle-Edition ist während KDP Select exklusiv. Online zeigen wir Cover, Kurzfassung und Kapitelübersicht.",
+        ctas: {
+          ebook: "eBook-Bundle",
+          print: "Print-Bundle",
+          support: "Unterstützen (optional)",
+        },
+      },
       contribute: {
         title: "So bringst du dich ein",
         body:
@@ -132,6 +174,28 @@ const STRINGS: Record<SupportedLocale, Partial<GrundlagenStrings>> = {
       },
     },
     supportNote: "Alle Texte sind kostenfrei. Wenn es hilft, freuen wir uns über Unterstützung – wir bauen unabhängig ohne Investor.",
+    preview: {
+      coverLabel: "Cover",
+      coverFallback: "Cover folgt in Kürze.",
+      executiveLabel: "Executive Summary (Kurzfassung)",
+      executiveFallback: "Executive Summary in Vorbereitung.",
+      executiveNote:
+        "Hinweis: Während der Kindle-Exklusivität zeigen wir online Cover, Kurzfassung und Kapitelübersicht.",
+      editionsLabel: "Kindle & Print",
+      editionsBody:
+        "Kauf ist Unterstützung für Lektorat, Übersetzungen und Infrastruktur – ohne Stimmvorteile.",
+      chaptersLabel: "Kapitelübersicht",
+      exclusivityNote:
+        "Während der KDP-Exklusivität ist der Volltext online nicht verfügbar.",
+      ctas: {
+        kindleBuy: "Kindle kaufen",
+        kindlePreorder: "Kindle vorbestellen",
+        printBuy: "Print",
+        printPreorder: "Print vorbestellen",
+        bundleEbook: "eBook-Bundle",
+        bundlePrint: "Print-Bundle",
+      },
+    },
     order: {
       title: "Print-Edition bestellen",
       body: "Gedruckte Ausgabe auf Anfrage. Bestellung per E-Mail.",
@@ -202,7 +266,7 @@ const STRINGS: Record<SupportedLocale, Partial<GrundlagenStrings>> = {
         title: "RePro",
         subtitle: "Referenzprozess & Operationalisierung",
         intro:
-          "RePro übersetzt das Modell in einen klaren Prozess, der in VoiceOpenGov umgesetzt wird.",
+          "RePro übersetzt das Modell in einen klaren Prozess, der bei VoiceOpenGov mit eDebatte konsequent umgesetzt wird.",
         meta: {
           title: "Band III – RePro: Referenzprozess & Operationalisierung – VoiceOpenGov",
           description: "Methodische Operationalisierung von Check, Dossier, Beteiligung und Status.",

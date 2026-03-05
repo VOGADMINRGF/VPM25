@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { membersCol } from "@/lib/vogMongo";
 import { sendMail } from "@/lib/mail/sendMail";
+import { VOG_SUPPORT_URL } from "@/config/links";
 
 export const runtime = "nodejs";
 
@@ -262,14 +263,14 @@ export async function POST(req: Request) {
         ? body.orgName?.trim()
         : [body.firstName?.trim(), body.lastName?.trim()].filter(Boolean).join(" ");
     const locationParts = [body.city?.trim(), body.country?.trim()].filter(Boolean).join(", ");
-    const visibilityText = isPublic ? "Öffentlich (nur Orts-Summen)" : "Privat";
+    const visibilityText = isPublic ? "Anonym (nur Orts-Summen)" : "Privat";
     const supporterText = publicSupporter ? "Ja" : "Nein";
     const newsletterText = wantsNewsletter ? "Ja" : "Nein";
     const newsletterEdText = wantsNewsletterEdDebatte ? "Ja" : "Nein";
     const birthDateText = birthDateValue
       ? birthDateValue.split("-").reverse().join(".")
       : undefined;
-    const supportUrl = `${base}/unterstuetzen`;
+    const supportUrl = VOG_SUPPORT_URL;
     const contactUrl = `${base}/kontakt`;
     const notifyEmail =
       process.env.VOG_MEMBERSHIP_CONTACT_EMAIL || "members@voiceopengov.org";

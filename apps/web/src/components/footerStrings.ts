@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, type SupportedLocale } from "@/config/locales";
+import { VOG_SUPPORT_PATH } from "@/config/links";
 
 type FooterStrings = {
   brand: {
@@ -43,7 +44,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Mitmachen" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Unterstützen" },
+        { href: VOG_SUPPORT_PATH, label: "Unterstützen" },
       ],
       initiatives: [{ href: "/initiatives", label: "Für Initiativen" }],
       legal: [
@@ -73,7 +74,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Join" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Support" },
+        { href: VOG_SUPPORT_PATH, label: "Support" },
       ],
       initiatives: [{ href: "/initiatives", label: "For initiatives" }],
       legal: [
@@ -103,7 +104,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Participer" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Soutenir" },
+        { href: VOG_SUPPORT_PATH, label: "Soutenir" },
       ],
       initiatives: [{ href: "/initiatives", label: "Pour les initiatives" }],
       legal: [
@@ -133,7 +134,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Dołącz" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Wesprzyj" },
+        { href: VOG_SUPPORT_PATH, label: "Wesprzyj" },
       ],
       initiatives: [{ href: "/initiatives", label: "Dla inicjatyw" }],
       legal: [
@@ -163,7 +164,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Participar" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Apoyar" },
+        { href: VOG_SUPPORT_PATH, label: "Apoyar" },
       ],
       initiatives: [{ href: "/initiatives", label: "Para iniciativas" }],
       legal: [
@@ -193,7 +194,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Partecipa" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Sostieni" },
+        { href: VOG_SUPPORT_PATH, label: "Sostieni" },
       ],
       initiatives: [{ href: "/initiatives", label: "Per iniziative" }],
       legal: [
@@ -223,7 +224,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Katıl" },
         { href: "/dossier", label: "Dossier" },
-        { href: "/unterstuetzen", label: "Destekle" },
+        { href: VOG_SUPPORT_PATH, label: "Destekle" },
       ],
       initiatives: [{ href: "/initiatives", label: "Girişimler için" }],
       legal: [
@@ -253,7 +254,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "شارك" },
         { href: "/dossier", label: "ملف" },
-        { href: "/unterstuetzen", label: "ادعم" },
+        { href: VOG_SUPPORT_PATH, label: "ادعم" },
       ],
       initiatives: [{ href: "/initiatives", label: "للمبادرات" }],
       legal: [
@@ -283,7 +284,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Участвовать" },
         { href: "/dossier", label: "Досье" },
-        { href: "/unterstuetzen", label: "Поддержать" },
+        { href: VOG_SUPPORT_PATH, label: "Поддержать" },
       ],
       initiatives: [{ href: "/initiatives", label: "Для инициатив" }],
       legal: [
@@ -313,7 +314,7 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "参与" },
         { href: "/dossier", label: "档案" },
-        { href: "/unterstuetzen", label: "支持" },
+        { href: VOG_SUPPORT_PATH, label: "支持" },
       ],
       initiatives: [{ href: "/initiatives", label: "面向倡议" }],
       legal: [

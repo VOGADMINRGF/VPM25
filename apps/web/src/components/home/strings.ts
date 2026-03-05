@@ -7,6 +7,7 @@ type HomeStrings = {
     badge: string;
     title: string;
     subtitle: string;
+    oneLiner: string;
     lead: {
       pre: string;
       highlight1: string;
@@ -18,10 +19,16 @@ type HomeStrings = {
     };
     focus: string;
     scalable: string;
+    badges: string[];
     ctas: {
       join: string;
       how: string;
       support: string;
+    };
+    more: {
+      label: string;
+      edebatte: string;
+      preorder: string;
     };
     micro: {
       line1: string;
@@ -94,6 +101,10 @@ type HomeStrings = {
     supportCardTitle: string;
     supportCardBody: string;
     supportCardCta: string;
+    step1Cta: string;
+    step1Hint: string;
+    step2Label: string;
+    step2Hint: string;
     privacyBefore: string;
     privacyLink: string;
     privacyAfter: string;
@@ -136,33 +147,79 @@ type HomeStrings = {
     ctaSupport: string;
     ctaQuestions: string;
   };
+  supportAfterCta: {
+    title: string;
+    body: string;
+    cta: string;
+  };
+  supportCalculator: {
+    label: string;
+    title: string;
+    body: string;
+    net: string;
+    rent: string;
+    household: string;
+    interval: string;
+    monthly: string;
+    once: string;
+    presets: string;
+    suggestion: string;
+    perPerson: string;
+    total: string;
+    note: string;
+  };
+  supportBank: {
+    title: string;
+    body: string;
+    ctaContact: string;
+    labels: {
+      recipient: string;
+      bank: string;
+      iban: string;
+      bic: string;
+      reference: string;
+    };
+    referenceHint: string;
+    noDetails: string;
+    afterNote: string;
+  };
 };
 
 const STRINGS: Record<SupportedLocale, HomeStrings> = {
   de: {
     hero: {
       badge: "Strukturierte Beteiligung",
-      title: "Beteiligung, die nachvollziehbar bleibt.",
-      subtitle: "Neutral, strukturiert, statusgeführt.",
+      title: "Eine Initiative für nachvollziehbaren Wandel.",
+      subtitle: "Neue Struktur für Verständigung und Verantwortung.",
+      oneLiner:
+        "VoiceOpenGov ist die Initiative & Mitgliedschaft. eDebatte ist das Tool: Check → Dossier → Beteiligung → Status.",
       lead: {
-        pre: "VoiceOpenGov ist eine",
-        highlight1: "Informationsarchitektur",
-        mid1: "für Beteiligung: Optionen,",
-        highlight2: "Begründung",
-        mid2: "und",
-        highlight3: "Status",
-        post: "werden sichtbar.",
+        pre: "VoiceOpenGov ist eine private, unabhängige",
+        highlight1: "Initiative",
+        mid1: "für eine neue",
+        highlight2: "Struktur",
+        mid2: "des",
+        highlight3: "Wandels",
+        post: "– offen, nachvollziehbar, anschlussfähig.",
       },
-      focus: "Beteiligung zwischen Wahlterminen – als Informationsarchitektur: Optionen, Begründung, Status.",
-      scalable: "Dokumentiert, vergleichbar, wiederverwendbar.",
+      focus:
+        "Mitgliedschaft für Reichweite – eDebatte für nachvollziehbare Entscheidungen.",
+      scalable:
+        "Dafür suchen wir Fürsprecher, Unterstützer und Empfehlende – damit wir grenzübergreifend voneinander lernen und Entscheidungen besser verstehen.",
+      badges: ["Community-finanziert", "Keine Werbung", "Keine Datenverkäufe"],
       ctas: {
-        join: "Kostenfrei am Smartphone mitwirken",
+        join: "Kostenfrei mitwirken",
         how: "So funktioniert’s",
-        support: "Initiative unterstützen",
+        support: "Unterstützen",
+      },
+      more: {
+        label: "Weiter interessiert?",
+        edebatte: "eDebatte eintragen",
+        preorder: "Trilogie vorbestellen",
       },
       micro: {
-        line1: "Mobil in 3 Minuten • Double-Opt-In • Öffentlich: nur Orts-Summen",
-        line2: "Keine Einzelprofile • Keine Rohdaten",
+        line1: "Mobil in 3 Minuten • Double-Opt-In • Anonym nach außen",
+        line2: "Keine Einzelprofile • Keine Rohdaten • Keine Stimmvorteile durch Unterstützung",
       },
       steps: [
         {
@@ -204,11 +261,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Grundlagen",
-      title: "Die veröffentlichten Grundlagen",
-      subtitle:
-        "VoiceOpenGov basiert auf drei offenen Textbänden. Alle Inhalte sind frei zugänglich.",
+      title: "Band I–III (in Arbeit)",
+      subtitle: "Vorabkapitel + Updates per Newsletter",
       bandLine: "Band I · Band II · Band III",
-      bandHint: "Theorie, Modell und Methode – offen dokumentiert und frei zugänglich.",
+      bandHint: "Theorie, Modell und Methode – Veröffentlichung in Arbeit.",
       bandLabel: "Band",
       items: [
         {
@@ -217,7 +273,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Analyse struktureller Herausforderungen moderner Beteiligung – institutionelle Überlastung, Informationsfragmentierung und fehlende Status-Transparenz.",
           href: "/grundlagen/weissbuch",
-          cta: "Online lesen →",
+          cta: "Mehr erfahren →",
         },
         {
           title: "Legitimation 2.0",
@@ -225,25 +281,25 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Ein Governance-Modell für prüfbare Entscheidungen, dokumentierte Entscheidungsdimensionen und nachvollziehbare Verantwortung.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Online lesen →",
+          cta: "Mehr erfahren →",
         },
         {
           title: "RePro",
           subtitle: "Referenzprozess & Operationalisierung",
           body:
-            "Methodische Operationalisierung: Check → Dossier → Beteiligung → Status – als formalisierte Entscheidungslogik.",
+            "RePro übersetzt das Modell in einen klaren Prozess, der bei VoiceOpenGov mit eDebatte konsequent umgesetzt wird.",
           href: "/grundlagen/repro",
-          cta: "Online lesen →",
+          cta: "Mehr erfahren →",
         },
       ],
-      footerNote: "Frei zugänglich · Keine Paywall · Wenn es hilft, freuen wir uns über Unterstützung. Unabhängig, ohne Investor.",
+      footerNote: "Vorbestellung möglich · Infos per Newsletter · Unterstützung willkommen.",
       architectureLabel: "Architektur",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
       ctaTitle: "Vom Modell zur Mitwirkung",
       ctaBody:
         "Die veröffentlichte Architektur wird in VoiceOpenGov operationalisiert – mobil, nachvollziehbar und statusgeführt.",
-      ctaButton: "Jetzt am Smartphone mitwirken",
+      ctaButton: "Zum Formular",
     },
     decisionCard: {
       label: "Entscheidungslogik",
@@ -261,7 +317,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Mitgliedschaft",
       title: "Kostenfrei beitreten",
-      subtitle: "Double-Opt-In: Bitte E-Mail bestätigen. Mitgliedschaft ist kostenfrei.",
+      subtitle:
+        "Mitgliedschaft beantragen (kostenfrei, Double-Opt-In). Optional Beitrag wählen – so wachsen wir schneller.",
       type: {
         person: "Person",
         organisation: "Organisation",
@@ -279,11 +336,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "in meinem Ort",
       country: "Land (optional)",
       countryPlaceholder: "Bitte wählen",
-      locationVisibility: "Orts-Sichtbarkeit",
+      locationVisibility: "Anonymität nach außen",
       public: "Öffentlich",
       private: "Privat",
       visibilityHint:
-        "Öffentlich: zählt in Orts-Summen (keine Einzelprofile, keine Rohdaten). Privat: wird nicht öffentlich aggregiert.",
+        "Wir zeigen nur Orts-Summen, keine Einzelprofile oder Rohdaten.",
       logoUrl: "Logo-Link (optional)",
       avatarUpload: "Profilfoto hochladen (optional)",
       previewLabel: "Vorschau",
@@ -299,8 +356,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Updates zu eDebatte (Werkzeug) (optional)",
       supportCardTitle: "Initiative unterstützen",
       supportCardBody:
-        "Freiwillige Unterstützung hält Infrastruktur, Recherche und Moderation am Laufen. Keine Stimmvorteile.",
-      supportCardCta: "Unterstützungswege ansehen",
+        "Geschlossener Kreislauf: Mitgliedschaft beantragen (kostenfrei) → Beitrag wählen (optional) → schneller wachsen. Keine Stimmvorteile.",
+      supportCardCta: "Beitragsrechner öffnen",
+      step1Cta: "Mitwirken",
+      step1Hint: "Schritt 1: E-Mail eintragen. Schritt 2 erscheint danach.",
+      step2Label: "Schritt 2",
+      step2Hint: "Bitte ergänze die restlichen Angaben.",
       privacyBefore: "Ich akzeptiere die",
       privacyLink: "Datenschutzhinweise",
       privacyAfter: "und den Double-Opt-In Hinweis.",
@@ -352,47 +413,94 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "Das hat nicht geklappt. Bitte später erneut versuchen.",
     },
     footer: {
-      membershipFree: "Mitgliedschaft ist kostenfrei.",
+      membershipFree: "Mitgliedschaft ist kostenfrei und stärkt unsere Reichweite.",
       supportNoteBefore:
-        "Unterstützung ist freiwillig und hilft beim Aufbau von Moderation, Dossiers und Infrastruktur. Details findest du unter",
+        "Unterstützung ist freiwillig. Jeder Beitrag zählt, damit wir schneller wachsen – Details findest du unter",
       supportNoteLink: "Unterstützen",
       supportNoteAfter: "oder per Mail an",
       publicPrivateNote:
-        "Öffentlich/Privat: Öffentlich zeigt nur Orts-Summen (keine Einzelprofile, keine Rohdaten).",
+        "Anonym nach außen: öffentlich sind nur Orts-Summen (keine Einzelprofile, keine Rohdaten).",
     },
     supportSection: {
       label: "Unterstützen",
-      title: "Unterstütze die Initiative – transparent und ohne Stimmvorteile.",
+      title: "Freiwillig unterstützen – Beitrag wählen, Reichweite ausbauen.",
       body:
-        "Unterstützung ermöglicht Infrastruktur, Recherche und Übersetzungen. Wir halten alles nachvollziehbar und offen dokumentiert.",
-      ctaSupport: "Unterstützungswege",
+        "Mitgliedschaft ist kostenfrei; jeder Beitrag hilft beim Wachstum. Als private Initiative stellen wir keine Spendenquittungen aus.",
+      ctaSupport: "Beitragsrechner",
       ctaQuestions: "Fragen stellen",
+    },
+    supportAfterCta: {
+      title: "Jetzt kostenfrei beitreten",
+      body: "Mit oder ohne Beitrag: Die Mitgliedschaft ist kostenfrei und zählt für die Reichweite.",
+      cta: "Zur Anmeldung",
+    },
+    supportCalculator: {
+      label: "Beitragsrechner",
+      title: "Orientierungsbeitrag berechnen",
+      body:
+        "Ein Richtwert auf Basis deines Haushalts. Mitgliedschaft bleibt kostenfrei; jeder Beitrag ist freiwillig und zählt.",
+      net: "Haushaltsnetto (monatlich)",
+      rent: "Warmmiete (monatlich)",
+      household: "Haushaltsgröße (ab 16 J.)",
+      interval: "Intervall",
+      monthly: "Monatlich",
+      once: "Einmalig",
+      presets: "Schnellwahl",
+      suggestion: "Vorschlag pro Person",
+      perPerson: "Betrag pro Person",
+      total: "Gesamtbeitrag",
+      note: "Richtwert, jederzeit anpassbar. Keine Stimmvorteile.",
+    },
+    supportBank: {
+      title: "Bankverbindung",
+      body: "Für deinen Beitrag. Bitte im Verwendungszweck nur das Nötigste angeben.",
+      ctaContact: "Kontakt aufnehmen",
+      labels: {
+        recipient: "Kontoinhaber",
+        bank: "Bank",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Verwendungszweck",
+      },
+      referenceHint: "{bankRefPrefix} optionaler Hinweis (z. B. Stadt oder Projekt)",
+      noDetails: "Bankdaten senden wir dir gern auf Anfrage.",
+      afterNote:
+        "Unterstützung ist freiwillig, nicht zweckgebunden für Stimmrechte und wird transparent dokumentiert. Keine Spendenquittungen (private Initiative).",
     },
   },
   en: {
     hero: {
       badge: "Structured participation",
-      title: "Participation that stays traceable.",
-      subtitle: "Neutral, structured, status-led.",
+      title: "An initiative for traceable change.",
+      subtitle: "A new structure for understanding and responsibility.",
+      oneLiner:
+        "VoiceOpenGov is the initiative & membership. eDebatte is the tool: Check → Dossier → Participation → Status.",
       lead: {
-        pre: "VoiceOpenGov is an",
-        highlight1: "information architecture",
-        mid1: "for participation: options,",
-        highlight2: "reasoning",
-        mid2: "and",
-        highlight3: "status",
-        post: "are made visible.",
+        pre: "VoiceOpenGov is a private, independent",
+        highlight1: "initiative",
+        mid1: "for a new",
+        highlight2: "structure",
+        mid2: "of",
+        highlight3: "change",
+        post: "— open, traceable, and connective.",
       },
-      focus: "Participation between elections — as information architecture: options, reasoning, status.",
-      scalable: "Documented, comparable, reusable.",
+      focus: "Membership for reach — eDebatte for traceable decisions.",
+      scalable:
+        "We are looking for advocates, supporters, and recommenders so we can learn across borders and better understand decisions.",
+      badges: ["Community-funded", "No ads", "No data sales"],
       ctas: {
-        join: "Join free on mobile",
+        join: "Join for free",
         how: "How it works",
-        support: "Support the initiative",
+        support: "Support",
+      },
+      more: {
+        label: "Further interested?",
+        edebatte: "Sign up for eDebatte",
+        preorder: "Preorder the trilogy",
       },
       micro: {
-        line1: "Mobile in 3 minutes • Double opt-in • Public: city totals only",
-        line2: "No individual profiles • No raw data",
+        line1: "Mobile in 3 minutes • Double opt-in • Anonymous externally",
+        line2: "No individual profiles • No raw data • No voting advantage through support",
       },
       steps: [
         {
@@ -434,10 +542,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Foundations",
-      title: "The published foundations",
-      subtitle: "VoiceOpenGov is based on three open volumes. All content is freely accessible.",
+      title: "Volumes I–III (in progress)",
+      subtitle: "Early chapters + updates via newsletter",
       bandLine: "Volume I · Volume II · Volume III",
-      bandHint: "Theory, model and method — openly documented and freely accessible.",
+      bandHint: "Theory, model and method — release in progress.",
       bandLabel: "Volume",
       items: [
         {
@@ -446,7 +554,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Analysis of structural challenges of modern participation — institutional overload, fragmented information, and missing status transparency.",
           href: "/grundlagen/weissbuch",
-          cta: "Read online →",
+          cta: "Learn more →",
         },
         {
           title: "Legitimation 2.0",
@@ -454,25 +562,25 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "A governance model for verifiable decisions, documented decision dimensions, and accountable responsibility.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Read online →",
+          cta: "Learn more →",
         },
         {
           title: "RePro",
           subtitle: "Reference process & operationalization",
           body:
-            "Methodical operationalization: Check → Dossier → Participation → Status — as a formal decision logic.",
+            "RePro translates the model into a clear process that is consistently implemented at VoiceOpenGov with eDebatte.",
           href: "/grundlagen/repro",
-          cta: "Read online →",
+          cta: "Learn more →",
         },
       ],
-      footerNote: "Free access · No paywall · If it helps, we appreciate support. Independent, no investors.",
+      footerNote: "Preorders possible · Updates via newsletter · Support appreciated.",
       architectureLabel: "Architecture",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
       ctaTitle: "From model to participation",
       ctaBody:
         "The published architecture is operationalized in VoiceOpenGov — mobile, traceable, and status-guided.",
-      ctaButton: "Participate on mobile now",
+      ctaButton: "Go to the form",
     },
     decisionCard: {
       label: "Decision logic",
@@ -490,7 +598,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Membership",
       title: "Join for free",
-      subtitle: "Double opt-in: please confirm your email. Membership is free.",
+      subtitle:
+        "Apply for membership (free, double opt-in). Optionally choose a contribution — it helps us grow faster.",
       type: {
         person: "Person",
         organisation: "Organization",
@@ -508,11 +617,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "in my city",
       country: "Country (optional)",
       countryPlaceholder: "Please choose",
-      locationVisibility: "City visibility",
+      locationVisibility: "External anonymity",
       public: "Public",
       private: "Private",
       visibilityHint:
-        "Public: counts in city totals (no individual profiles, no raw data). Private: not publicly aggregated.",
+        "We show city totals only — no individual profiles or raw data.",
       logoUrl: "Logo link (optional)",
       avatarUpload: "Upload profile photo (optional)",
       previewLabel: "Preview",
@@ -528,8 +637,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Updates about eDebatte (tool) (optional)",
       supportCardTitle: "Support the initiative",
       supportCardBody:
-        "Voluntary support keeps infrastructure, research, and moderation running. No voting advantages.",
-      supportCardCta: "See support options",
+        "Closed loop: apply for membership (free) → choose a contribution (optional) → grow faster. No voting advantage.",
+      supportCardCta: "Open contribution calculator",
+      step1Cta: "Join",
+      step1Hint: "Step 1: enter your email. Step 2 appears next.",
+      step2Label: "Step 2",
+      step2Hint: "Please add the remaining details.",
       privacyBefore: "I accept the",
       privacyLink: "privacy notice",
       privacyAfter: "and the double opt-in notice.",
@@ -581,21 +694,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "That did not work. Please try again later.",
     },
     footer: {
-      membershipFree: "Membership is free.",
+      membershipFree: "Membership is free and expands our reach.",
       supportNoteBefore:
-        "Support is voluntary and helps build moderation, dossiers, and infrastructure. Details at",
+        "Support is voluntary. Every contribution helps us grow faster — details at",
       supportNoteLink: "Support",
       supportNoteAfter: "or by email at",
       publicPrivateNote:
-        "Public/Private: Public shows only city totals (no individual profiles, no raw data).",
+        "Anonymous externally: public visibility is limited to city totals (no individual profiles, no raw data).",
     },
     supportSection: {
       label: "Support",
-      title: "Support the initiative - transparent and without voting advantages.",
+      title: "Support voluntarily — choose a contribution, build reach.",
       body:
-        "Support enables infrastructure, research, and translations. Everything is documented transparently.",
-      ctaSupport: "Support options",
+        "Membership is free; every contribution helps us grow. As a private initiative, we cannot issue donation receipts.",
+      ctaSupport: "Contribution calculator",
       ctaQuestions: "Ask a question",
+    },
+    supportAfterCta: {
+      title: "Join for free now",
+      body: "With or without a contribution: membership is free and counts toward reach.",
+      cta: "Go to join",
+    },
+    supportCalculator: {
+      label: "Contribution calculator",
+      title: "Estimate a contribution",
+      body:
+        "A guideline based on your household. Membership stays free; every contribution is voluntary and counts.",
+      net: "Household net income (monthly)",
+      rent: "Warm rent (monthly)",
+      household: "Household size (16+)",
+      interval: "Interval",
+      monthly: "Monthly",
+      once: "One-time",
+      presets: "Quick picks",
+      suggestion: "Suggested per person",
+      perPerson: "Amount per person",
+      total: "Total contribution",
+      note: "Guideline, adjustable anytime. No voting advantages.",
+    },
+    supportBank: {
+      title: "Bank details",
+      body: "For your contribution. Please keep the payment reference to the essentials.",
+      ctaContact: "Contact us",
+      labels: {
+        recipient: "Account holder",
+        bank: "Bank",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Reference",
+      },
+      referenceHint: "{bankRefPrefix} optional note (e.g. city or project)",
+      noDetails: "We are happy to share bank details on request.",
+      afterNote:
+        "Support is voluntary, not tied to voting rights, and documented transparently. No donation receipts (private initiative).",
     },
   },
   fr: {
@@ -603,6 +754,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "Participation structurée",
       title: "Une participation qui reste traçable.",
       subtitle: "Neutre, structurée, pilotée par le statut.",
+      oneLiner:
+        "VoiceOpenGov est l’initiative et l’adhésion. eDebatte est l’outil : Check → Dossier → Participation → Statut.",
       lead: {
         pre: "VoiceOpenGov est une",
         highlight1: "architecture de l'information",
@@ -614,13 +767,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "Participation entre les élections — comme architecture d'information : options, justification, statut.",
       scalable: "Documentée, comparable, réutilisable.",
+      badges: ["Financé par la communauté", "Sans publicité", "Pas de vente de données"],
       ctas: {
         join: "Participer gratuitement sur mobile",
         how: "Comment ça marche",
-        support: "Soutenir l'initiative",
+        support: "Soutenir librement",
+      },
+      more: {
+        label: "Plus intéressé ?",
+        edebatte: "S'inscrire à eDebatte",
+        preorder: "Précommander la trilogie",
       },
       micro: {
-        line1: "Mobile en 3 minutes • Double opt-in • Public : totaux par ville",
+        line1: "Mobile en 3 minutes • Double opt-in • Anonyme vers l'extérieur",
         line2: "Aucun profil individuel • Aucune donnée brute",
       },
       steps: [
@@ -663,11 +822,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Fondations",
-      title: "Les fondements publiés",
+      title: "Les fondations (en préparation)",
       subtitle:
-        "VoiceOpenGov s'appuie sur trois volumes ouverts. Tous les contenus sont librement accessibles.",
+        "Les trois volumes paraîtront bientôt. Précommande possible — infos via la newsletter.",
       bandLine: "Volume I · Volume II · Volume III",
-      bandHint: "Théorie, modèle et méthode — documentés ouvertement et librement accessibles.",
+      bandHint: "Théorie, modèle et méthode — publication en cours.",
       bandLabel: "Volume",
       items: [
         {
@@ -676,7 +835,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Analyse des défis structurels de la participation moderne — surcharge institutionnelle, fragmentation de l'information et manque de transparence du statut.",
           href: "/grundlagen/weissbuch",
-          cta: "Lire en ligne →",
+          cta: "En savoir plus →",
         },
         {
           title: "Legitimation 2.0",
@@ -684,7 +843,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Un modèle de gouvernance pour des décisions vérifiables, des dimensions de décision documentées et une responsabilité traçable.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Lire en ligne →",
+          cta: "En savoir plus →",
         },
         {
           title: "RePro",
@@ -692,10 +851,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Opérationnalisation méthodique : Check → Dossier → Participation → Statut — comme logique décisionnelle formalisée.",
           href: "/grundlagen/repro",
-          cta: "Lire en ligne →",
+          cta: "En savoir plus →",
         },
       ],
-      footerNote: "Accès libre · Pas de paywall · Si cela aide, nous apprécions le soutien. Indépendant, sans investisseurs.",
+      footerNote: "Précommande possible · Infos via la newsletter · Soutien bienvenu.",
       architectureLabel: "Architecture",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -720,7 +879,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Adhésion",
       title: "Rejoindre gratuitement",
-      subtitle: "Double opt-in : veuillez confirmer l'e-mail. L'adhésion est gratuite.",
+      subtitle:
+        "Adhésion gratuite (double opt-in). Contribution optionnelle — elle nous aide à grandir plus vite.",
       type: {
         person: "Personne",
         organisation: "Organisation",
@@ -738,11 +898,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "dans ma ville",
       country: "Pays (optionnel)",
       countryPlaceholder: "Veuillez choisir",
-      locationVisibility: "Visibilité de la ville",
+      locationVisibility: "Anonymat externe",
       public: "Public",
       private: "Privé",
       visibilityHint:
-        "Public : compte dans les totaux par ville (pas de profils individuels, pas de données brutes). Privé : non agrégé publiquement.",
+        "Nous affichons uniquement des totaux par ville, sans profils individuels ni données brutes.",
       logoUrl: "Lien du logo (optionnel)",
       avatarUpload: "Téléverser une photo de profil (optionnel)",
       previewLabel: "Aperçu",
@@ -758,8 +918,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Actualités eDebatte (outil) (optionnel)",
       supportCardTitle: "Soutenir l'initiative",
       supportCardBody:
-        "Le soutien volontaire maintient l'infrastructure, la recherche et la modération. Aucun avantage de vote.",
-      supportCardCta: "Voir les options de soutien",
+        "Boucle fermée : adhérer (gratuit) → choisir une contribution (optionnelle) → grandir plus vite. Aucun avantage de vote.",
+      supportCardCta: "Ouvrir le calculateur",
+      step1Cta: "Participer",
+      step1Hint: "Étape 1 : e-mail. L’étape 2 apparaît ensuite.",
+      step2Label: "Étape 2",
+      step2Hint: "Merci d’ajouter les informations restantes.",
       privacyBefore: "J'accepte la",
       privacyLink: "note de confidentialité",
       privacyAfter: "et l'avis de double opt-in.",
@@ -812,21 +976,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "Échec. Veuillez réessayer plus tard.",
     },
     footer: {
-      membershipFree: "L'adhésion est gratuite.",
+      membershipFree: "L'adhésion est gratuite et renforce notre portée.",
       supportNoteBefore:
-        "Le soutien est volontaire et aide à construire la modération, les dossiers et l'infrastructure. Détails sur",
+        "Le soutien est volontaire. Chaque contribution nous aide à grandir plus vite — détails sur",
       supportNoteLink: "Soutenir",
       supportNoteAfter: "ou par e-mail à",
       publicPrivateNote:
-        "Public/Privé : Public montre seulement les totaux par ville (pas de profils individuels, pas de données brutes).",
+        "Anonyme vers l'extérieur : seuls des totaux par ville sont publics (aucun profil individuel, aucune donnée brute).",
     },
     supportSection: {
       label: "Soutenir",
-      title: "Soutenez l'initiative - transparent et sans avantages de vote.",
+      title: "Soutenir volontairement — choisir une contribution, élargir la portée.",
       body:
-        "Le soutien permet l'infrastructure, la recherche et les traductions. Tout est documenté de manière transparente.",
-      ctaSupport: "Options de soutien",
+        "L'adhésion est gratuite ; chaque contribution nous aide à grandir. En tant qu'initiative privée, nous ne délivrons pas de reçus fiscaux.",
+      ctaSupport: "Calculateur de contribution",
       ctaQuestions: "Poser une question",
+    },
+    supportAfterCta: {
+      title: "Rejoindre gratuitement maintenant",
+      body: "Avec ou sans contribution : l’adhésion est gratuite et compte pour la portée.",
+      cta: "Aller à l’inscription",
+    },
+    supportCalculator: {
+      label: "Calculateur de contribution",
+      title: "Estimer une contribution",
+      body:
+        "Une indication basée sur votre foyer. L'adhésion reste gratuite ; chaque contribution est volontaire et compte.",
+      net: "Revenu net du foyer (mensuel)",
+      rent: "Loyer charges comprises (mensuel)",
+      household: "Taille du foyer (16+)",
+      interval: "Périodicité",
+      monthly: "Mensuel",
+      once: "Unique",
+      presets: "Choix rapides",
+      suggestion: "Suggestion par personne",
+      perPerson: "Montant par personne",
+      total: "Contribution totale",
+      note: "Repère ajustable à tout moment. Aucun avantage de vote.",
+    },
+    supportBank: {
+      title: "Coordonnées bancaires",
+      body: "Pour votre contribution. Merci de limiter le libellé au strict nécessaire.",
+      ctaContact: "Nous contacter",
+      labels: {
+        recipient: "Titulaire",
+        bank: "Banque",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Libellé",
+      },
+      referenceHint: "{bankRefPrefix} note optionnelle (ex. ville ou projet)",
+      noDetails: "Nous partageons les coordonnées sur demande.",
+      afterNote:
+        "Le soutien est volontaire, sans avantage de vote et documenté de façon transparente. Pas de reçus fiscaux (initiative privée).",
     },
   },
   pl: {
@@ -834,6 +1036,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "Ustrukturyzowany udział",
       title: "Udział, który pozostaje śledzalny.",
       subtitle: "Neutralny, uporządkowany, z widocznym statusem.",
+      oneLiner:
+        "VoiceOpenGov to inicjatywa i członkostwo. eDebatte to narzędzie: Check → Dossier → Uczestnictwo → Status.",
       lead: {
         pre: "VoiceOpenGov to",
         highlight1: "architektura informacji",
@@ -845,13 +1049,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "Udział między wyborami — jako architektura informacji: opcje, uzasadnienie, status.",
       scalable: "Udokumentowane, porównywalne, wielokrotnego użytku.",
+      badges: ["Finansowane przez społeczność", "Bez reklam", "Bez sprzedaży danych"],
       ctas: {
         join: "Dołącz bezpłatnie na smartfonie",
         how: "Jak to działa",
-        support: "Wesprzyj inicjatywę",
+        support: "Wesprzyj dobrowolnie",
+      },
+      more: {
+        label: "Chcesz więcej?",
+        edebatte: "Zapisz się do eDebatte",
+        preorder: "Zamów trylogię",
       },
       micro: {
-        line1: "Mobilnie w 3 minuty • Double opt-in • Publicznie: tylko sumy miast",
+        line1: "Mobilnie w 3 minuty • Double opt-in • Anonimowo na zewnątrz",
         line2: "Bez profili indywidualnych • Bez surowych danych",
       },
       steps: [
@@ -894,11 +1104,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Podstawy",
-      title: "Opublikowane podstawy",
+      title: "Podstawy (w przygotowaniu)",
       subtitle:
-        "VoiceOpenGov opiera się na trzech otwartych tomach. Wszystkie treści są ogólnie dostępne.",
+        "Trzy tomy zostaną opublikowane wkrótce. Możliwa przedsprzedaż — informacje w newsletterze.",
       bandLine: "Tom I · Tom II · Tom III",
-      bandHint: "Teoria, model i metoda — otwarcie udokumentowane i ogólnodostępne.",
+      bandHint: "Teoria, model i metoda — publikacja w przygotowaniu.",
       bandLabel: "Tom",
       items: [
         {
@@ -907,7 +1117,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Analiza strukturalnych wyzwań nowoczesnego uczestnictwa — przeciążenie instytucji, fragmentacja informacji i brak przejrzystości statusu.",
           href: "/grundlagen/weissbuch",
-          cta: "Czytaj online →",
+          cta: "Dowiedz się więcej →",
         },
         {
           title: "Legitimation 2.0",
@@ -915,7 +1125,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Model zarządzania dla weryfikowalnych decyzji, udokumentowanych wymiarów decyzji i odpowiedzialności.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Czytaj online →",
+          cta: "Dowiedz się więcej →",
         },
         {
           title: "RePro",
@@ -923,10 +1133,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Metodyczna operacjonalizacja: Check → Dossier → Uczestnictwo → Status — jako sformalizowana logika decyzji.",
           href: "/grundlagen/repro",
-          cta: "Czytaj online →",
+          cta: "Dowiedz się więcej →",
         },
       ],
-      footerNote: "Dostęp wolny · Bez paywalla · Jeśli to pomaga, doceniamy wsparcie. Niezależnie, bez inwestorów.",
+      footerNote: "Przedsprzedaż możliwa · Informacje w newsletterze · Wsparcie mile widziane.",
       architectureLabel: "Architektura",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -951,7 +1161,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Członkostwo",
       title: "Dołącz bezpłatnie",
-      subtitle: "Double opt-in: potwierdź e-mail. Członkostwo jest bezpłatne.",
+      subtitle:
+        "Członkostwo bezpłatne (double opt-in). Opcjonalnie wybierz składkę — pomaga nam rosnąć szybciej.",
       type: {
         person: "Osoba",
         organisation: "Organizacja",
@@ -969,11 +1180,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "w mojej miejscowości",
       country: "Kraj (opcjonalnie)",
       countryPlaceholder: "Wybierz",
-      locationVisibility: "Widoczność miasta",
+      locationVisibility: "Anonimowo na zewnątrz",
       public: "Publiczne",
       private: "Prywatne",
       visibilityHint:
-        "Publiczne: liczy się w sumach miast (brak profili indywidualnych, brak danych surowych). Prywatne: nie jest publicznie agregowane.",
+        "Pokazujemy tylko sumy dla miast, bez profili indywidualnych i surowych danych.",
       logoUrl: "Link do logo (opcjonalnie)",
       avatarUpload: "Prześlij zdjęcie profilowe (opcjonalnie)",
       previewLabel: "Podgląd",
@@ -989,8 +1200,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Aktualności eDebatte (narzędzie) (opcjonalnie)",
       supportCardTitle: "Wesprzyj inicjatywę",
       supportCardBody:
-        "Dobrowolne wsparcie utrzymuje infrastrukturę, badania i moderację. Bez korzyści wyborczych.",
-      supportCardCta: "Zobacz opcje wsparcia",
+        "Zamknięty obieg: dołącz (bezpłatnie) → wybierz składkę (opcjonalnie) → rośniemy szybciej. Bez korzyści wyborczych.",
+      supportCardCta: "Otwórz kalkulator składki",
+      step1Cta: "Dołącz",
+      step1Hint: "Krok 1: e-mail. Krok 2 pojawi się dalej.",
+      step2Label: "Krok 2",
+      step2Hint: "Uzupełnij pozostałe dane.",
       privacyBefore: "Akceptuję",
       privacyLink: "informację o prywatności",
       privacyAfter: "oraz informację o double opt-in.",
@@ -1042,21 +1257,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "Nie udało się. Spróbuj ponownie później.",
     },
     footer: {
-      membershipFree: "Członkostwo jest bezpłatne.",
+      membershipFree: "Członkostwo jest bezpłatne i zwiększa nasz zasięg.",
       supportNoteBefore:
-        "Wsparcie jest dobrowolne i pomaga w budowie moderacji, dossier i infrastruktury. Szczegóły w",
+        "Wsparcie jest dobrowolne. Każdy wkład pomaga nam rosnąć szybciej — szczegóły na",
       supportNoteLink: "Wesprzyj",
       supportNoteAfter: "lub e-mailem na",
       publicPrivateNote:
-        "Publiczne/Prywatne: Publiczne pokazuje tylko sumy miast (brak profili, brak danych surowych).",
+        "Anonimowo na zewnątrz: publiczne są tylko sumy miejskie (bez profili indywidualnych, bez surowych danych).",
     },
     supportSection: {
       label: "Wesprzyj",
-      title: "Wesprzyj inicjatywę - transparentnie i bez korzyści wyborczych.",
+      title: "Wesprzyj dobrowolnie — wybierz składkę, buduj zasięg.",
       body:
-        "Wsparcie umożliwia infrastrukturę, badania i tłumaczenia. Wszystko jest transparentnie dokumentowane.",
-      ctaSupport: "Opcje wsparcia",
+        "Członkostwo jest bezpłatne; każdy wkład pomaga nam rosnąć. Jako inicjatywa prywatna nie wystawiamy potwierdzeń darowizn.",
+      ctaSupport: "Kalkulator składki",
       ctaQuestions: "Zadaj pytanie",
+    },
+    supportAfterCta: {
+      title: "Dołącz bezpłatnie teraz",
+      body: "Z wkładem lub bez: członkostwo jest bezpłatne i liczy się dla zasięgu.",
+      cta: "Do formularza",
+    },
+    supportCalculator: {
+      label: "Kalkulator składki",
+      title: "Oszacuj składkę",
+      body:
+        "Wskaźnik na podstawie gospodarstwa domowego. Członkostwo jest bezpłatne; każda składka jest dobrowolna i się liczy.",
+      net: "Dochód netto gospodarstwa (miesięcznie)",
+      rent: "Czynsz z opłatami (miesięcznie)",
+      household: "Wielkość gospodarstwa (16+)",
+      interval: "Interwał",
+      monthly: "Miesięcznie",
+      once: "Jednorazowo",
+      presets: "Szybki wybór",
+      suggestion: "Propozycja na osobę",
+      perPerson: "Kwota na osobę",
+      total: "Łączna składka",
+      note: "Wskaźnik, do zmiany w każdej chwili. Bez przewagi w głosowaniu.",
+    },
+    supportBank: {
+      title: "Dane bankowe",
+      body: "Na Twój wkład. W tytule przelewu podaj tylko to, co konieczne.",
+      ctaContact: "Skontaktuj się",
+      labels: {
+        recipient: "Właściciel konta",
+        bank: "Bank",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Tytuł przelewu",
+      },
+      referenceHint: "{bankRefPrefix} opcjonalna notatka (np. miasto lub projekt)",
+      noDetails: "Dane bankowe prześlemy na prośbę.",
+      afterNote:
+        "Wsparcie jest dobrowolne, niezwiązane z prawami wyborczymi i dokumentowane transparentnie. Brak potwierdzeń darowizn (inicjatywa prywatna).",
     },
   },
   es: {
@@ -1064,6 +1317,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "Participación estructurada",
       title: "Participación que se mantiene trazable.",
       subtitle: "Neutral, estructurada, guiada por el estado.",
+      oneLiner:
+        "VoiceOpenGov es la iniciativa y la membresía. eDebatte es la herramienta: Check → Dossier → Participación → Estado.",
       lead: {
         pre: "VoiceOpenGov es una",
         highlight1: "arquitectura de información",
@@ -1075,13 +1330,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "Participación entre elecciones — como arquitectura de información: opciones, justificación, estado.",
       scalable: "Documentada, comparable, reutilizable.",
+      badges: ["Financiado por la comunidad", "Sin publicidad", "Sin venta de datos"],
       ctas: {
         join: "Participar gratis en móvil",
         how: "Cómo funciona",
-        support: "Apoyar la iniciativa",
+        support: "Apoyar voluntariamente",
+      },
+      more: {
+        label: "¿Quieres más?",
+        edebatte: "Inscribirse en eDebatte",
+        preorder: "Preordenar la trilogía",
       },
       micro: {
-        line1: "Móvil en 3 minutos • Double opt-in • Público: solo totales por ciudad",
+        line1: "Móvil en 3 minutos • Double opt-in • Anónimo hacia fuera",
         line2: "Sin perfiles individuales • Sin datos brutos",
       },
       steps: [
@@ -1124,11 +1385,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Fundamentos",
-      title: "Los fundamentos publicados",
+      title: "Las bases (en preparación)",
       subtitle:
-        "VoiceOpenGov se basa en tres volúmenes abiertos. Todo el contenido es de libre acceso.",
+        "Los tres volúmenes se publicarán pronto. Prepedido posible — información vía newsletter.",
       bandLine: "Volumen I · Volumen II · Volumen III",
-      bandHint: "Teoría, modelo y método — documentados de forma abierta y accesibles.",
+      bandHint: "Teoría, modelo y método — publicación en curso.",
       bandLabel: "Volumen",
       items: [
         {
@@ -1137,7 +1398,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Análisis de los desafíos estructurales de la participación moderna: sobrecarga institucional, fragmentación de la información y falta de transparencia de estado.",
           href: "/grundlagen/weissbuch",
-          cta: "Leer en línea →",
+          cta: "Más información →",
         },
         {
           title: "Legitimation 2.0",
@@ -1145,7 +1406,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Un modelo de gobernanza para decisiones verificables, dimensiones de decisión documentadas y responsabilidad trazable.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Leer en línea →",
+          cta: "Más información →",
         },
         {
           title: "RePro",
@@ -1153,10 +1414,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Operacionalización metodológica: Check → Dossier → Participación → Estado — como lógica de decisión formalizada.",
           href: "/grundlagen/repro",
-          cta: "Leer en línea →",
+          cta: "Más información →",
         },
       ],
-      footerNote: "Acceso libre · Sin paywall · Si ayuda, agradecemos el apoyo. Independientes, sin inversores.",
+      footerNote: "Prepedido posible · Información vía newsletter · Apoyo bienvenido.",
       architectureLabel: "Arquitectura",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1181,7 +1442,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Membresía",
       title: "Unirse gratis",
-      subtitle: "Double opt-in: confirma tu e-mail. La membresía es gratuita.",
+      subtitle:
+        "Afiliación gratuita (doble opt-in). Contribución opcional: nos ayuda a crecer más rápido.",
       type: {
         person: "Persona",
         organisation: "Organización",
@@ -1199,11 +1461,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "en mi ciudad",
       country: "País (opcional)",
       countryPlaceholder: "Selecciona",
-      locationVisibility: "Visibilidad de la ciudad",
+      locationVisibility: "Anonimato hacia fuera",
       public: "Público",
       private: "Privado",
       visibilityHint:
-        "Público: cuenta en totales por ciudad (sin perfiles individuales, sin datos crudos). Privado: no se agrega públicamente.",
+        "Mostramos solo totales por ciudad, sin perfiles individuales ni datos brutos.",
       logoUrl: "Enlace del logo (opcional)",
       avatarUpload: "Subir foto de perfil (opcional)",
       previewLabel: "Vista previa",
@@ -1219,8 +1481,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Actualizaciones de eDebatte (herramienta) (opcional)",
       supportCardTitle: "Apoyar la iniciativa",
       supportCardBody:
-        "El apoyo voluntario mantiene infraestructura, investigación y moderación. Sin ventajas de voto.",
-      supportCardCta: "Ver opciones de apoyo",
+        "Ciclo cerrado: unirte (gratis) → elegir contribución (opcional) → crecer más rápido. Sin ventajas de voto.",
+      supportCardCta: "Abrir calculadora",
+      step1Cta: "Participar",
+      step1Hint: "Paso 1: e-mail. El paso 2 aparece después.",
+      step2Label: "Paso 2",
+      step2Hint: "Añade el resto de datos.",
       privacyBefore: "Acepto el",
       privacyLink: "aviso de privacidad",
       privacyAfter: "y el aviso de double opt-in.",
@@ -1272,21 +1538,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "No funcionó. Inténtalo más tarde.",
     },
     footer: {
-      membershipFree: "La membresía es gratuita.",
+      membershipFree: "La membresía es gratuita y amplía nuestro alcance.",
       supportNoteBefore:
-        "El apoyo es voluntario y ayuda a construir moderación, dossiers e infraestructura. Detalles en",
+        "El apoyo es voluntario. Cada contribución nos ayuda a crecer más rápido — detalles en",
       supportNoteLink: "Apoyar",
       supportNoteAfter: "o por e-mail a",
       publicPrivateNote:
-        "Público/Privado: Público muestra solo totales por ciudad (sin perfiles individuales, sin datos crudos).",
+        "Anónimo hacia fuera: solo totales por ciudad (sin perfiles individuales, sin datos brutos).",
     },
     supportSection: {
       label: "Apoyar",
-      title: "Apoya la iniciativa - transparente y sin ventajas de voto.",
+      title: "Apoya voluntariamente — elige contribución, amplía el alcance.",
       body:
-        "El apoyo permite infraestructura, investigación y traducciones. Todo está documentado con transparencia.",
-      ctaSupport: "Opciones de apoyo",
+        "La membresía es gratuita; cada contribución ayuda a crecer. Como iniciativa privada no emitimos recibos de donación.",
+      ctaSupport: "Calculadora de aportes",
       ctaQuestions: "Hacer una pregunta",
+    },
+    supportAfterCta: {
+      title: "Únete gratis ahora",
+      body: "Con o sin contribución: la membresía es gratuita y cuenta para el alcance.",
+      cta: "Ir al registro",
+    },
+    supportCalculator: {
+      label: "Calculadora de aportes",
+      title: "Estimar un aporte",
+      body:
+        "Una referencia basada en tu hogar. La membresía sigue siendo gratuita; cada aporte es voluntario y cuenta.",
+      net: "Ingreso neto del hogar (mensual)",
+      rent: "Alquiler con gastos (mensual)",
+      household: "Tamaño del hogar (16+)",
+      interval: "Intervalo",
+      monthly: "Mensual",
+      once: "Único",
+      presets: "Selección rápida",
+      suggestion: "Sugerencia por persona",
+      perPerson: "Monto por persona",
+      total: "Aporte total",
+      note: "Guía ajustable en cualquier momento. Sin ventajas de voto.",
+    },
+    supportBank: {
+      title: "Datos bancarios",
+      body: "Para tu aporte. Mantén la referencia al mínimo necesario.",
+      ctaContact: "Contactar",
+      labels: {
+        recipient: "Titular de la cuenta",
+        bank: "Banco",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Concepto",
+      },
+      referenceHint: "{bankRefPrefix} nota opcional (p. ej. ciudad o proyecto)",
+      noDetails: "Enviaremos los datos bancarios a solicitud.",
+      afterNote:
+        "El apoyo es voluntario, no está ligado a derechos de voto y se documenta con transparencia. No hay recibos de donación (iniciativa privada).",
     },
   },
   it: {
@@ -1294,6 +1598,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "Partecipazione strutturata",
       title: "Partecipazione che resta tracciabile.",
       subtitle: "Neutrale, strutturata, guidata dallo stato.",
+      oneLiner:
+        "VoiceOpenGov è l'iniziativa e la membership. eDebatte è lo strumento: Check → Dossier → Partecipazione → Stato.",
       lead: {
         pre: "VoiceOpenGov è un'",
         highlight1: "architettura dell'informazione",
@@ -1305,13 +1611,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "Partecipazione tra elezioni — come architettura dell'informazione: opzioni, motivazione, stato.",
       scalable: "Documentata, comparabile, riutilizzabile.",
+      badges: ["Finanziato dalla community", "Niente pubblicità", "Nessuna vendita di dati"],
       ctas: {
         join: "Partecipa gratis da mobile",
         how: "Come funziona",
-        support: "Sostieni l'iniziativa",
+        support: "Sostieni volontariamente",
+      },
+      more: {
+        label: "Vuoi saperne di più?",
+        edebatte: "Iscriviti a eDebatte",
+        preorder: "Preordina la trilogia",
       },
       micro: {
-        line1: "Mobile in 3 minuti • Double opt-in • Pubblico: solo totali per città",
+        line1: "Mobile in 3 minuti • Double opt-in • Anonimo verso l’esterno",
         line2: "Nessun profilo individuale • Nessun dato grezzo",
       },
       steps: [
@@ -1354,11 +1666,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Fondamenti",
-      title: "I fondamenti pubblicati",
+      title: "Le basi (in preparazione)",
       subtitle:
-        "VoiceOpenGov si basa su tre volumi aperti. Tutti i contenuti sono liberamente accessibili.",
+        "I tre volumi saranno pubblicati a breve. Preordine possibile — informazioni via newsletter.",
       bandLine: "Volume I · Volume II · Volume III",
-      bandHint: "Teoria, modello e metodo — documentati apertamente e accessibili.",
+      bandHint: "Teoria, modello e metodo — pubblicazione in corso.",
       bandLabel: "Volume",
       items: [
         {
@@ -1367,7 +1679,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Analisi delle sfide strutturali della partecipazione moderna — sovraccarico istituzionale, frammentazione dell'informazione e mancanza di trasparenza sullo stato.",
           href: "/grundlagen/weissbuch",
-          cta: "Leggi online →",
+          cta: "Scopri di più →",
         },
         {
           title: "Legitimation 2.0",
@@ -1375,7 +1687,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Un modello di governance per decisioni verificabili, dimensioni decisionali documentate e responsabilità tracciabile.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Leggi online →",
+          cta: "Scopri di più →",
         },
         {
           title: "RePro",
@@ -1383,10 +1695,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Operazionalizzazione metodica: Check → Dossier → Partecipazione → Stato — come logica decisionale formalizzata.",
           href: "/grundlagen/repro",
-          cta: "Leggi online →",
+          cta: "Scopri di più →",
         },
       ],
-      footerNote: "Accesso libero · Nessun paywall · Se è utile, apprezziamo il supporto. Indipendenti, senza investitori.",
+      footerNote: "Preordine possibile · Informazioni via newsletter · Supporto gradito.",
       architectureLabel: "Architettura",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1411,7 +1723,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Iscrizione",
       title: "Unisciti gratis",
-      subtitle: "Double opt-in: conferma l'e-mail. L'iscrizione è gratuita.",
+      subtitle:
+        "Iscrizione gratuita (double opt-in). Contributo opzionale — ci aiuta a crescere più in fretta.",
       type: {
         person: "Persona",
         organisation: "Organizzazione",
@@ -1429,11 +1742,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "nella mia città",
       country: "Paese (opzionale)",
       countryPlaceholder: "Seleziona",
-      locationVisibility: "Visibilità della città",
+      locationVisibility: "Anonimato verso l’esterno",
       public: "Pubblico",
       private: "Privato",
       visibilityHint:
-        "Pubblico: conteggia nei totali per città (nessun profilo individuale, nessun dato grezzo). Privato: non aggregato pubblicamente.",
+        "Mostriamo solo totali per città, senza profili individuali né dati grezzi.",
       logoUrl: "Link logo (opzionale)",
       avatarUpload: "Carica foto profilo (opzionale)",
       previewLabel: "Anteprima",
@@ -1449,8 +1762,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Aggiornamenti eDebatte (strumento) (opzionale)",
       supportCardTitle: "Sostieni l'iniziativa",
       supportCardBody:
-        "Il supporto volontario mantiene infrastruttura, ricerca e moderazione. Nessun vantaggio di voto.",
-      supportCardCta: "Vedi opzioni di supporto",
+        "Ciclo chiuso: iscrizione (gratuita) → contributo (opzionale) → crescere più in fretta. Nessun vantaggio di voto.",
+      supportCardCta: "Apri il calcolatore",
+      step1Cta: "Partecipa",
+      step1Hint: "Passo 1: e-mail. Il passo 2 appare dopo.",
+      step2Label: "Passo 2",
+      step2Hint: "Aggiungi le informazioni rimanenti.",
       privacyBefore: "Accetto la",
       privacyLink: "nota sulla privacy",
       privacyAfter: "e l'avviso di double opt-in.",
@@ -1502,21 +1819,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "Non ha funzionato. Riprova più tardi.",
     },
     footer: {
-      membershipFree: "L'iscrizione è gratuita.",
+      membershipFree: "L'iscrizione è gratuita e aumenta la nostra portata.",
       supportNoteBefore:
-        "Il supporto è volontario e aiuta a costruire moderazione, dossier e infrastruttura. Dettagli su",
+        "Il supporto è volontario. Ogni contributo ci aiuta a crescere più in fretta — dettagli su",
       supportNoteLink: "Sostieni",
       supportNoteAfter: "o via e-mail a",
       publicPrivateNote:
-        "Pubblico/Privato: Pubblico mostra solo totali per città (nessun profilo, nessun dato grezzo).",
+        "Anonimo verso l’esterno: pubblici solo i totali per città (nessun profilo individuale, nessun dato grezzo).",
     },
     supportSection: {
       label: "Sostieni",
-      title: "Sostieni l'iniziativa - trasparente e senza vantaggi di voto.",
+      title: "Sostieni volontariamente — scegli il contributo, aumenta la portata.",
       body:
-        "Il supporto abilita infrastruttura, ricerca e traduzioni. Tutto è documentato in modo trasparente.",
-      ctaSupport: "Opzioni di supporto",
+        "L'iscrizione è gratuita; ogni contributo aiuta a crescere. Come iniziativa privata non rilasciamo ricevute di donazione.",
+      ctaSupport: "Calcolatore del contributo",
       ctaQuestions: "Fai una domanda",
+    },
+    supportAfterCta: {
+      title: "Iscriviti gratis ora",
+      body: "Con o senza contributo: l'iscrizione è gratuita e conta per la portata.",
+      cta: "Vai all'iscrizione",
+    },
+    supportCalculator: {
+      label: "Calcolatore del contributo",
+      title: "Stima un contributo",
+      body:
+        "Un riferimento basato sul tuo nucleo. L’adesione resta gratuita; ogni contributo è volontario e conta.",
+      net: "Reddito netto familiare (mensile)",
+      rent: "Affitto tutto incluso (mensile)",
+      household: "Dimensione del nucleo (16+)",
+      interval: "Intervallo",
+      monthly: "Mensile",
+      once: "Una tantum",
+      presets: "Scelta rapida",
+      suggestion: "Suggerimento per persona",
+      perPerson: "Importo per persona",
+      total: "Contributo totale",
+      note: "Riferimento modificabile in qualsiasi momento. Nessun vantaggio di voto.",
+    },
+    supportBank: {
+      title: "Coordinate bancarie",
+      body: "Per il tuo contributo. Nella causale indica solo l’essenziale.",
+      ctaContact: "Contattaci",
+      labels: {
+        recipient: "Intestatario",
+        bank: "Banca",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Causale",
+      },
+      referenceHint: "{bankRefPrefix} nota opzionale (es. città o progetto)",
+      noDetails: "Invieremo le coordinate bancarie su richiesta.",
+      afterNote:
+        "Il sostegno è volontario, non legato ai diritti di voto e documentato in modo trasparente. Niente ricevute di donazione (iniziativa privata).",
     },
   },
   tr: {
@@ -1524,6 +1879,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "Yapılandırılmış katılım",
       title: "İzlenebilir kalan katılım.",
       subtitle: "Tarafsız, yapılandırılmış, durum odaklı.",
+      oneLiner:
+        "VoiceOpenGov girişim ve üyelik. eDebatte araçtır: Check → Dossier → Katılım → Statü.",
       lead: {
         pre: "VoiceOpenGov bir",
         highlight1: "bilgi mimarisidir",
@@ -1535,13 +1892,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "Seçimler arasında katılım — bilgi mimarisi olarak: seçenekler, gerekçe, durum.",
       scalable: "Belgelenmiş, karşılaştırılabilir, yeniden kullanılabilir.",
+      badges: ["Topluluk finansmanlı", "Reklam yok", "Veri satışı yok"],
       ctas: {
         join: "Mobilde ücretsiz katıl",
         how: "Nasıl çalışır",
-        support: "Girişimi destekle",
+        support: "Gönüllü destekle",
+      },
+      more: {
+        label: "Daha fazlası?",
+        edebatte: "eDebatte’ye kaydol",
+        preorder: "Trilojiyi ön sipariş ver",
       },
       micro: {
-        line1: "Mobilde 3 dakikada • Double opt-in • Herkese açık: sadece şehir toplamları",
+        line1: "Mobilde 3 dakikada • Double opt-in • Dışa karşı anonim",
         line2: "Bireysel profil yok • Ham veri yok",
       },
       steps: [
@@ -1584,10 +1947,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Temeller",
-      title: "Yayınlanan temeller",
-      subtitle: "VoiceOpenGov üç açık cilt üzerine kurulur. Tüm içerikler serbestçe erişilebilir.",
+      title: "Temeller (hazırlanıyor)",
+      subtitle: "Üç cilt yakında yayımlanacak. Ön sipariş mümkün — bilgiler bülten üzerinden.",
       bandLine: "Cilt I · Cilt II · Cilt III",
-      bandHint: "Teori, model ve yöntem — açıkça belgelenmiş ve erişilebilir.",
+      bandHint: "Teori, model ve yöntem — yayın sürecinde.",
       bandLabel: "Cilt",
       items: [
         {
@@ -1596,7 +1959,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Modern katılımın yapısal zorluklarının analizi — kurumsal aşırı yük, bilgi parçalanması ve statü şeffaflığının eksikliği.",
           href: "/grundlagen/weissbuch",
-          cta: "Çevrimiçi oku →",
+          cta: "Daha fazla bilgi →",
         },
         {
           title: "Legitimation 2.0",
@@ -1604,7 +1967,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Doğrulanabilir kararlar, belgelenmiş karar boyutları ve izlenebilir sorumluluk için bir yönetişim modeli.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Çevrimiçi oku →",
+          cta: "Daha fazla bilgi →",
         },
         {
           title: "RePro",
@@ -1612,10 +1975,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Yöntemsel operasyonelleştirme: Check → Dossier → Katılım → Statü — biçimsel karar mantığı olarak.",
           href: "/grundlagen/repro",
-          cta: "Çevrimiçi oku →",
+          cta: "Daha fazla bilgi →",
         },
       ],
-      footerNote: "Ücretsiz erişim · Paywall yok · Fayda sağlıyorsa desteğinizi önemsiyoruz. Bağımsız, yatırımcısız.",
+      footerNote: "Ön sipariş mümkün · Bülten üzerinden bilgi · Destek memnuniyetle.",
       architectureLabel: "Mimari",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1640,7 +2003,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Üyelik",
       title: "Ücretsiz katıl",
-      subtitle: "Double opt-in: e-postanı onayla. Üyelik ücretsizdir.",
+      subtitle:
+        "Üyelik ücretsiz (double opt-in). İsteğe bağlı katkı seç — daha hızlı büyümemize yardım eder.",
       type: {
         person: "Kişi",
         organisation: "Kuruluş",
@@ -1658,11 +2022,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "bulunduğum yerde",
       country: "Ülke (isteğe bağlı)",
       countryPlaceholder: "Seçiniz",
-      locationVisibility: "Şehir görünürlüğü",
+      locationVisibility: "Dışa karşı anonimlik",
       public: "Kamu",
       private: "Özel",
       visibilityHint:
-        "Kamu: şehir toplamlarına dahil edilir (bireysel profil yok, ham veri yok). Özel: kamuya açık olarak birleştirilmez.",
+        "Yalnızca şehir toplamlarını gösteriyoruz, bireysel profil ve ham veri yok.",
       logoUrl: "Logo bağlantısı (isteğe bağlı)",
       avatarUpload: "Profil fotoğrafı yükle (isteğe bağlı)",
       previewLabel: "Önizleme",
@@ -1678,8 +2042,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "eDebatte güncellemeleri (araç) (isteğe bağlı)",
       supportCardTitle: "Girişimi destekle",
       supportCardBody:
-        "Gönüllü destek altyapı, araştırma ve moderasyonu sürdürür. Oy avantajı yok.",
-      supportCardCta: "Destek seçeneklerini gör",
+        "Kapalı döngü: üye ol (ücretsiz) → katkı seç (isteğe bağlı) → daha hızlı büyü. Oy avantajı yok.",
+      supportCardCta: "Katkı hesaplayıcısını aç",
+      step1Cta: "Katıl",
+      step1Hint: "1. adım: e-posta. 2. adım sonra görünür.",
+      step2Label: "2. adım",
+      step2Hint: "Kalan bilgileri tamamlayın.",
       privacyBefore: "Şu",
       privacyLink: "gizlilik bildirimini",
       privacyAfter: "ve double opt-in bilgisini kabul ediyorum.",
@@ -1731,21 +2099,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "Olmadı. Lütfen daha sonra tekrar deneyin.",
     },
     footer: {
-      membershipFree: "Üyelik ücretsizdir.",
+      membershipFree: "Üyelik ücretsizdir ve erişimimizi büyütür.",
       supportNoteBefore:
-        "Destek gönüllüdür ve moderasyon, dossier ve altyapının kurulmasına yardımcı olur. Ayrıntılar",
+        "Destek gönüllüdür. Her katkı daha hızlı büyümemize yardım eder — ayrıntılar",
       supportNoteLink: "Destekle",
       supportNoteAfter: "veya e-posta ile",
       publicPrivateNote:
-        "Kamu/Özel: Kamu yalnızca şehir toplamlarını gösterir (bireysel profil yok, ham veri yok).",
+        "Dışa karşı anonim: kamuya açık olan yalnızca şehir toplamlarıdır (bireysel profil yok, ham veri yok).",
     },
     supportSection: {
       label: "Destekle",
-      title: "Girişimi destekle - şeffaf ve oy avantajı olmadan.",
+      title: "Gönüllü destekle — katkı seç, erişimi büyüt.",
       body:
-        "Destek altyapı, araştırma ve çevirileri mümkün kılar. Her şey şeffaf biçimde belgelenir.",
-      ctaSupport: "Destek seçenekleri",
+        "Üyelik ücretsizdir; her katkı büyümeye yardım eder. Özel bir girişim olduğumuz için bağış makbuzu veremiyoruz.",
+      ctaSupport: "Katkı hesaplayıcı",
       ctaQuestions: "Soru sor",
+    },
+    supportAfterCta: {
+      title: "Şimdi ücretsiz katıl",
+      body: "Katkı olsun ya da olmasın: üyelik ücretsizdir ve erişim için sayılır.",
+      cta: "Kayıta git",
+    },
+    supportCalculator: {
+      label: "Katkı hesaplayıcı",
+      title: "Bir katkı tahmini",
+      body:
+        "Hanenize göre bir rehber. Üyelik ücretsizdir; her katkı gönüllüdür ve önemlidir.",
+      net: "Hane net geliri (aylık)",
+      rent: "Isınma dahil kira (aylık)",
+      household: "Hane büyüklüğü (16+)",
+      interval: "Aralık",
+      monthly: "Aylık",
+      once: "Tek sefer",
+      presets: "Hızlı seçim",
+      suggestion: "Kişi başı öneri",
+      perPerson: "Kişi başı tutar",
+      total: "Toplam katkı",
+      note: "Rehber, istediğin zaman ayarlanır. Oy avantajı yok.",
+    },
+    supportBank: {
+      title: "Banka bilgileri",
+      body: "Katkın için. Açıklama kısmında sadece gerekli bilgileri yazın.",
+      ctaContact: "İletişime geç",
+      labels: {
+        recipient: "Hesap sahibi",
+        bank: "Banka",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Açıklama",
+      },
+      referenceHint: "{bankRefPrefix} isteğe bağlı not (örn. şehir veya proje)",
+      noDetails: "Banka bilgilerini talep üzerine paylaşırız.",
+      afterNote:
+        "Destek gönüllüdür, oy haklarına bağlı değildir ve şeffaf biçimde belgelenir. Bağış makbuzu yoktur (özel girişim).",
     },
   },
   ar: {
@@ -1753,6 +2159,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "مشاركة منظمة",
       title: "مشاركة يمكن تتبعها.",
       subtitle: "محايدة، منظمة، ومبنية على الحالة.",
+      oneLiner:
+        "VoiceOpenGov هي المبادرة والعضوية. eDebatte هي الأداة: Check → Dossier → مشاركة → حالة.",
       lead: {
         pre: "VoiceOpenGov هي",
         highlight1: "معمارية معلومات",
@@ -1764,13 +2172,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "مشاركة بين الانتخابات — كمعمارية معلومات: خيارات، تبرير، حالة.",
       scalable: "موثقة، قابلة للمقارنة، وقابلة لإعادة الاستخدام.",
+      badges: ["ممولة مجتمعياً", "بدون إعلانات", "بدون بيع للبيانات"],
       ctas: {
         join: "شارك مجاناً عبر الهاتف",
         how: "كيف يعمل",
-        support: "ادعم المبادرة",
+        support: "ادعم طوعًا",
+      },
+      more: {
+        label: "مهتم أكثر؟",
+        edebatte: "التسجيل في eDebatte",
+        preorder: "حجز ثلاثية الكتب مسبقًا",
       },
       micro: {
-        line1: "الهاتف خلال 3 دقائق • Double opt-in • علني: إجماليات المدن فقط",
+        line1: "الهاتف خلال 3 دقائق • Double opt-in • مجهول خارجيًا",
         line2: "لا ملفات فردية • لا بيانات خام",
       },
       steps: [
@@ -1813,10 +2227,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "الأسس",
-      title: "الأسس المنشورة",
-      subtitle: "يعتمد VoiceOpenGov على ثلاثة مجلدات مفتوحة. كل المحتوى متاح بحرية.",
+      title: "الأسس (قيد التحضير)",
+      subtitle: "ستُنشر المجلدات الثلاثة قريبًا. الحجز المسبق ممكن — المعلومات عبر النشرة.",
       bandLine: "مجلد I · مجلد II · مجلد III",
-      bandHint: "نظرية، نموذج ومنهج — موثقة بشكل مفتوح ومتاحة للجميع.",
+      bandHint: "نظرية ونموذج ومنهج — النشر قيد التنفيذ.",
       bandLabel: "مجلد",
       items: [
         {
@@ -1825,7 +2239,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "تحليل التحديات البنيوية للمشاركة الحديثة — ضغط المؤسسات، تجزؤ المعلومات، وغياب شفافية الحالة.",
           href: "/grundlagen/weissbuch",
-          cta: "اقرأ عبر الإنترنت →",
+          cta: "معرفة المزيد →",
         },
         {
           title: "Legitimation 2.0",
@@ -1833,7 +2247,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "نموذج حوكمة لقرارات قابلة للتحقق، وأبعاد قرار موثقة، ومسؤولية قابلة للتتبع.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "اقرأ عبر الإنترنت →",
+          cta: "معرفة المزيد →",
         },
         {
           title: "RePro",
@@ -1841,10 +2255,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "تشغيل منهجي: Check → Dossier → مشاركة → حالة — كمنطق قرار مُقنن.",
           href: "/grundlagen/repro",
-          cta: "اقرأ عبر الإنترنت →",
+          cta: "معرفة المزيد →",
         },
       ],
-      footerNote: "وصول مجاني · بدون جدار دفع · إذا كان مفيداً فنحن نقدر الدعم. مستقلون بلا مستثمرين.",
+      footerNote: "الحجز المسبق ممكن · المعلومات عبر النشرة · الدعم مُرحّب به.",
       architectureLabel: "الهندسة",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -1869,7 +2283,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "العضوية",
       title: "انضم مجانا",
-      subtitle: "Double opt-in: يرجى تأكيد البريد الإلكتروني. العضوية مجانية.",
+      subtitle:
+        "العضوية مجانية (تأكيد مزدوج). يمكن اختيار مساهمة اختيارية — تساعدنا على النمو أسرع.",
       type: {
         person: "شخص",
         organisation: "منظمة",
@@ -1887,11 +2302,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "في مدينتي",
       country: "الدولة (اختياري)",
       countryPlaceholder: "اختر",
-      locationVisibility: "رؤية المدينة",
+      locationVisibility: "الهوية مجهولة خارجيًا",
       public: "عام",
       private: "خاص",
       visibilityHint:
-        "عام: يدخل في مجاميع المدن (بدون ملفات فردية، بدون بيانات خام). خاص: غير مجمع علنا.",
+        "نُظهر فقط إجماليات المدن دون ملفات فردية أو بيانات خام.",
       logoUrl: "رابط الشعار (اختياري)",
       avatarUpload: "رفع صورة الملف (اختياري)",
       previewLabel: "معاينة",
@@ -1907,8 +2322,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "تحديثات eDebatte (أداة) (اختياري)",
       supportCardTitle: "ادعم المبادرة",
       supportCardBody:
-        "الدعم التطوعي يحافظ على البنية التحتية والبحث والإشراف. بدون مزايا تصويت.",
-      supportCardCta: "عرض طرق الدعم",
+        "حلقة مغلقة: انضم مجاناً → اختر مساهمة (اختيارية) → نَنمو أسرع. لا امتيازات تصويت.",
+      supportCardCta: "فتح حاسبة المساهمة",
+      step1Cta: "شارك",
+      step1Hint: "الخطوة 1: البريد الإلكتروني. الخطوة 2 تظهر بعدها.",
+      step2Label: "الخطوة 2",
+      step2Hint: "يرجى إضافة بقية البيانات.",
       privacyBefore: "أوافق على",
       privacyLink: "إشعار الخصوصية",
       privacyAfter: "وإشعار double opt-in.",
@@ -1960,21 +2379,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "لم ينجح. يرجى المحاولة لاحقا.",
     },
     footer: {
-      membershipFree: "العضوية مجانية.",
+      membershipFree: "العضوية مجانية وتوسّع وصولنا.",
       supportNoteBefore:
-        "الدعم طوعي ويساعد في بناء الإشراف والملفات والبنية التحتية. التفاصيل في",
+        "الدعم اختياري. كل مساهمة تساعدنا على النمو أسرع — التفاصيل على",
       supportNoteLink: "الدعم",
       supportNoteAfter: "أو عبر البريد إلى",
       publicPrivateNote:
-        "عام/خاص: العام يعرض مجاميع المدن فقط (بدون ملفات فردية، بدون بيانات خام).",
+        "مجهول خارجيًا: المعروض علنًا هو إجماليات المدن فقط (لا ملفات فردية ولا بيانات خام).",
     },
     supportSection: {
       label: "الدعم",
-      title: "ادعم المبادرة - بشفافية وبدون مزايا تصويت.",
+      title: "ادعم طوعاً — اختر مساهمة وزِد الوصول.",
       body:
-        "الدعم يتيح البنية التحتية والبحث والترجمات. يتم توثيق كل شيء بشفافية.",
-      ctaSupport: "طرق الدعم",
+        "العضوية مجانية؛ كل مساهمة تساعدنا على النمو. كمبادرة خاصة لا نصدر إيصالات تبرع.",
+      ctaSupport: "حاسبة المساهمة",
       ctaQuestions: "اطرح سؤالا",
+    },
+    supportAfterCta: {
+      title: "انضم مجاناً الآن",
+      body: "مع أو بدون مساهمة: العضوية مجانية وتُحتسب للوصول.",
+      cta: "الانتقال للتسجيل",
+    },
+    supportCalculator: {
+      label: "حاسبة المساهمة",
+      title: "تقدير المساهمة",
+      body:
+        "تقدير قائم على أسرتك. العضوية تبقى مجانية؛ كل مساهمة اختيارية ومهمة.",
+      net: "صافي دخل الأسرة (شهريًا)",
+      rent: "الإيجار شامل الخدمات (شهريًا)",
+      household: "حجم الأسرة (16+)",
+      interval: "الدورية",
+      monthly: "شهري",
+      once: "مرة واحدة",
+      presets: "اختيارات سريعة",
+      suggestion: "اقتراح للفرد",
+      perPerson: "المبلغ للفرد",
+      total: "إجمالي المساهمة",
+      note: "مؤشر قابل للتعديل في أي وقت. دون مزايا تصويت.",
+    },
+    supportBank: {
+      title: "بيانات الحساب",
+      body: "لمساهمتك. يرجى إبقاء المرجع في الحد الأدنى.",
+      ctaContact: "تواصل معنا",
+      labels: {
+        recipient: "صاحب الحساب",
+        bank: "البنك",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "المرجع",
+      },
+      referenceHint: "{bankRefPrefix} ملاحظة اختيارية (مثلاً مدينة أو مشروع)",
+      noDetails: "سنرسل بيانات الحساب عند الطلب.",
+      afterNote:
+        "الدعم اختياري وليس مرتبطاً بحقوق التصويت ويُوثَّق بشفافية. لا توجد إيصالات تبرع (مبادرة خاصة).",
     },
   },
   ru: {
@@ -1982,6 +2439,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "Структурированное участие",
       title: "Участие, которое остается отслеживаемым.",
       subtitle: "Нейтрально, структурированно, со статусом.",
+      oneLiner:
+        "VoiceOpenGov — инициатива и участие. eDebatte — инструмент: Check → Dossier → Участие → Статус.",
       lead: {
         pre: "VoiceOpenGov — это",
         highlight1: "информационная архитектура",
@@ -1993,13 +2452,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "Участие между выборами — как информационная архитектура: варианты, обоснование, статус.",
       scalable: "Документировано, сопоставимо, повторно используемо.",
+      badges: ["Финансируется сообществом", "Без рекламы", "Без продажи данных"],
       ctas: {
         join: "Участвовать бесплатно с телефона",
         how: "Как это работает",
-        support: "Поддержать инициативу",
+        support: "Поддержать добровольно",
+      },
+      more: {
+        label: "Хотите больше?",
+        edebatte: "Записаться в eDebatte",
+        preorder: "Предзаказать трилогию",
       },
       micro: {
-        line1: "Мобильно за 3 минуты • Double opt-in • Публично: только суммы по городам",
+        line1: "Мобильно за 3 минуты • Double opt-in • Анонимно наружу",
         line2: "Без индивидуальных профилей • Без исходных данных",
       },
       steps: [
@@ -2042,10 +2507,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "Основы",
-      title: "Опубликованные основы",
-      subtitle: "VoiceOpenGov основан на трех открытых томах. Весь контент доступен свободно.",
+      title: "Основы (в подготовке)",
+      subtitle: "Три тома скоро будут опубликованы. Возможна предзаказ — информация в рассылке.",
       bandLine: "Том I · Том II · Том III",
-      bandHint: "Теория, модель и метод — открыто документированы и свободно доступны.",
+      bandHint: "Теория, модель и метод — публикация в процессе.",
       bandLabel: "Том",
       items: [
         {
@@ -2054,7 +2519,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Анализ структурных вызовов современной вовлеченности — институциональная перегрузка, фрагментация информации и отсутствие прозрачности статуса.",
           href: "/grundlagen/weissbuch",
-          cta: "Читать онлайн →",
+          cta: "Подробнее →",
         },
         {
           title: "Legitimation 2.0",
@@ -2062,7 +2527,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Модель управления для проверяемых решений, документированных измерений решения и подотчетной ответственности.",
           href: "/grundlagen/legitimation-2-0",
-          cta: "Читать онлайн →",
+          cta: "Подробнее →",
         },
         {
           title: "RePro",
@@ -2070,10 +2535,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "Методическая операционализация: Check → Dossier → Участие → Статус — как формализованная логика решений.",
           href: "/grundlagen/repro",
-          cta: "Читать онлайн →",
+          cta: "Подробнее →",
         },
       ],
-      footerNote: "Свободный доступ · Без paywall · Если это помогает, мы ценим поддержку. Независимо, без инвесторов.",
+      footerNote: "Предзаказ возможен · Информация в рассылке · Поддержка приветствуется.",
       architectureLabel: "Архитектура",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -2098,7 +2563,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "Участие",
       title: "Присоединиться бесплатно",
-      subtitle: "Double opt-in: подтвердите e-mail. Участие бесплатное.",
+      subtitle:
+        "Участие бесплатное (double opt-in). Взнос по желанию — помогает нам расти быстрее.",
       type: {
         person: "Человек",
         organisation: "Организация",
@@ -2116,11 +2582,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "в моем городе",
       country: "Страна (необязательно)",
       countryPlaceholder: "Выберите",
-      locationVisibility: "Видимость города",
+      locationVisibility: "Внешняя анонимность",
       public: "Публично",
       private: "Приватно",
       visibilityHint:
-        "Публично: учитывается в суммах по городам (без индивидуальных профилей, без сырых данных). Приватно: не агрегируется публично.",
+        "Показываем только городские итоги, без индивидуальных профилей и сырых данных.",
       logoUrl: "Ссылка на логотип (необязательно)",
       avatarUpload: "Загрузить фото профиля (необязательно)",
       previewLabel: "Предпросмотр",
@@ -2136,8 +2602,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletterTool: "Обновления eDebatte (инструмент) (необязательно)",
       supportCardTitle: "Поддержать инициативу",
       supportCardBody:
-        "Добровольная поддержка обеспечивает инфраструктуру, исследования и модерацию. Без преимуществ в голосовании.",
-      supportCardCta: "Посмотреть варианты поддержки",
+        "Замкнутый цикл: вступить (бесплатно) → выбрать взнос (по желанию) → расти быстрее. Без преимуществ в голосовании.",
+      supportCardCta: "Открыть калькулятор",
+      step1Cta: "Участвовать",
+      step1Hint: "Шаг 1: e-mail. Шаг 2 появится дальше.",
+      step2Label: "Шаг 2",
+      step2Hint: "Пожалуйста, добавьте остальные данные.",
       privacyBefore: "Я принимаю",
       privacyLink: "уведомление о конфиденциальности",
       privacyAfter: "и уведомление double opt-in.",
@@ -2189,21 +2659,59 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "Не получилось. Попробуйте позже.",
     },
     footer: {
-      membershipFree: "Участие бесплатное.",
+      membershipFree: "Участие бесплатное и расширяет наш охват.",
       supportNoteBefore:
-        "Поддержка добровольная и помогает строить модерацию, досье и инфраструктуру. Подробнее на",
+        "Поддержка добровольная. Каждый взнос помогает нам расти быстрее — подробности на",
       supportNoteLink: "Поддержать",
       supportNoteAfter: "или по e-mail",
       publicPrivateNote:
-        "Публично/Приватно: Публично показываются только суммы по городам (без профилей, без сырых данных).",
+        "Анонимно наружу: публичны только городские итоги (без индивидуальных профилей, без сырых данных).",
     },
     supportSection: {
       label: "Поддержать",
-      title: "Поддержите инициативу - прозрачно и без преимуществ в голосовании.",
+      title: "Поддержите добровольно — выберите взнос, расширьте охват.",
       body:
-        "Поддержка обеспечивает инфраструктуру, исследования и переводы. Все документируется прозрачно.",
-      ctaSupport: "Варианты поддержки",
+        "Участие бесплатное; каждый взнос помогает росту. Как частная инициатива мы не выдаём квитанции о пожертвовании.",
+      ctaSupport: "Калькулятор взноса",
       ctaQuestions: "Задать вопрос",
+    },
+    supportAfterCta: {
+      title: "Присоединиться бесплатно сейчас",
+      body: "С взносом или без: участие бесплатное и учитывается для охвата.",
+      cta: "К регистрации",
+    },
+    supportCalculator: {
+      label: "Калькулятор взноса",
+      title: "Оценить взнос",
+      body:
+        "Ориентир на основе вашего домохозяйства. Участие остаётся бесплатным; каждый взнос добровольный и важен.",
+      net: "Чистый доход домохозяйства (в месяц)",
+      rent: "Аренда с коммунальными (в месяц)",
+      household: "Размер домохозяйства (16+)",
+      interval: "Период",
+      monthly: "Ежемесячно",
+      once: "Разово",
+      presets: "Быстрый выбор",
+      suggestion: "Рекомендация на человека",
+      perPerson: "Сумма на человека",
+      total: "Общий взнос",
+      note: "Ориентир, можно менять в любое время. Без преимуществ в голосовании.",
+    },
+    supportBank: {
+      title: "Банковские реквизиты",
+      body: "Для вашего взноса. В назначении указывайте только необходимое.",
+      ctaContact: "Связаться",
+      labels: {
+        recipient: "Получатель",
+        bank: "Банк",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "Назначение",
+      },
+      referenceHint: "{bankRefPrefix} дополнительная пометка (например, город или проект)",
+      noDetails: "Мы отправим реквизиты по запросу.",
+      afterNote:
+        "Поддержка добровольна, не связана с правами голоса и документируется прозрачно. Без квитанций о пожертвованиях (частная инициатива).",
     },
   },
   zh: {
@@ -2211,6 +2719,8 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       badge: "结构化参与",
       title: "可追踪的参与。",
       subtitle: "中立、有结构、以状态为导向。",
+      oneLiner:
+        "VoiceOpenGov 是倡议与成员体系，eDebatte 是工具：Check → Dossier → 参与 → 状态。",
       lead: {
         pre: "VoiceOpenGov 是一种",
         highlight1: "信息架构",
@@ -2222,13 +2732,19 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       },
       focus: "选举之间的参与——作为信息架构：选项、理由、状态。",
       scalable: "可记录、可比较、可复用。",
+      badges: ["社区资助", "无广告", "不出售数据"],
       ctas: {
         join: "免费手机参与",
         how: "如何运作",
-        support: "支持该倡议",
+        support: "自愿支持",
+      },
+      more: {
+        label: "想了解更多？",
+        edebatte: "登记 eDebatte",
+        preorder: "预订三部曲",
       },
       micro: {
-        line1: "3 分钟手机完成 • Double opt-in • 公开：仅城市汇总",
+        line1: "3 分钟手机完成 • Double opt-in • 对外匿名",
         line2: "无个人档案 • 无原始数据",
       },
       steps: [
@@ -2271,10 +2787,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     },
     foundations: {
       label: "基础",
-      title: "公开的基础",
-      subtitle: "VoiceOpenGov 基于三部开放文本。所有内容均可自由访问。",
+      title: "基础（筹备中）",
+      subtitle: "三册将于近期发布。可预订——信息将通过通讯发布。",
       bandLine: "卷 I · 卷 II · 卷 III",
-      bandHint: "理论、模型与方法——开放记录并自由访问。",
+      bandHint: "理论、模型与方法——发布进行中。",
       bandLabel: "卷",
       items: [
         {
@@ -2282,14 +2798,14 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           subtitle: "问题空间与要求",
           body: "分析现代参与的结构性挑战——制度负荷、信息碎片化与状态透明度不足。",
           href: "/grundlagen/weissbuch",
-          cta: "在线阅读 →",
+          cta: "了解更多 →",
         },
         {
           title: "Legitimation 2.0",
           subtitle: "治理模型与合法性逻辑",
           body: "用于可验证决策、记录决策维度与可追责责任的治理模型。",
           href: "/grundlagen/legitimation-2-0",
-          cta: "在线阅读 →",
+          cta: "了解更多 →",
         },
         {
           title: "RePro",
@@ -2297,10 +2813,10 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body:
             "方法化落地：Check → Dossier → 参与 → 状态——作为规范化的决策逻辑。",
           href: "/grundlagen/repro",
-          cta: "在线阅读 →",
+          cta: "了解更多 →",
         },
       ],
-      footerNote: "免费访问 · 无付费墙 · 如有帮助，感谢支持。独立运作，无投资人。",
+      footerNote: "可预订 · 资讯通过通讯 · 欢迎支持。",
       architectureLabel: "架构",
       architectureFlow: ["Weißbuch", "Legitimation 2.0", "RePro"],
       architectureStrong: "VoiceOpenGov",
@@ -2324,7 +2840,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
     membership: {
       label: "成员",
       title: "免费加入",
-      subtitle: "Double opt-in：请确认邮箱。成员免费。",
+      subtitle: "会员免费（双重确认）。可选择自愿贡献，帮助我们更快成长。",
       type: {
         person: "个人",
         organisation: "组织",
@@ -2342,11 +2858,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cityFallback: "在我的城市",
       country: "国家（可选）",
       countryPlaceholder: "请选择",
-      locationVisibility: "城市可见性",
+      locationVisibility: "对外匿名",
       public: "公开",
       private: "私密",
       visibilityHint:
-        "公开：计入城市汇总（无个人档案、无原始数据）。私密：不公开汇总。",
+        "仅展示城市汇总，不展示个人资料或原始数据。",
       logoUrl: "Logo 链接（可选）",
       avatarUpload: "上传头像（可选）",
       previewLabel: "预览",
@@ -2360,8 +2876,12 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       newsletter: "VoiceOpenGov 更新（可选）",
       newsletterTool: "eDebatte 更新（工具）（可选）",
       supportCardTitle: "支持该倡议",
-      supportCardBody: "自愿支持维持基础设施、研究与审核。无投票优势。",
-      supportCardCta: "查看支持方式",
+      supportCardBody: "闭环：加入（免费）→ 选择贡献（可选）→ 更快成长。无投票优势。",
+      supportCardCta: "打开计算器",
+      step1Cta: "参与",
+      step1Hint: "第 1 步：填写邮箱。第 2 步随后出现。",
+      step2Label: "第 2 步",
+      step2Hint: "请补充其余信息。",
       privacyBefore: "我接受",
       privacyLink: "隐私说明",
       privacyAfter: "以及 double opt-in 说明。",
@@ -2412,19 +2932,55 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       submitFail: "未成功，请稍后再试。",
     },
     footer: {
-      membershipFree: "成员免费。",
+      membershipFree: "成员免费，并扩大我们的影响力。",
       supportNoteBefore:
-        "支持是自愿的，有助于建立审核、档案与基础设施。详情见",
+        "支持为自愿。每一份贡献都能帮助我们更快成长——详情请见",
       supportNoteLink: "支持",
       supportNoteAfter: "或邮件联系",
-      publicPrivateNote: "公开/私密：公开仅显示城市汇总（无个人档案、无原始数据）。",
+      publicPrivateNote: "对外匿名：仅公开城市汇总（无个人资料、无原始数据）。",
     },
     supportSection: {
       label: "支持",
-      title: "支持该倡议——透明且无投票优势。",
-      body: "支持促进基础设施、研究与翻译。所有内容透明记录。",
-      ctaSupport: "支持方式",
+      title: "自愿支持——选择贡献，扩大影响力。",
+      body: "会员免费；每一份贡献都能帮助成长。作为私人倡议，我们无法开具捐赠收据。",
+      ctaSupport: "贡献计算器",
       ctaQuestions: "提问",
+    },
+    supportAfterCta: {
+      title: "现在免费加入",
+      body: "有无贡献皆可：成员免费，并计入影响力。",
+      cta: "前往报名",
+    },
+    supportCalculator: {
+      label: "贡献计算器",
+      title: "估算贡献",
+      body: "基于家庭情况的参考值。会员保持免费；每一份贡献都是自愿且重要的。",
+      net: "家庭净收入（每月）",
+      rent: "含费用租金（每月）",
+      household: "家庭人数（16+）",
+      interval: "周期",
+      monthly: "每月",
+      once: "一次性",
+      presets: "快捷选择",
+      suggestion: "每人建议",
+      perPerson: "每人金额",
+      total: "总贡献",
+      note: "参考值，可随时调整。无投票优势。",
+    },
+    supportBank: {
+      title: "银行信息",
+      body: "用于你的贡献。附言请尽量简短。",
+      ctaContact: "联系我们",
+      labels: {
+        recipient: "收款方",
+        bank: "银行",
+        iban: "IBAN",
+        bic: "BIC",
+        reference: "附言",
+      },
+      referenceHint: "{bankRefPrefix} 可选备注（如城市或项目）",
+      noDetails: "可按需提供银行信息。",
+      afterNote: "支持为自愿，与投票权无关，透明记录。无法提供捐赠收据（私人倡议）。",
     },
   },
 };

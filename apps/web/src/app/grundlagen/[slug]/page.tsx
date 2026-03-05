@@ -4,8 +4,9 @@ import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getGrundlagenStrings } from "../strings";
 import { getGrundlagenSourceEntry } from "../source";
 import { getLatestRelease } from "../versioning";
-import { getPrintPriceLabel } from "@/config/print";
 import GrundlagenReaderClient from "./reader-client";
+import { getCovers } from "../covers";
+import { getLinks, KDP_SELECT_ENABLED, PRICES } from "../editions";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -58,9 +59,11 @@ export default async function GrundlagenDetailPage({ params }: PageProps) {
   const entry = getGrundlagenSourceEntry(slug);
   if (!entry) notFound();
 
-  const orderPrice = getPrintPriceLabel(locale);
   const release = getLatestRelease(slug);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voiceopengov.org";
+  const covers = getCovers(slug);
+  const links = getLinks(slug);
+  const preorderEmail = process.env.VOG_PREORDER_EMAIL || "members@voiceopengov.org";
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
@@ -69,9 +72,13 @@ export default async function GrundlagenDetailPage({ params }: PageProps) {
           locale={locale}
           strings={strings}
           entry={entry}
-          orderPrice={orderPrice}
           release={release}
           siteUrl={siteUrl}
+          selectMode={KDP_SELECT_ENABLED}
+          covers={covers}
+          links={links}
+          prices={PRICES}
+          preorderEmail={preorderEmail}
         />
       </section>
     </main>

@@ -11,6 +11,7 @@ export function SiteHeader() {
   const { locale, setLocale } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [localeOpen, setLocaleOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState<"system" | "light">("system");
   const router = useRouter();
   const strings = getHeaderStrings(locale);
 
@@ -36,6 +37,43 @@ export function SiteHeader() {
   useEffect(() => {
     if (!mobileOpen) setLocaleOpen(false);
   }, [mobileOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = window.localStorage.getItem("vog_theme");
+    if (stored === "system" || stored === "light") {
+      setThemeMode(stored);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const useLight = themeMode === "light" || (themeMode === "system" && !media.matches);
+      if (useLight) {
+        document.documentElement.dataset.theme = "light";
+        document.documentElement.style.colorScheme = "light";
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        document.documentElement.style.colorScheme = "dark";
+      }
+    };
+
+    apply();
+    if (themeMode === "system") {
+      media.addEventListener("change", apply);
+      return () => media.removeEventListener("change", apply);
+    }
+    return;
+  }, [themeMode]);
+
+  const handleThemeSelect = (next: "system" | "light") => {
+    setThemeMode(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("vog_theme", next);
+    }
+  };
 
   const handleLocaleSelect = (next: SupportedLocale) => {
     setLocale(next);
@@ -125,24 +163,34 @@ export function SiteHeader() {
       {mobileOpen && (
         <div className="border-t border-slate-800/80 bg-slate-950/95">
           <div className="mx-auto max-w-6xl px-4 py-4 space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="text-xs uppercase tracking-wide text-slate-400">
                 {strings.navigationLabel}
               </span>
-              <button
-                type="button"
-                aria-label={localeAriaLabel}
-                aria-expanded={localeOpen}
-                onClick={() => setLocaleOpen((v) => !v)}
-                className="rounded-full border border-slate-700 bg-slate-900 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-300 hover:border-sky-300 hover:text-sky-200"
-              >
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true">{activeLocaleConfig.flagEmoji || "🏳️"}</span>
-                  <span>{localeLabel}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] uppercase tracking-wide text-slate-400">
+                  {strings.theme.label}
                 </span>
-              </button>
+                <div className="inline-flex rounded-full border border-slate-700 bg-slate-900 p-1 text-[11px] font-semibold text-slate-300">
+                  {(["system", "light"] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => handleThemeSelect(mode)}
+                      className={`rounded-full px-3 py-1 ${
+                        themeMode === mode ? "bg-sky-600 text-white" : "hover:bg-slate-900"
+                      }`}
+                    >
+                      {mode === "system" ? strings.theme.system : strings.theme.light}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            {localeOpen && (
+            <div className="space-y-2">
+              <span className="text-xs uppercase tracking-wide text-slate-400">
+                {strings.localeLabel}
+              </span>
               <div className="grid grid-cols-2 gap-2">
                 {localeOptions.map((lang) => (
                   <button
@@ -159,7 +207,7 @@ export function SiteHeader() {
                   </button>
                 ))}
               </div>
-            )}
+            </div>
 
             <nav
               aria-label={strings.aria.mobileNav}

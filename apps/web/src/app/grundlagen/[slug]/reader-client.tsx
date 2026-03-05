@@ -5,6 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { GrundlagenEntry } from "../strings";
 import type { GrundlagenRelease } from "../versioning";
 import { getBand } from "../bands";
+import CoverLightbox from "@/components/media/CoverLightbox";
+import { VOG_SUPPORT_PATH } from "@/config/links";
+import type { BandCovers } from "../covers";
+import type { EditionLinks, EditionPricing } from "../editions";
 
 type GrundlagenReaderStrings = {
   label: string;
@@ -30,10 +34,24 @@ type GrundlagenReaderStrings = {
     copy: string;
     copied: string;
   };
-  download: {
-    label: string;
-    md: string;
-    txt: string;
+  preview: {
+    coverLabel: string;
+    coverFallback: string;
+    executiveLabel: string;
+    executiveFallback: string;
+    executiveNote: string;
+    editionsLabel: string;
+    editionsBody: string;
+    chaptersLabel: string;
+    exclusivityNote: string;
+    ctas: {
+      kindleBuy: string;
+      kindlePreorder: string;
+      printBuy: string;
+      printPreorder: string;
+      bundleEbook: string;
+      bundlePrint: string;
+    };
   };
   overview: {
     contribute: {
@@ -45,11 +63,6 @@ type GrundlagenReaderStrings = {
     };
   };
   supportNote: string;
-  order: {
-    title: string;
-    body: string;
-    cta: string;
-  };
   ctas: { join: string; support: string };
 };
 
@@ -59,22 +72,35 @@ export default function GrundlagenReaderClient({
   locale,
   strings,
   entry,
-  orderPrice,
   release,
   siteUrl,
+  selectMode,
+  covers,
+  links,
+  prices,
+  preorderEmail,
 }: {
   locale: string;
   strings: GrundlagenReaderStrings;
   entry: GrundlagenEntry;
-  orderPrice: string;
   release: GrundlagenRelease | null;
   siteUrl: string;
+  selectMode: boolean;
+  covers: BandCovers | null;
+  links: EditionLinks;
+  prices: EditionPricing;
+  preorderEmail: string;
 }) {
   const [translatedEntry, setTranslatedEntry] = useState<GrundlagenEntry | null>(null);
   const [translationState, setTranslationState] = useState<TranslationState>("idle");
   const [showOriginal, setShowOriginal] = useState(false);
   const [copied, setCopied] = useState(false);
   const shouldTranslate = locale !== "de";
+
+  const makeMailto = (subject: string, body: string) =>
+    `mailto:${preorderEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      body,
+    )}`;
 
   useEffect(() => {
     if (!shouldTranslate) {
@@ -142,6 +168,18 @@ export default function GrundlagenReaderClient({
     return showOriginal ? entry : translatedEntry;
   }, [entry, shouldTranslate, showOriginal, translatedEntry, translationState]);
 
+  const executive = useMemo(() => {
+    const out: string[] = [];
+    if (view.intro) out.push(view.intro);
+    for (const section of view.sections ?? []) {
+      for (const paragraph of section.body ?? []) {
+        out.push(paragraph);
+        if (out.length >= 6) return out;
+      }
+    }
+    return out.length ? out : [strings.preview.executiveFallback];
+  }, [view, strings.preview.executiveFallback]);
+
   const showTranslationToggle = shouldTranslate && translationState === "ready";
   const showTranslationNotice = shouldTranslate;
 
@@ -202,42 +240,157 @@ export default function GrundlagenReaderClient({
         )}
       </header>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-[220px_1fr]">
-        <nav className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            {strings.tocLabel}
+            {strings.preview.coverLabel}
           </p>
-          <ul className="mt-3 space-y-2">
-            {view.sections.map((section) => (
-              <li key={section.id}>
-                <a
-                  href={`#${section.id}`}
-                  className="hover:text-slate-100 hover:underline hover:underline-offset-4"
-                >
-                  {section.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <div className="mt-4">
+            {covers?.front ? (
+              <CoverLightbox
+                frontSrc={covers.front}
+                backSrc={covers.back}
+                title={`${strings.volumeLabel} ${bandNumber}: ${view.title}`}
+                priority
+              />
+            ) : (
+              <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950/50 p-6 text-sm text-slate-400">
+                {strings.preview.coverFallback}
+              </div>
+            )}
+          </div>
+        </div>
 
-        <article className="space-y-8">
-          {view.sections.map((section) => (
-            <section
-              key={section.id}
-              id={section.id}
-              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
-            >
-              <h2 className="text-lg font-semibold text-slate-100">{section.title}</h2>
-              {section.body.map((paragraph, idx) => (
-                <p key={idx} className="mt-2 text-sm text-slate-300">
-                  {paragraph}
-                </p>
+        <div className="space-y-6">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              {strings.preview.executiveLabel}
+            </p>
+            <div className="mt-3 space-y-3 text-sm text-slate-300">
+              {executive.map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
               ))}
-            </section>
-          ))}
-        </article>
+            </div>
+            {selectMode ? (
+              <p className="mt-3 text-xs text-slate-400">{strings.preview.executiveNote}</p>
+            ) : null}
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              {strings.preview.editionsLabel}
+            </p>
+            <p className="mt-2 text-sm text-slate-300">{strings.preview.editionsBody}</p>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              {links.kindleUrl ? (
+                <a className="btn btn-primary" href={links.kindleUrl} target="_blank" rel="noreferrer">
+                  {strings.preview.ctas.kindleBuy} · {prices.ebookPrice}
+                </a>
+              ) : (
+                <a
+                  className="btn btn-primary"
+                  href={makeMailto(
+                    `Vorbestellung – ${strings.volumeLabel} ${bandNumber}: ${view.title} (Kindle)`,
+                    `Bitte Kindle-Edition vorbestellen.\nPreis: ${prices.ebookPrice}\n\nName:\nE-Mail:\nHinweis (optional):\n`,
+                  )}
+                >
+                  {strings.preview.ctas.kindlePreorder} · {prices.ebookPrice}
+                </a>
+              )}
+
+              {links.printUrl ? (
+                <a className="btn btn-ghost" href={links.printUrl} target="_blank" rel="noreferrer">
+                  {strings.preview.ctas.printBuy} · {prices.printPrice}
+                </a>
+              ) : (
+                <a
+                  className="btn btn-ghost"
+                  href={makeMailto(
+                    `Vorbestellung – ${strings.volumeLabel} ${bandNumber}: ${view.title} (Print)`,
+                    `Bitte Print-Edition vorbestellen.\nPreis: ${prices.printPrice}\n\nName:\nE-Mail:\nLieferadresse:\nHinweis (optional):\n`,
+                  )}
+                >
+                  {strings.preview.ctas.printPreorder} · {prices.printPrice}
+                </a>
+              )}
+
+              <a
+                className="btn btn-ghost"
+                href={makeMailto(
+                  "Vorbestellung – eBook-Bundle (Band I–III)",
+                  `Bitte eBook-Bundle vorbestellen.\nPreis: ${prices.ebookBundlePrice}\n\nName:\nE-Mail:\nHinweis (optional):\n`,
+                )}
+              >
+                {strings.preview.ctas.bundleEbook} · {prices.ebookBundlePrice}
+              </a>
+
+              <a
+                className="btn btn-ghost"
+                href={makeMailto(
+                  "Vorbestellung – Print-Bundle (Band I–III)",
+                  `Bitte Print-Bundle vorbestellen.\nPreis: ${prices.printBundlePrice}\n\nName:\nE-Mail:\nLieferadresse:\nHinweis (optional):\n`,
+                )}
+              >
+                {strings.preview.ctas.bundlePrint} · {prices.printBundlePrice}
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              {strings.preview.chaptersLabel}
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-slate-300">
+              {view.sections.map((section) => (
+                <li key={section.id}>{section.title}</li>
+              ))}
+            </ul>
+            {selectMode ? (
+              <p className="mt-3 text-xs text-slate-400">{strings.preview.exclusivityNote}</p>
+            ) : null}
+          </div>
+        </div>
       </div>
+
+      {!selectMode ? (
+        <div className="mt-8 grid gap-6 md:grid-cols-[220px_1fr]">
+          <nav className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              {strings.tocLabel}
+            </p>
+            <ul className="mt-3 space-y-2">
+              {view.sections.map((section) => (
+                <li key={section.id}>
+                  <a
+                    href={`#${section.id}`}
+                    className="hover:text-slate-100 hover:underline hover:underline-offset-4"
+                  >
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <article className="space-y-8">
+            {view.sections.map((section) => (
+              <section
+                key={section.id}
+                id={section.id}
+                className="rounded-2xl border border-slate-800 bg-slate-900/70 p-5"
+              >
+                <h2 className="text-lg font-semibold text-slate-100">{section.title}</h2>
+                {section.body.map((paragraph, idx) => (
+                  <p key={idx} className="mt-2 text-sm text-slate-300">
+                    {paragraph}
+                  </p>
+                ))}
+              </section>
+            ))}
+          </article>
+        </div>
+      ) : null}
 
       <div className="mt-10 flex flex-wrap justify-center gap-3">
         <Link href="/#mitmachen" className="btn btn-primary">
@@ -249,7 +402,7 @@ export default function GrundlagenReaderClient({
         <Link href="/swipes" className="btn btn-ghost">
           {strings.overview.contribute.ctas.vote}
         </Link>
-        <Link href="/unterstuetzen" className="btn btn-ghost">
+        <Link href={VOG_SUPPORT_PATH} className="btn btn-ghost">
           {strings.overview.contribute.ctas.support}
         </Link>
       </div>
@@ -293,38 +446,6 @@ export default function GrundlagenReaderClient({
         </button>
       </div>
 
-      <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-900/80 p-5 text-center text-sm text-slate-300 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-          {strings.download.label}
-        </p>
-        <div className="mt-3 flex flex-wrap justify-center gap-3">
-          <a
-            href={`/api/grundlagen/${entry.slug}/download?format=md`}
-            className="btn btn-ghost"
-          >
-            {strings.download.md}
-          </a>
-          <a
-            href={`/api/grundlagen/${entry.slug}/download?format=txt`}
-            className="btn btn-ghost"
-          >
-            {strings.download.txt}
-          </a>
-        </div>
-      </div>
-
-      <div className="mt-8 rounded-3xl border border-slate-800 bg-slate-900/80 p-5 text-center shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-          {strings.order.title}
-        </p>
-        <h3 className="mt-2 text-2xl font-semibold text-slate-100">
-          {orderPrice}
-        </h3>
-        <p className="mt-2 text-sm text-slate-300">{strings.order.body}</p>
-        <Link href={`/grundlagen/bestellen?band=${entry.slug}`} className="btn btn-ghost mt-4">
-          {strings.order.cta}
-        </Link>
-      </div>
     </>
   );
 }

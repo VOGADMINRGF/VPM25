@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { VOG_SUPPORT_PATH } from "@/config/links";
 
 function formatValue(value: number) {
   return new Intl.NumberFormat("de-DE").format(value);
@@ -85,13 +86,13 @@ export function MomentumAndCtas({
           Chapter starten
         </Link>
 
-        <Link href="/unterstuetzen" className={ctaGhost}>
+        <Link href={VOG_SUPPORT_PATH} className={ctaGhost}>
           Initiative unterstützen
         </Link>
       </div>
 
       <div className="mt-2 text-xs text-slate-400">
-        60 Sekunden - Double-Opt-In - öffentlich nur Orts-Summen - keine Einzelprofile
+        60 Sekunden - Double-Opt-In - anonym nach außen - nur Orts-Summen
       </div>
     </section>
   );

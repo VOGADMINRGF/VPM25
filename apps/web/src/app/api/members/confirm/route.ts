@@ -1,5 +1,6 @@
 import { membersCol } from "@/lib/vogMongo";
 import { getCountryMeta } from "@/lib/countries";
+import { VOG_SUPPORT_URL } from "@/config/links";
 
 type MemberPreview = {
   type: "person" | "organisation";
@@ -130,7 +131,7 @@ function renderPage(opts: {
           </div>
           <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px;">
             <a href="${baseUrl}/" style="background: #0ea5e9; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Zur Startseite</a>
-            <a href="${baseUrl}/unterstuetzen" style="background: #06b6d4; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Initiative unterstützen</a>
+            <a href="${VOG_SUPPORT_URL}" style="background: #06b6d4; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Initiative unterstützen</a>
             <a href="${baseUrl}/kontakt" style="background: #e2e8f0; color: #0f172a; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Fragen?</a>
           </div>
         </div>
