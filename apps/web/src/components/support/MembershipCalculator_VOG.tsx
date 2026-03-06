@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "@/context/LocaleContext";
 
 type CalculatorStrings = {
   label: string;
   title: string;
   body: string;
+  lockedTitle: string;
+  lockedBody: string;
+  lockedCta: string;
   net: string;
   rent: string;
   household: string;
@@ -18,6 +21,13 @@ type CalculatorStrings = {
   perPerson: string;
   total: string;
   note: string;
+  peopleTitle: string;
+  peopleHint: string;
+  personLabel: string;
+  personName: string;
+  personEmail: string;
+  mailListLabel: string;
+  mailListHint: string;
 };
 
 const MIN_SUGGESTION = 5.63;
@@ -37,8 +47,19 @@ function clampHousehold(value: string) {
   return parsed;
 }
 
-export function MembershipCalculator_VOG({ strings }: { strings: CalculatorStrings }) {
+export function MembershipCalculator_VOG({
+  strings,
+  canOpen = true,
+  onRequestEmail,
+}: {
+  strings: CalculatorStrings;
+  canOpen?: boolean;
+  onRequestEmail?: () => void;
+}) {
   const { locale } = useLocale();
+  const [people, setPeople] = useState<Array<{ name: string; email: string }>>([
+    { name: "", email: "" },
+  ]);
   const [net, setNet] = useState("");
   const [rent, setRent] = useState("");
   const [household, setHousehold] = useState("1");
@@ -48,6 +69,7 @@ export function MembershipCalculator_VOG({ strings }: { strings: CalculatorStrin
   const netValue = parseAmount(net) ?? 0;
   const rentValue = parseAmount(rent) ?? 0;
   const householdValue = clampHousehold(household);
+  const isLocked = !canOpen;
 
   const suggestion = useMemo(() => {
     const base = Math.max(0, netValue - rentValue);
@@ -65,6 +87,40 @@ export function MembershipCalculator_VOG({ strings }: { strings: CalculatorStrin
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(value);
+
+  useEffect(() => {
+    setPeople((prev) => {
+      const next = [...prev];
+      if (householdValue > next.length) {
+        for (let i = next.length; i < householdValue; i += 1) {
+          next.push({ name: "", email: "" });
+        }
+      }
+      if (householdValue < next.length) {
+        next.length = householdValue;
+      }
+      return next;
+    });
+  }, [householdValue]);
+
+  if (isLocked) {
+    return (
+      <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+          {strings.label}
+        </p>
+        <h2 className="mt-2 text-2xl font-bold text-slate-100">{strings.lockedTitle}</h2>
+        <p className="mt-2 text-sm text-slate-300">{strings.lockedBody}</p>
+        <button
+          type="button"
+          className="btn btn-primary mt-4"
+          onClick={() => onRequestEmail?.()}
+        >
+          {strings.lockedCta}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
@@ -156,6 +212,75 @@ export function MembershipCalculator_VOG({ strings }: { strings: CalculatorStrin
               placeholder={formatMoney(suggestion)}
             />
           </label>
+
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-slate-300">{strings.peopleTitle}</p>
+            <p className="text-xs text-slate-400">{strings.peopleHint}</p>
+            <div className="space-y-3">
+              {people.map((person, index) => (
+                <div key={`${index}-${householdValue}`} className="grid gap-3 md:grid-cols-2">
+                  <label className="space-y-1 text-xs font-medium text-slate-300">
+                    <span>
+                      {strings.personName}{" "}
+                      <span className="text-slate-400">
+                        {strings.personLabel.replace("{n}", String(index + 1))}
+                      </span>
+                    </span>
+                    <input
+                      value={person.name}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setPeople((prev) => {
+                          const next = [...prev];
+                          next[index] = { ...next[index], name: value };
+                          return next;
+                        });
+                      }}
+                      className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                      placeholder={strings.personName}
+                    />
+                  </label>
+                  <label className="space-y-1 text-xs font-medium text-slate-300">
+                    <span>{strings.personEmail}</span>
+                    <input
+                      value={person.email}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setPeople((prev) => {
+                          const next = [...prev];
+                          next[index] = { ...next[index], email: value };
+                          return next;
+                        });
+                      }}
+                      type="email"
+                      className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40"
+                      placeholder="name@email.com"
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+            <p className="text-xs font-medium text-slate-300">{strings.mailListLabel}</p>
+            <p className="text-xs text-slate-400">{strings.mailListHint}</p>
+            <textarea
+              readOnly
+              className="w-full min-h-[120px] rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-200 outline-none"
+              value={people
+                .map((person, index) => {
+                  const name =
+                    person.name.trim() ||
+                    strings.personLabel.replace("{n}", String(index + 1));
+                  const email = person.email.trim() || "—";
+                  return `${index + 1}. ${name} <${email}> — ${formatMoney(
+                    amountValue,
+                  )} · ${interval === "monthly" ? strings.monthly : strings.once}`;
+                })
+                .join("\n")}
+            />
+          </div>
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300">

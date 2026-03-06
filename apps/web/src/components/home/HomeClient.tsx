@@ -81,6 +81,11 @@ export default function HomeClient({
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactFirstName, setContactFirstName] = useState("");
+  const [contactLastName, setContactLastName] = useState("");
+  const [contactSubject, setContactSubject] = useState("");
+  const [contactHumanCheck, setContactHumanCheck] = useState(false);
+  const [contactError, setContactError] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
   const stepTwoFirstRef = useRef<HTMLInputElement>(null);
   const inputClass =
@@ -89,6 +94,7 @@ export default function HomeClient({
   const isPerson = memberType === "person";
   const isPublic = true;
   const cityRequired = true;
+  const canOpenCalculator = email.trim().length > 3 && email.includes("@");
 
   const resetForm = () => {
     setMemberType("person");
@@ -125,6 +131,45 @@ export default function HomeClient({
     if (!isStepTwoOpen) return;
     window.setTimeout(() => stepTwoFirstRef.current?.focus(), 80);
   }, [isStepTwoOpen]);
+
+  const handleRequestEmail = () => {
+    if (typeof window !== "undefined") {
+      window.location.hash = "#join";
+    }
+    window.setTimeout(() => emailRef.current?.focus(), 80);
+  };
+
+  const handleContactSubmit = () => {
+    const first = contactFirstName.trim();
+    const last = contactLastName.trim();
+    const subject = contactSubject.trim();
+
+    if (!first || !last || !subject) {
+      setContactError(strings.supportBank.contact.errorRequired);
+      return;
+    }
+    if (!contactHumanCheck) {
+      setContactError(strings.supportBank.contact.errorHuman);
+      return;
+    }
+
+    const bodyLines = [
+      strings.supportBank.contact.mailIntro,
+      `${strings.supportBank.contact.mailName} ${first} ${last}`.trim(),
+      `${strings.supportBank.contact.mailSubject} ${subject}`.trim(),
+      email.trim()
+        ? `${strings.supportBank.contact.mailEmail} ${email.trim()}`
+        : undefined,
+      strings.supportBank.contact.mailOutro,
+    ].filter(Boolean);
+
+    const mailto = `mailto:${contactEmail}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+
+    setContactError("");
+    window.location.href = mailto;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -718,7 +763,11 @@ export default function HomeClient({
 
       <section id="voiceopengov-support" className="mx-auto mt-14 max-w-6xl px-4 pb-10">
         <div className="grid gap-6">
-          <MembershipCalculator_VOG strings={strings.supportCalculator} />
+          <MembershipCalculator_VOG
+            strings={strings.supportCalculator}
+            canOpen={canOpenCalculator}
+            onRequestEmail={handleRequestEmail}
+          />
 
           <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-center shadow-sm">
             <p className="text-sm font-semibold text-slate-100">
@@ -742,9 +791,6 @@ export default function HomeClient({
                   {strings.supportBank.body}
                 </p>
               </div>
-              <a href={`mailto:${contactEmail}`} className="btn btn-ghost">
-                {strings.supportBank.ctaContact}
-              </a>
             </div>
 
             {supportBank.recipient && supportBank.iban && supportBank.bic && supportBank.bank ? (
@@ -802,9 +848,71 @@ export default function HomeClient({
                 {strings.supportBank.noDetails}
               </div>
             )}
-            <p className="mt-3 text-xs text-slate-400">
-              {strings.supportBank.afterNote}
-            </p>
+            <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {strings.supportBank.contact.title}
+              </p>
+              <p className="mt-2 text-xs text-slate-300">
+                {strings.supportBank.contact.body}
+              </p>
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                <label className="space-y-1 text-xs font-medium text-slate-300">
+                  <span>{strings.supportBank.contact.firstName}</span>
+                  <input
+                    value={contactFirstName}
+                    onChange={(e) => {
+                      setContactFirstName(e.target.value);
+                      setContactError("");
+                    }}
+                    className={inputClass}
+                  />
+                </label>
+                <label className="space-y-1 text-xs font-medium text-slate-300">
+                  <span>{strings.supportBank.contact.lastName}</span>
+                  <input
+                    value={contactLastName}
+                    onChange={(e) => {
+                      setContactLastName(e.target.value);
+                      setContactError("");
+                    }}
+                    className={inputClass}
+                  />
+                </label>
+                <label className="space-y-1 text-xs font-medium text-slate-300 md:col-span-2">
+                  <span>{strings.supportBank.contact.subject}</span>
+                  <input
+                    value={contactSubject}
+                    onChange={(e) => {
+                      setContactSubject(e.target.value);
+                      setContactError("");
+                    }}
+                    className={inputClass}
+                    placeholder={strings.supportBank.contact.subjectPlaceholder}
+                  />
+                </label>
+              </div>
+              <label className="mt-3 flex items-start gap-2 text-xs text-slate-300">
+                <input
+                  type="checkbox"
+                  checked={contactHumanCheck}
+                  onChange={(e) => {
+                    setContactHumanCheck(e.target.checked);
+                    setContactError("");
+                  }}
+                  className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
+                />
+                <span>{strings.supportBank.contact.humanCheck}</span>
+              </label>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <button type="button" onClick={handleContactSubmit} className="btn btn-ghost">
+                  {strings.supportBank.contact.submit}
+                </button>
+                {contactError ? (
+                  <span className="text-xs text-amber-300">{contactError}</span>
+                ) : null}
+              </div>
+            </div>
+            <p className="mt-3 text-xs text-slate-400">{strings.supportBank.afterNote}</p>
           </div>
         </div>
       </section>
