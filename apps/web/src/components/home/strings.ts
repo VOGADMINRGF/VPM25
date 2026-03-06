@@ -156,6 +156,9 @@ type HomeStrings = {
     label: string;
     title: string;
     body: string;
+    lockedTitle: string;
+    lockedBody: string;
+    lockedCta: string;
     net: string;
     rent: string;
     household: string;
@@ -167,6 +170,13 @@ type HomeStrings = {
     perPerson: string;
     total: string;
     note: string;
+    peopleTitle: string;
+    peopleHint: string;
+    personLabel: string;
+    personName: string;
+    personEmail: string;
+    mailListLabel: string;
+    mailListHint: string;
   };
   supportBank: {
     title: string;
