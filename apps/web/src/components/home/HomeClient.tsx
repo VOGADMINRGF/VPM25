@@ -52,7 +52,7 @@ function maxBirthDateIso(minAge: number) {
 }
 
 export default function HomeClient({
-  supportBank,
+  supportBank: _supportBank,
   contactEmail,
 }: {
   supportBank: {
@@ -66,6 +66,7 @@ export default function HomeClient({
 }) {
   const { locale } = useLocale();
   const strings = getHomeStrings(locale);
+  const highlightLabels = strings.hero.highlightLabels;
   const countryOptions = useMemo(() => getCountryOptions(locale), [locale]);
   const [memberType, setMemberType] = useState<"person" | "organisation">("person");
   const [firstName, setFirstName] = useState("");
@@ -91,7 +92,6 @@ export default function HomeClient({
   const inputClass =
     "w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-800/40";
   const labelClass = "text-xs font-medium text-slate-300";
-  const isPerson = memberType === "person";
   const isPublic = true;
   const cityRequired = true;
   const canOpenCalculator = email.trim().length > 3 && email.includes("@");
@@ -210,7 +210,6 @@ export default function HomeClient({
         lastName: memberType === "person" ? lastName.trim() || undefined : undefined,
         birthDate: memberType === "person" ? birthDate.trim() || undefined : undefined,
         orgName: memberType === "organisation" ? orgName.trim() || undefined : undefined,
-        // Ort ist Pflicht für Orts-Summen (anonym nach außen).
         city: city.trim() || undefined,
         country: countryCode || undefined,
         isPublic,
@@ -259,9 +258,7 @@ export default function HomeClient({
               </div>
               <div className="space-y-4">
                 <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
-                  <span className="block headline-gradient">
-                    {strings.hero.title}
-                  </span>
+                  <span className="block headline-gradient">{strings.hero.title}</span>
                   <span className="block text-slate-100">{strings.hero.subtitle}</span>
                 </h1>
                 <p className="max-w-2xl text-base font-semibold text-slate-100 md:text-lg">
@@ -276,12 +273,35 @@ export default function HomeClient({
                   <span className="text-slate-100">{strings.hero.lead.highlight3}</span>{" "}
                   {strings.hero.lead.post}
                 </p>
-                <p className="max-w-2xl text-lg text-slate-300 md:text-xl">
-                  {strings.hero.focus}
-                </p>
-                <p className="max-w-2xl text-sm text-slate-400">
-                  {strings.hero.scalable}
-                </p>
+                <div className="mt-6 grid gap-4 md:grid-cols-3">
+                  <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-slate-300 shadow-sm">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                      {highlightLabels.focus}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-slate-100 leading-relaxed">
+                      {strings.hero.focus}
+                    </p>
+                  </article>
+                  <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-slate-300 shadow-sm">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                      {highlightLabels.scalable}
+                    </p>
+                    <p className="mt-2 text-sm text-slate-200 leading-relaxed">
+                      {strings.hero.scalable}
+                    </p>
+                  </article>
+                  <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-slate-300 shadow-sm">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                      {highlightLabels.mobility}
+                    </p>
+                    <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                      {strings.hero.micro.line1}
+                    </p>
+                    <p className="text-sm text-slate-400 leading-relaxed">
+                      {strings.hero.micro.line2}
+                    </p>
+                  </article>
+                </div>
                 <div className="flex flex-wrap gap-3">
                   <Link href="/#join" className="btn btn-primary">
                     {strings.hero.ctas.join}
@@ -327,10 +347,6 @@ export default function HomeClient({
                   >
                     {strings.hero.ctas.how}
                   </Link>
-                </div>
-                <div className="mt-3 max-w-2xl text-sm text-slate-300">
-                  <p>{strings.hero.micro.line1}</p>
-                  <p>{strings.hero.micro.line2}</p>
                 </div>
                 <div className="mt-6 grid gap-3 md:grid-cols-4">
                   {strings.hero.steps.map((item) => (
@@ -479,9 +495,7 @@ export default function HomeClient({
           <h3 className="text-lg font-semibold text-slate-100">
             {strings.foundations.ctaTitle}
           </h3>
-          <p className="mt-2 text-sm text-slate-300">
-            {strings.foundations.ctaBody}
-          </p>
+          <p className="mt-2 text-sm text-slate-300">{strings.foundations.ctaBody}</p>
           <Link href="/#join" className="btn btn-ghost mt-4">
             {strings.foundations.ctaButton}
           </Link>
@@ -497,9 +511,7 @@ export default function HomeClient({
                 {strings.membership.label}
               </p>
               <h2 className="text-2xl font-bold text-slate-100">{strings.membership.title}</h2>
-              <p className="mt-1 text-xs text-slate-400">
-                {strings.membership.subtitle}
-              </p>
+              <p className="mt-1 text-xs text-slate-400">{strings.membership.subtitle}</p>
             </div>
           </div>
 
@@ -773,9 +785,7 @@ export default function HomeClient({
             <p className="text-sm font-semibold text-slate-100">
               {strings.supportAfterCta.title}
             </p>
-            <p className="mt-2 text-sm text-slate-300">
-              {strings.supportAfterCta.body}
-            </p>
+            <p className="mt-2 text-sm text-slate-300">{strings.supportAfterCta.body}</p>
             <Link href="/#join" className="btn btn-primary mt-4">
               {strings.supportAfterCta.cta}
             </Link>
@@ -787,74 +797,19 @@ export default function HomeClient({
                 <h4 className="text-lg font-semibold text-slate-100">
                   {strings.supportBank.title}
                 </h4>
-                <p className="mt-2 text-sm text-slate-300">
-                  {strings.supportBank.body}
-                </p>
+                <p className="mt-2 text-sm text-slate-300">{strings.supportBank.body}</p>
               </div>
             </div>
 
-            {supportBank.recipient && supportBank.iban && supportBank.bic && supportBank.bank ? (
-              <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {strings.supportBank.labels.recipient}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-slate-100">
-                      {supportBank.recipient}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {strings.supportBank.labels.bank}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-slate-100">
-                      {supportBank.bank}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {strings.supportBank.labels.iban}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-slate-100">
-                      {supportBank.iban}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {strings.supportBank.labels.bic}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold text-slate-100">
-                      {supportBank.bic}
-                    </p>
-                  </div>
-                  {supportBank.referencePrefix ? (
-                    <div className="sm:col-span-2">
-                      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                        {strings.supportBank.labels.reference}
-                      </p>
-                      <p className="mt-1 text-sm text-slate-300">
-                        {strings.supportBank.referenceHint.replace(
-                          "{bankRefPrefix}",
-                          supportBank.referencePrefix,
-                        )}
-                      </p>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            ) : (
-              <div className="mt-4 rounded-2xl border border-dashed border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
-                {strings.supportBank.noDetails}
-              </div>
-            )}
+            <div className="mt-4 rounded-2xl border border-dashed border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
+              {strings.supportBank.noDetails}
+            </div>
+
             <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                 {strings.supportBank.contact.title}
               </p>
-              <p className="mt-2 text-xs text-slate-300">
-                {strings.supportBank.contact.body}
-              </p>
+              <p className="mt-2 text-xs text-slate-300">{strings.supportBank.contact.body}</p>
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 <label className="space-y-1 text-xs font-medium text-slate-300">
                   <span>{strings.supportBank.contact.firstName}</span>

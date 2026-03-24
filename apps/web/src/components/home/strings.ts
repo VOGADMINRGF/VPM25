@@ -37,6 +37,11 @@ type HomeStrings = {
     steps: Array<{ title: string; body: string; href: string }>;
     learnMore: string;
     cards: Array<{ title: string; body: string }>;
+    highlightLabels: {
+      focus: string;
+      scalable: string;
+      mobility: string;
+    };
   };
   foundations: {
     label: string;
@@ -215,7 +220,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   de: {
     hero: {
       badge: "Strukturierte Beteiligung",
-      title: "Eine Initiative für nachvollziehbaren Wandel.",
+      title: "VoiceOpenGov — Beteiligung mit nachvollziehbaren Entscheidungen.",
       subtitle: "Neue Struktur für Verständigung und Verantwortung.",
       oneLiner:
         "VoiceOpenGov ist die Initiative & Mitgliedschaft. eDebatte ist das Tool: Check → Dossier → Beteiligung → Status.",
@@ -284,6 +289,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Beschluss, Begründung, Status – nachvollziehbar im Bericht.",
         },
       ],
+      highlightLabels: {
+        focus: "Fokus",
+        scalable: "Skalierung",
+        mobility: "Mobil",
+      },
     },
     foundations: {
       label: "Grundlagen",
@@ -523,7 +533,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   en: {
     hero: {
       badge: "Structured participation",
-      title: "An initiative for traceable change.",
+      title: "VoiceOpenGov — participation with traceable decisions.",
       subtitle: "A new structure for understanding and responsibility.",
       oneLiner:
         "VoiceOpenGov is the initiative & membership. eDebatte is the tool: Check → Dossier → Participation → Status.",
@@ -591,6 +601,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Decision, reasoning, status — traceable in the report.",
         },
       ],
+      highlightLabels: {
+        focus: "Focus",
+        scalable: "Scale",
+        mobility: "Mobility",
+      },
     },
     foundations: {
       label: "Foundations",
@@ -830,7 +845,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   fr: {
     hero: {
       badge: "Participation structurée",
-      title: "Une participation qui reste traçable.",
+      title: "VoiceOpenGov — participation avec des décisions traçables.",
       subtitle: "Neutre, structurée, pilotée par le statut.",
       oneLiner:
         "VoiceOpenGov est l’initiative et l’adhésion. eDebatte est l’outil : Check → Dossier → Participation → Statut.",
@@ -897,6 +912,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Décision, justification, statut — traçables dans le rapport.",
         },
       ],
+      highlightLabels: {
+        focus: "Focus",
+        scalable: "Échelle",
+        mobility: "Mobilité",
+      },
     },
     foundations: {
       label: "Fondations",
@@ -1138,7 +1158,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   pl: {
     hero: {
       badge: "Ustrukturyzowany udział",
-      title: "Udział, który pozostaje śledzalny.",
+      title: "VoiceOpenGov — udział z przejrzystymi decyzjami.",
       subtitle: "Neutralny, uporządkowany, z widocznym statusem.",
       oneLiner:
         "VoiceOpenGov to inicjatywa i członkostwo. eDebatte to narzędzie: Check → Dossier → Uczestnictwo → Status.",
@@ -1205,6 +1225,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Decyzja, uzasadnienie, status — w raporcie.",
         },
       ],
+      highlightLabels: {
+        focus: "Skupienie",
+        scalable: "Skalowanie",
+        mobility: "Mobilność",
+      },
     },
     foundations: {
       label: "Podstawy",
@@ -1445,7 +1470,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   es: {
     hero: {
       badge: "Participación estructurada",
-      title: "Participación que se mantiene trazable.",
+      title: "VoiceOpenGov — participación con decisiones trazables.",
       subtitle: "Neutral, estructurada, guiada por el estado.",
       oneLiner:
         "VoiceOpenGov es la iniciativa y la membresía. eDebatte es la herramienta: Check → Dossier → Participación → Estado.",
@@ -1512,6 +1537,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Decisión, justificación, estado — trazables en el informe.",
         },
       ],
+      highlightLabels: {
+        focus: "Enfoque",
+        scalable: "Escala",
+        mobility: "Movilidad",
+      },
     },
     foundations: {
       label: "Fundamentos",
@@ -1752,7 +1782,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   it: {
     hero: {
       badge: "Partecipazione strutturata",
-      title: "Partecipazione che resta tracciabile.",
+      title: "VoiceOpenGov — partecipazione con decisioni tracciabili.",
       subtitle: "Neutrale, strutturata, guidata dallo stato.",
       oneLiner:
         "VoiceOpenGov è l'iniziativa e la membership. eDebatte è lo strumento: Check → Dossier → Partecipazione → Stato.",
@@ -1819,6 +1849,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Decisione, motivazione, stato — tracciabili nel report.",
         },
       ],
+      highlightLabels: {
+        focus: "Focus",
+        scalable: "Scala",
+        mobility: "Mobilità",
+      },
     },
     foundations: {
       label: "Fondamenti",
@@ -2059,7 +2094,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   tr: {
     hero: {
       badge: "Yapılandırılmış katılım",
-      title: "İzlenebilir kalan katılım.",
+      title: "VoiceOpenGov — izlenebilir kararlarla katılım.",
       subtitle: "Tarafsız, yapılandırılmış, durum odaklı.",
       oneLiner:
         "VoiceOpenGov girişim ve üyelik. eDebatte araçtır: Check → Dossier → Katılım → Statü.",
@@ -2126,6 +2161,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Karar, gerekçe, durum — raporda izlenebilir.",
         },
       ],
+      highlightLabels: {
+        focus: "Odak",
+        scalable: "Ölçek",
+        mobility: "Mobilite",
+      },
     },
     foundations: {
       label: "Temeller",
@@ -2365,7 +2405,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   ar: {
     hero: {
       badge: "مشاركة منظمة",
-      title: "مشاركة يمكن تتبعها.",
+      title: "VoiceOpenGov — مشاركة بقرارات قابلة للتتبع.",
       subtitle: "محايدة، منظمة، ومبنية على الحالة.",
       oneLiner:
         "VoiceOpenGov هي المبادرة والعضوية. eDebatte هي الأداة: Check → Dossier → مشاركة → حالة.",
@@ -2432,6 +2472,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "القرار، التبرير، الحالة — قابلة للتتبع في التقرير.",
         },
       ],
+      highlightLabels: {
+        focus: "تركيز",
+        scalable: "قابلية التوسع",
+        mobility: "تنقل",
+      },
     },
     foundations: {
       label: "الأسس",
@@ -2671,7 +2716,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   ru: {
     hero: {
       badge: "Структурированное участие",
-      title: "Участие, которое остается отслеживаемым.",
+      title: "VoiceOpenGov — участие с отслеживаемыми решениями.",
       subtitle: "Нейтрально, структурированно, со статусом.",
       oneLiner:
         "VoiceOpenGov — инициатива и участие. eDebatte — инструмент: Check → Dossier → Участие → Статус.",
@@ -2738,6 +2783,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "Решение, обоснование, статус — отслеживаемо в отчете.",
         },
       ],
+      highlightLabels: {
+        focus: "Фокус",
+        scalable: "Масштаб",
+        mobility: "Мобильность",
+      },
     },
     foundations: {
       label: "Основы",
@@ -2977,7 +3027,7 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
   zh: {
     hero: {
       badge: "结构化参与",
-      title: "可追踪的参与。",
+      title: "VoiceOpenGov — 具有可追踪决策的参与。",
       subtitle: "中立、有结构、以状态为导向。",
       oneLiner:
         "VoiceOpenGov 是倡议与成员体系，eDebatte 是工具：Check → Dossier → 参与 → 状态。",
@@ -3044,6 +3094,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
           body: "决定、理由、状态——在报告中可追踪。",
         },
       ],
+      highlightLabels: {
+        focus: "聚焦",
+        scalable: "可扩展性",
+        mobility: "移动性",
+      },
     },
     foundations: {
       label: "基础",
