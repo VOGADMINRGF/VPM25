@@ -22,29 +22,29 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   de: {
     navItems: [
       {
-        href: "/#mitmachen",
-        label: "Mitmachen",
-        description: "In wenigen Sekunden eintragen und informiert bleiben.",
+        href: "/howtoworks/bewegung",
+        label: "Bewegung",
+        description: "Worum VoiceOpenGov steht und was es tragen soll.",
       },
       {
-        href: VOG_SUPPORT_PATH,
-        label: "Unterstützen",
-        description: "Aufbau, Recherche und Community stärken.",
+        href: "/howtoworks/edebatte",
+        label: "So funktioniert’s",
+        description: "Wie eDebatte Struktur und Evidenz sichtbar macht.",
+      },
+      {
+        href: "/#join",
+        label: "Mitmachen",
+        description: "Mitglied werden und intern mitwirken.",
       },
       {
         href: "/initiatives",
         label: "Für Initiativen",
-        description: "Themen einreichen und Prozesse sauber aufsetzen.",
+        description: "Themen einreichen und Prozesse sauber anstoßen.",
       },
       {
-        href: "/dossier",
-        label: "Dossier",
-        description: "Standards, offene Fragen und Quellen.",
-      },
-      {
-        href: "/kontakt",
-        label: "Kontakt",
-        description: "Direkter Draht zum VoiceOpenGov Team.",
+        href: VOG_SUPPORT_PATH,
+        label: "Unterstützen",
+        description: "Aufbau und Unabhängigkeit sichern.",
       },
     ],
     navigationLabel: "Navigation",
@@ -64,29 +64,29 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   en: {
     navItems: [
       {
-        href: "/#mitmachen",
-        label: "Join",
-        description: "Get listed in seconds and stay informed.",
+        href: "/howtoworks/bewegung",
+        label: "Movement",
+        description: "What VoiceOpenGov stands for and wants to build.",
       },
       {
-        href: VOG_SUPPORT_PATH,
-        label: "Support",
-        description: "Strengthen build-up, research and community.",
+        href: "/howtoworks/edebatte",
+        label: "How it works",
+        description: "How eDebatte makes structure and evidence visible.",
+      },
+      {
+        href: "/#join",
+        label: "Join",
+        description: "Become a member and participate internally.",
       },
       {
         href: "/initiatives",
         label: "For initiatives",
-        description: "Submit topics and set up clean processes.",
+        description: "Submit topics and start clean processes.",
       },
       {
-        href: "/dossier",
-        label: "Dossier",
-        description: "Standards, open questions and sources.",
-      },
-      {
-        href: "/kontakt",
-        label: "Contact",
-        description: "Direct line to the VoiceOpenGov team.",
+        href: VOG_SUPPORT_PATH,
+        label: "Support",
+        description: "Secure build-up and independence.",
       },
     ],
     navigationLabel: "Navigation",
@@ -106,7 +106,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   fr: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "Participer",
         description: "Inscription rapide et infos à jour.",
       },
@@ -148,7 +148,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   pl: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "Dołącz",
         description: "Zgłoszenie w kilka sekund i bieżące informacje.",
       },
@@ -190,7 +190,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   es: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "Participar",
         description: "Registro en segundos y al día.",
       },
@@ -232,7 +232,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   it: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "Partecipa",
         description: "Iscrizione in pochi secondi e aggiornamenti.",
       },
@@ -274,7 +274,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   tr: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "Katıl",
         description: "Saniyeler içinde kayıt ve güncel kal.",
       },
@@ -316,7 +316,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   ar: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "شارك",
         description: "تسجيل سريع والبقاء على اطلاع.",
       },
@@ -358,7 +358,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   ru: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "Участвовать",
         description: "Регистрация за секунды и новости по делу.",
       },
@@ -400,7 +400,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
   zh: {
     navItems: [
       {
-        href: "/#mitmachen",
+        href: "/#join",
         label: "参与",
         description: "几秒钟登记并获取更新。",
       },

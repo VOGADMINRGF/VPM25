@@ -83,8 +83,9 @@ export default function HomeClient({
   const [contactSubject, setContactSubject] = useState("");
   const [contactHumanCheck, setContactHumanCheck] = useState(false);
   const [contactError, setContactError] = useState("");
-  const [supportOpen, setSupportOpen] = useState(false);
   const [supportContactOpen, setSupportContactOpen] = useState(false);
+  const [selectedPath, setSelectedPath] = useState<"member" | "support">("member");
+  const [contributionOffer, setContributionOffer] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
   const stepTwoFirstRef = useRef<HTMLInputElement>(null);
   const inputClass =
@@ -106,7 +107,7 @@ export default function HomeClient({
           "Nicht noch mehr Lautstärke. Nicht noch mehr Nebel. Sondern eine Form, in der öffentliche Themen verständlich, prüfbar, mehrheitsfähig und statusgeführt bearbeitet werden können.",
         heroBody:
           "Wir wollen Vertrauen in öffentliche Meinungsbildung zurückholen – mit einer neuen Informationsarchitektur, die Problem, Evidenz, Optionen, Verantwortung und Ergebnis wieder lesbar macht. eDebatte ist dafür das Werkzeug. VoiceOpenGov ist die Bewegung und der öffentliche Rahmen.",
-        primaryCta: "Unterstützen",
+        primaryCta: "Mitglied werden",
         secondaryCta: "Die Bewegung verstehen",
         tertiaryLabel: "Praktisches Werkzeug:",
         tertiaryLink: "eDebatte ansehen",
@@ -122,7 +123,7 @@ export default function HomeClient({
         problemLabel: "Das Problem",
         problemTitle: "Warum so viele Debatten heute Vertrauen verlieren",
         problemIntro:
-          "Öffentliche Diskussion scheitert oft nicht am Interesse der Menschen, sondern an der Form.",
+          "Öffentliche Diskussion scheitert oft nicht am Interesse der Menschen, sondern an der Form: Viele demonstrieren, viele Vereine arbeiten – doch Wirkung bleibt verteilt, Anschluss fehlt, Entscheidungen laufen weiter in Lagern.",
         problems: [
           {
             title: "Fragmentierte Information",
@@ -143,11 +144,11 @@ export default function HomeClient({
         solutionLabel: "Unsere Antwort",
         solutionTitle: "Problem, Lösung, Bewegung – in einer klaren Logik",
         solutionIntro:
-          "VoiceOpenGov will die öffentliche Form verbessern. eDebatte macht diese Form praktisch nutzbar.",
+          "VoiceOpenGov will die öffentliche Form verbessern: Wenn wir Mehrheiten nachvollziehbar sichtbar machen, verliert Lagerdenken an Macht. eDebatte macht diese Form praktisch nutzbar.",
         movementLabel: "Die Bewegung",
         movementTitle: "VoiceOpenGov ist mehr als ein Tool-Label.",
         movementBody:
-          "Wir suchen Bürger, Initiativen und Unterstützer, die eine neue demokratische Kultur nicht nur fordern, sondern strukturell mit aufbauen wollen – unabhängig, nachvollziehbar und ohne versteckte Einflusslogik.",
+          "Wir suchen Bürger, Initiativen und Unterstützer, die eine neue demokratische Kultur nicht nur fordern, sondern strukturell mit aufbauen wollen – unabhängig, nachvollziehbar und ohne versteckte Einflusslogik. Der Anspruch endet nicht an Landesgrenzen: gesellschaftliche Fragen sind vernetzt, Beteiligung sollte es auch sein.",
         movementCards: [
           {
             title: "Für Bürger",
@@ -165,11 +166,24 @@ export default function HomeClient({
               "Wer Unabhängigkeit ernst meint, hilft beim Aufbau einer Infrastruktur, die nicht von Werbung, Lobby oder Exit-Logik getrieben ist.",
           },
         ],
-        movementPrimary: "Jetzt unterstützen",
+        movementPrimary: "Mitglied werden",
         movementSecondary: "Zu eDebatte",
-        joinTitle: "Mitglied werden und intern mitwirken",
+        joinTitle: "Mitglied werden — mit oder ohne freiwillige Unterstützung",
         joinBody:
-          "Mitgliedschaft ist kostenfrei. Interne Themenräume zu Veranstaltungen, Treffen, Satzung oder Prioritäten sollen innerhalb der Mitgliedschaft geführt werden – datenschutzsauber und nicht künstlich öffentlich gemacht.",
+          "Mitgliedschaft ist kostenfrei. Wer VoiceOpenGov unterstützen möchte, kann das zusätzlich freiwillig tun. Beides wird bewusst getrennt: Erst die Mitgliedschaft, dann – nur wenn gewünscht – ein freiwilliger Beitrag.",
+        joinOption1Title: "Ich möchte Mitglied werden.",
+        joinOption1Body:
+          "Ich trage mich ein und werde als Mitglied aufgenommen. Optional kann ich angeben, was ich außer Geld einbringen kann.",
+        joinOption1Cta: "Kostenfrei Mitglied werden",
+        joinOption2Title: "Ich möchte Mitglied werden und freiwillig unterstützen.",
+        joinOption2Body:
+          "Ich trage mich ein, werde als Mitglied aufgenommen und kann zusätzlich freiwillig unterstützen – regelmäßig oder einmalig.",
+        joinOption2Cta: "Mitglied werden und freiwillig unterstützen",
+        joinSupportNote:
+          "Wichtig: Aktuell gibt es keine Spendenquittung. Unterstützung verstehen wir nicht als Steuersparmodell, sondern als freiwilligen Beitrag zum Aufbau unabhängiger Infrastruktur.",
+        contributionLabel: "Was kannst du einbringen? (optional)",
+        contributionHint:
+          "Zeit, Erfahrung, Netzwerk, Fachwissen, Redaktion/Recherche, Organisation, Technik, Gestaltung oder anderes.",
       }
     : {
         heroBadge: "Initiative for traceable public evidence and participation",
@@ -181,7 +195,7 @@ export default function HomeClient({
           "Not more noise. Not more fog. A form in which public issues can be handled in a way that is understandable, verifiable, majoritarian and status-guided.",
         heroBody:
           "We want to rebuild trust in public opinion-forming through a new information architecture that makes problems, evidence, options, responsibility and outcomes readable again. eDebatte is the tool for that. VoiceOpenGov is the movement and the public frame.",
-        primaryCta: "Support",
+        primaryCta: "Become a member",
         secondaryCta: "Understand the movement",
         tertiaryLabel: "Practical tool:",
         tertiaryLink: "See eDebatte",
@@ -197,7 +211,7 @@ export default function HomeClient({
         problemLabel: "The problem",
         problemTitle: "Why so many debates lose trust today",
         problemIntro:
-          "Public discussion often fails not because people do not care, but because the form is broken.",
+          "Public discussion often fails not because people do not care, but because the form is broken: many protest, many associations act, yet impact stays fragmented and follow-through is missing.",
         problems: [
           {
             title: "Fragmented information",
@@ -218,11 +232,11 @@ export default function HomeClient({
         solutionLabel: "Our answer",
         solutionTitle: "Problem, solution, movement – in one clear logic",
         solutionIntro:
-          "VoiceOpenGov improves the public form. eDebatte makes that form usable in practice.",
+          "VoiceOpenGov improves the public form: when majorities become traceable, camp thinking loses power. eDebatte makes that form usable in practice.",
         movementLabel: "The movement",
         movementTitle: "VoiceOpenGov is more than a tool label.",
         movementBody:
-          "We are looking for citizens, initiatives and supporters who do not only demand a new democratic culture, but want to help build it in a structured and independent way.",
+          "We are looking for citizens, initiatives and supporters who do not only demand a new democratic culture, but want to help build it in a structured and independent way. The ambition does not stop at borders: societal questions are connected, participation should be too.",
         movementCards: [
           {
             title: "For citizens",
@@ -240,11 +254,24 @@ export default function HomeClient({
               "If you take independence seriously, you help build an infrastructure that is not driven by ads, lobbying or exit logic.",
           },
         ],
-        movementPrimary: "Support now",
+        movementPrimary: "Become a member",
         movementSecondary: "Go to eDebatte",
-        joinTitle: "Become a member and participate internally",
+        joinTitle: "Become a member — with or without voluntary support",
         joinBody:
-          "Membership is free. Internal topic spaces around events, meetings, statutes or priorities should live within membership – privacy-safe and not artificially exposed in public.",
+          "Membership is free. If you want to support VoiceOpenGov, you can do so voluntarily. We keep both steps separate: first membership, then — only if desired — a voluntary contribution.",
+        joinOption1Title: "I want to become a member.",
+        joinOption1Body:
+          "I sign up and get accepted as a member. Optionally, I can share what I can contribute beyond money.",
+        joinOption1Cta: "Join for free",
+        joinOption2Title: "I want to become a member and support voluntarily.",
+        joinOption2Body:
+          "I sign up as a member and can additionally support — regularly or one-time.",
+        joinOption2Cta: "Join and support voluntarily",
+        joinSupportNote:
+          "Important: We currently cannot issue donation receipts. We do not treat support as a tax-saving model, but as a voluntary contribution to independent infrastructure.",
+        contributionLabel: "What can you contribute? (optional)",
+        contributionHint:
+          "Time, experience, network, expertise, editing/research, organization, tech, design or other.",
       };
 
   const solutionSteps = isGerman
@@ -298,6 +325,9 @@ export default function HomeClient({
     setWantsNewsletter(false);
     setWantsNewsletterEdDebatte(false);
     setPrivacyAccepted(false);
+    setContributionOffer("");
+    setSelectedPath("member");
+    setSupportContactOpen(false);
   };
 
   useEffect(() => {
@@ -306,20 +336,29 @@ export default function HomeClient({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const focusEmail = () => {
+    const handleHash = () => {
       if (window.location.hash === "#join") {
         window.setTimeout(() => emailRef.current?.focus(), 80);
       }
+      if (window.location.hash === "#voiceopengov-support") {
+        setSelectedPath("support");
+      }
     };
-    focusEmail();
-    window.addEventListener("hashchange", focusEmail);
-    return () => window.removeEventListener("hashchange", focusEmail);
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
   }, []);
 
   useEffect(() => {
     if (!isStepTwoOpen) return;
     window.setTimeout(() => stepTwoFirstRef.current?.focus(), 80);
   }, [isStepTwoOpen]);
+
+  useEffect(() => {
+    if (selectedPath !== "support") {
+      setSupportContactOpen(false);
+    }
+  }, [selectedPath]);
 
   const handleRequestEmail = () => {
     if (typeof window !== "undefined") {
@@ -404,6 +443,7 @@ export default function HomeClient({
         isPublic,
         wantsNewsletter,
         wantsNewsletterEdDebatte,
+        contributionOffer: contributionOffer.trim() || undefined,
       };
 
       const res = await fetch("/api/members/public-register", {
@@ -459,7 +499,7 @@ export default function HomeClient({
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Link href={VOG_SUPPORT_PATH} className="btn btn-primary">
+                <Link href="/#join" className="btn btn-primary">
                   {copy.primaryCta}
                 </Link>
                 <Link href="/howtoworks/bewegung" className="btn btn-ghost">
@@ -609,7 +649,7 @@ export default function HomeClient({
             ))}
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href={VOG_SUPPORT_PATH} className="btn btn-primary">
+            <Link href="/#join" className="btn btn-primary">
               {copy.movementPrimary}
             </Link>
             <a
@@ -638,6 +678,52 @@ export default function HomeClient({
               {copy.joinBody}
             </p>
           </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div
+              className={`rounded-2xl border p-5 transition ${
+                selectedPath === "member"
+                  ? "border-sky-500/50 bg-sky-500/10"
+                  : "border-slate-800 bg-slate-950/40"
+              }`}
+            >
+              <h3 className="text-base font-semibold text-slate-100">{copy.joinOption1Title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{copy.joinOption1Body}</p>
+              <button
+                type="button"
+                className="btn btn-primary mt-4"
+                onClick={() => {
+                  setSelectedPath("member");
+                  handleRequestEmail();
+                }}
+              >
+                {copy.joinOption1Cta}
+              </button>
+            </div>
+            <div
+              className={`rounded-2xl border p-5 transition ${
+                selectedPath === "support"
+                  ? "border-sky-500/50 bg-sky-500/10"
+                  : "border-slate-800 bg-slate-950/40"
+              }`}
+            >
+              <h3 className="text-base font-semibold text-slate-100">{copy.joinOption2Title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{copy.joinOption2Body}</p>
+              <p className="mt-3 text-xs text-slate-400">{copy.joinSupportNote}</p>
+              <button
+                type="button"
+                className="btn btn-ghost mt-4"
+                onClick={() => {
+                  setSelectedPath("support");
+                  handleRequestEmail();
+                }}
+              >
+                {copy.joinOption2Cta}
+              </button>
+            </div>
+          </div>
+
+          <div id="voiceopengov-support" className="scroll-mt-24" />
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
@@ -836,7 +922,134 @@ export default function HomeClient({
                     />
                     <span>{strings.form.newsletterTool}</span>
                   </label>
+
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+                    <label className="text-xs font-medium text-slate-300" htmlFor="contributionOffer">
+                      {copy.contributionLabel}
+                    </label>
+                    <textarea
+                      id="contributionOffer"
+                      value={contributionOffer}
+                      onChange={(e) => setContributionOffer(e.target.value)}
+                      rows={3}
+                      className={`${inputClass} mt-2 resize-none`}
+                      placeholder={copy.contributionHint}
+                    />
+                  </div>
                 </div>
+
+                {selectedPath === "support" && (
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+                    <div className="space-y-3">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                        {strings.supportSection.label}
+                      </p>
+                      <h3 className="text-lg font-semibold text-slate-100">
+                        {strings.supportSection.title}
+                      </h3>
+                      <p className="text-sm leading-7 text-slate-300">
+                        {strings.supportSection.body}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 space-y-5">
+                      <MembershipCalculator_VOG
+                        strings={strings.supportCalculator}
+                        canOpen={canOpenCalculator}
+                      />
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          type="button"
+                          className="btn btn-ghost"
+                          onClick={() => setSupportContactOpen((prev) => !prev)}
+                        >
+                          {strings.supportBank.contact.title}
+                        </button>
+                      </div>
+
+                      {supportContactOpen && (
+                        <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                            {strings.supportBank.title}
+                          </p>
+                          <p className="mt-2 text-sm text-slate-300">
+                            {strings.supportBank.body}
+                          </p>
+                          <p className="mt-3 text-xs text-slate-400">
+                            {strings.supportBank.noDetails}
+                          </p>
+                          <p className="mt-3 text-xs text-slate-300">
+                            {strings.supportBank.contact.body}
+                          </p>
+
+                          <div className="mt-4 grid gap-3 md:grid-cols-2">
+                            <label className="space-y-1 text-xs font-medium text-slate-300">
+                              <span>{strings.supportBank.contact.firstName}</span>
+                              <input
+                                value={contactFirstName}
+                                onChange={(e) => {
+                                  setContactFirstName(e.target.value);
+                                  setContactError("");
+                                }}
+                                className={inputClass}
+                              />
+                            </label>
+                            <label className="space-y-1 text-xs font-medium text-slate-300">
+                              <span>{strings.supportBank.contact.lastName}</span>
+                              <input
+                                value={contactLastName}
+                                onChange={(e) => {
+                                  setContactLastName(e.target.value);
+                                  setContactError("");
+                                }}
+                                className={inputClass}
+                              />
+                            </label>
+                            <label className="space-y-1 text-xs font-medium text-slate-300 md:col-span-2">
+                              <span>{strings.supportBank.contact.subject}</span>
+                              <input
+                                value={contactSubject}
+                                onChange={(e) => {
+                                  setContactSubject(e.target.value);
+                                  setContactError("");
+                                }}
+                                className={inputClass}
+                                placeholder={strings.supportBank.contact.subjectPlaceholder}
+                              />
+                            </label>
+                          </div>
+                          <label className="mt-3 flex items-start gap-2 text-xs text-slate-300">
+                            <input
+                              type="checkbox"
+                              checked={contactHumanCheck}
+                              onChange={(e) => {
+                                setContactHumanCheck(e.target.checked);
+                                setContactError("");
+                              }}
+                              className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
+                            />
+                            <span>{strings.supportBank.contact.humanCheck}</span>
+                          </label>
+                          <div className="mt-3 flex flex-wrap items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={handleContactSubmit}
+                              className="btn btn-ghost"
+                            >
+                              {strings.supportBank.contact.submit}
+                            </button>
+                            {contactError ? (
+                              <span className="text-xs text-amber-300">{contactError}</span>
+                            ) : null}
+                          </div>
+                          <p className="mt-3 text-xs text-slate-400">
+                            {strings.supportBank.afterNote}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <label className="flex items-start gap-2 text-xs text-slate-300">
                   <input
@@ -894,116 +1107,6 @@ export default function HomeClient({
             </p>
             <p>{strings.footer.publicPrivateNote}</p>
           </div>
-        </div>
-      </section>
-
-      <section id="voiceopengov-support" className="mx-auto mt-12 max-w-6xl px-4 pb-12">
-        <div className="rounded-[2rem] border border-slate-800/90 bg-slate-900/80 p-6 shadow-sm md:p-8">
-          <div className="max-w-3xl space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-              {strings.supportSection.label}
-            </p>
-            <h2 className="text-3xl font-bold tracking-[-0.03em] text-slate-100 md:text-4xl">
-              <span className="headline-gradient">{strings.supportSection.title}</span>
-            </h2>
-            <p className="text-sm leading-7 text-slate-300 md:text-base">
-              {strings.supportSection.body}
-            </p>
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => setSupportOpen((prev) => !prev)}
-            >
-              {strings.supportSection.ctaSupport}
-            </button>
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => setSupportContactOpen((prev) => !prev)}
-            >
-              {strings.supportBank.contact.title}
-            </button>
-          </div>
-
-          {supportOpen && (
-            <div className="mt-6">
-              <MembershipCalculator_VOG
-                strings={strings.supportCalculator}
-                canOpen={canOpenCalculator}
-                onRequestEmail={handleRequestEmail}
-              />
-            </div>
-          )}
-
-          {supportContactOpen && (
-            <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                {strings.supportBank.title}
-              </p>
-              <p className="mt-2 text-sm text-slate-300">{strings.supportBank.body}</p>
-              <p className="mt-3 text-xs text-slate-400">{strings.supportBank.noDetails}</p>
-              <p className="mt-3 text-xs text-slate-300">{strings.supportBank.contact.body}</p>
-
-              <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <label className="space-y-1 text-xs font-medium text-slate-300">
-                  <span>{strings.supportBank.contact.firstName}</span>
-                  <input
-                    value={contactFirstName}
-                    onChange={(e) => {
-                      setContactFirstName(e.target.value);
-                      setContactError("");
-                    }}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="space-y-1 text-xs font-medium text-slate-300">
-                  <span>{strings.supportBank.contact.lastName}</span>
-                  <input
-                    value={contactLastName}
-                    onChange={(e) => {
-                      setContactLastName(e.target.value);
-                      setContactError("");
-                    }}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="space-y-1 text-xs font-medium text-slate-300 md:col-span-2">
-                  <span>{strings.supportBank.contact.subject}</span>
-                  <input
-                    value={contactSubject}
-                    onChange={(e) => {
-                      setContactSubject(e.target.value);
-                      setContactError("");
-                    }}
-                    className={inputClass}
-                    placeholder={strings.supportBank.contact.subjectPlaceholder}
-                  />
-                </label>
-              </div>
-              <label className="mt-3 flex items-start gap-2 text-xs text-slate-300">
-                <input
-                  type="checkbox"
-                  checked={contactHumanCheck}
-                  onChange={(e) => {
-                    setContactHumanCheck(e.target.checked);
-                    setContactError("");
-                  }}
-                  className="mt-1 h-4 w-4 rounded border-slate-500 text-sky-500"
-                />
-                <span>{strings.supportBank.contact.humanCheck}</span>
-              </label>
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                <button type="button" onClick={handleContactSubmit} className="btn btn-ghost">
-                  {strings.supportBank.contact.submit}
-                </button>
-                {contactError ? <span className="text-xs text-amber-300">{contactError}</span> : null}
-              </div>
-              <p className="mt-3 text-xs text-slate-400">{strings.supportBank.afterNote}</p>
-            </div>
-          )}
         </div>
       </section>
     </main>

@@ -50,11 +50,9 @@ function clampHousehold(value: string) {
 export function MembershipCalculator_VOG({
   strings,
   canOpen = true,
-  onRequestEmail,
 }: {
   strings: CalculatorStrings;
   canOpen?: boolean;
-  onRequestEmail?: () => void;
 }) {
   const { locale } = useLocale();
   const [people, setPeople] = useState<Array<{ name: string; email: string }>>([
@@ -111,13 +109,6 @@ export function MembershipCalculator_VOG({
         </p>
         <h2 className="mt-2 text-2xl font-bold text-slate-100">{strings.lockedTitle}</h2>
         <p className="mt-2 text-sm text-slate-300">{strings.lockedBody}</p>
-        <button
-          type="button"
-          className="btn btn-primary mt-4"
-          onClick={() => onRequestEmail?.()}
-        >
-          {strings.lockedCta}
-        </button>
       </div>
     );
   }

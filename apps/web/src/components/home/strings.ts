@@ -471,11 +471,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cta: "Zur Anmeldung",
     },
     supportCalculator: {
-      label: "Beitragsrechner",
-      title: "Orientierungsbeitrag berechnen",
+      label: "Freiwillige Unterstützung",
+      title: "Beitragsrechner",
       body:
         "Ein Richtwert auf Basis deines Haushalts. Mitgliedschaft bleibt kostenfrei; jeder Beitrag ist freiwillig und zählt.",
-      lockedTitle: "Orientierungsbeitrag berechnen",
+      lockedTitle: "Beitragsrechner",
       lockedBody: "Bitte zuerst deine E-Mail bei der Mitgliedschaft eintragen, dann öffnet sich der Rechner.",
       lockedCta: "E-Mail eintragen",
       net: "Haushaltsnetto (monatlich)",
@@ -783,11 +783,11 @@ const STRINGS: Record<SupportedLocale, HomeStrings> = {
       cta: "Go to join",
     },
     supportCalculator: {
-      label: "Contribution calculator",
-      title: "Estimate a contribution",
+      label: "Voluntary support",
+      title: "Contribution calculator",
       body:
         "A guideline based on your household. Membership stays free; every contribution is voluntary and counts.",
-      lockedTitle: "Estimate a contribution",
+      lockedTitle: "Contribution calculator",
       lockedBody: "Please enter your membership email first to open the calculator.",
       lockedCta: "Enter email",
       net: "Household net income (monthly)",

@@ -78,12 +78,41 @@ Statusmodell:
 - Priorität: hoch
 - Ziel: der untere Bereich wirkt ruhiger, klarer und mobile-first.
 - Deliverables:
+  - Membership als einziger Einstieg, Support als optionaler Unterpfad,
   - zusammengeführte Support-Fläche mit progressiver Offenlegung,
   - reduzierte CTA-Dichte,
-  - klare Reihenfolge: Mitgliedschaft zuerst, Unterstützung danach.
+  - klare Reihenfolge: Mitgliedschaft zuerst, Unterstützung danach,
+  - keine doppelte Mail-Eingabe oder redundante Einstiege.
 - Akzeptanzkriterien:
   - weniger visuelle Brüche,
-  - klare, ruhige Nutzerführung auf Mobile.
+  - klare, ruhige Nutzerführung auf Mobile,
+  - Support wirkt nicht wie ein zweiter Primärpfad.
+
+### VOG-SITE-P0-13 – CTA-Hierarchie global normalisieren
+- Status: `done`
+- Priorität: hoch
+- Ziel: Mitgliedschaft / Mitmachen als öffentlicher Primärpfad, freiwillige Unterstützung als optionaler Zweitpfad.
+- Deliverables:
+  - konsistente CTA-Reihenfolge auf allen relevanten öffentlichen Seiten,
+  - angeglichene Copy für Mitgliedschaft vs. freiwillige Unterstützung,
+  - keine widersprüchliche Gewichtung zwischen Seiten.
+- Akzeptanzkriterien:
+  - Mitgliedschaft steht in Seitenlogik und CTA-Reihenfolge vor Unterstützung,
+  - Unterstützung erscheint klar optional,
+  - keine Seite vermittelt Geld als Voraussetzung für Zugehörigkeit.
+
+### VOG-SITE-P0-14 – Gradient-/Headline-System öffentlich vereinheitlichen
+- Status: `done`
+- Priorität: mittel
+- Ziel: türkis-blauer Verlauf als konsistentes Identitätsmerkmal zentraler öffentlicher Headlines.
+- Deliverables:
+  - wiederverwendbare Stil-/Komponentenlogik,
+  - einheitliche Anwendung auf relevante Haupt- und Section-Headlines,
+  - abgestimmte visuelle Regeln für wann Verlauf eingesetzt wird.
+- Akzeptanzkriterien:
+  - zentrale Headlines wirken erkennbar zusammengehörig,
+  - Verlauf wird weder zufällig noch überladen eingesetzt,
+  - öffentliche Seiten wirken ruhiger und harmonischer.
 
 ### VOG-SITE-P0-03 – „So funktioniert’s“ als RePro-Nutzerreise bauen
 - Status: `in_progress`

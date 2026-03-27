@@ -11,7 +11,6 @@ import {
   SUPPORTED_LOCALES,
   type SupportedLocale,
 } from "@/config/locales";
-import { VOG_SUPPORT_PATH } from "@/config/links";
 import { getHeaderStrings } from "./headerStrings";
 
 export function SiteHeader() {
@@ -41,12 +40,12 @@ export function SiteHeader() {
     [],
   );
 
-  const supportItem = useMemo(
-    () => strings.navItems.find((item) => item.href === VOG_SUPPORT_PATH),
+  const ctaItem = useMemo(
+    () => strings.navItems.find((item) => item.href === "/#join"),
     [strings.navItems],
   );
   const primaryNav = useMemo(
-    () => strings.navItems.filter((item) => item.href !== VOG_SUPPORT_PATH),
+    () => strings.navItems.filter((item) => item.href !== "/#join"),
     [strings.navItems],
   );
 
@@ -96,12 +95,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {supportItem && (
+          {ctaItem && (
             <Link
-              href={supportItem.href}
+              href={ctaItem.href}
               className="btn btn-primary hidden sm:inline-flex"
             >
-              {supportItem.label}
+              {ctaItem.label}
             </Link>
           )}
           <div className="relative">
@@ -159,13 +158,13 @@ export function SiteHeader() {
         <div className="border-t border-slate-800/80 bg-slate-950/95">
           <div className="mx-auto max-w-6xl space-y-4 px-4 py-4">
             <nav className="flex flex-col gap-2 text-sm font-semibold text-slate-100">
-              {supportItem && (
+              {ctaItem && (
                 <Link
-                  href={supportItem.href}
+                  href={ctaItem.href}
                   onClick={() => setMobileOpen(false)}
                   className="btn btn-primary w-full"
                 >
-                  {supportItem.label}
+                  {ctaItem.label}
                 </Link>
               )}
               {primaryNav.map((item) => (
