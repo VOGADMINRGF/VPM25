@@ -4,10 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale } from "@/context/LocaleContext";
 import { getCountryOptions } from "@/lib/countries";
-import { getBand } from "@/app/grundlagen/bands";
-import { getCovers } from "@/app/grundlagen/covers";
-import { EDEBATTE_PREORDER_URL, EDEBATTE_SIGNUP_URL, VOG_SUPPORT_PATH } from "@/config/links";
-import CoverLightbox from "@/components/media/CoverLightbox";
+import { EDEBATTE_SIGNUP_URL, VOG_SUPPORT_PATH } from "@/config/links";
 import { MembershipCalculator_VOG } from "@/components/support/MembershipCalculator_VOG";
 import { getHomeStrings } from "./strings";
 
@@ -66,7 +63,6 @@ export default function HomeClient({
 }) {
   const { locale } = useLocale();
   const strings = getHomeStrings(locale);
-  const highlightLabels = strings.hero.highlightLabels;
   const countryOptions = useMemo(() => getCountryOptions(locale), [locale]);
   const [memberType, setMemberType] = useState<"person" | "organisation">("person");
   const [firstName, setFirstName] = useState("");
@@ -87,6 +83,8 @@ export default function HomeClient({
   const [contactSubject, setContactSubject] = useState("");
   const [contactHumanCheck, setContactHumanCheck] = useState(false);
   const [contactError, setContactError] = useState("");
+  const [supportOpen, setSupportOpen] = useState(false);
+  const [supportContactOpen, setSupportContactOpen] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const stepTwoFirstRef = useRef<HTMLInputElement>(null);
   const inputClass =
@@ -95,6 +93,197 @@ export default function HomeClient({
   const isPublic = true;
   const cityRequired = true;
   const canOpenCalculator = email.trim().length > 3 && email.includes("@");
+  const isGerman = locale === "de";
+
+  const copy = isGerman
+    ? {
+        heroBadge: "Initiative für nachvollziehbare öffentliche Evidenz und Beteiligung",
+        heroKicker: "Private Initiative · weltweit offen, lokal anschlussfähig",
+        heroTitleA: "VoiceOpenGov",
+        heroTitleB: "für eine neue",
+        heroTitleC: "direktdemokratische Diskussionskultur.",
+        heroLead:
+          "Nicht noch mehr Lautstärke. Nicht noch mehr Nebel. Sondern eine Form, in der öffentliche Themen verständlich, prüfbar, mehrheitsfähig und statusgeführt bearbeitet werden können.",
+        heroBody:
+          "Wir wollen Vertrauen in öffentliche Meinungsbildung zurückholen – mit einer neuen Informationsarchitektur, die Problem, Evidenz, Optionen, Verantwortung und Ergebnis wieder lesbar macht. eDebatte ist dafür das Werkzeug. VoiceOpenGov ist die Bewegung und der öffentliche Rahmen.",
+        primaryCta: "Unterstützen",
+        secondaryCta: "Die Bewegung verstehen",
+        tertiaryLabel: "Praktisches Werkzeug:",
+        tertiaryLink: "eDebatte ansehen",
+        principleEyebrow: "Mehrheit braucht Form",
+        principleTitle: "Mehrheit ist kein Stimmungsrausch, sondern Verantwortung.",
+        principleBody:
+          "Eine Mehrheit soll sichtbar werden können – aber nicht als bloße Lautstärke. Sie braucht Kontext, Optionen, Folgen, Minderheitensichtbarkeit und einen nachvollziehbaren Weg vom Thema bis zum Status.",
+        principlePoints: [
+          "Mehrheiten sollen lesbar werden, nicht künstlich erzeugt.",
+          "Minderheiten bleiben sichtbar, auch wenn sie nicht obsiegen.",
+          "Beteiligung ohne Anschluss erzeugt Enttäuschung statt Legitimität.",
+        ],
+        problemLabel: "Das Problem",
+        problemTitle: "Warum so viele Debatten heute Vertrauen verlieren",
+        problemIntro:
+          "Öffentliche Diskussion scheitert oft nicht am Interesse der Menschen, sondern an der Form.",
+        problems: [
+          {
+            title: "Fragmentierte Information",
+            body:
+              "Behauptungen, Links, Kommentare und Empörung stehen nebeneinander, aber selten in einer gemeinsamen, nachvollziehbaren Struktur.",
+          },
+          {
+            title: "Fehlender Anschluss",
+            body:
+              "Selbst wenn Beteiligung stattfindet, bleibt oft unklar, was daraus folgt, wer zuständig ist und in welchem Status sich ein Thema befindet.",
+          },
+          {
+            title: "Mehrheit ohne Tiefenschärfe",
+            body:
+              "Zahlen allein erklären noch nichts. Ohne Optionen, Folgen und Kontext wird auch Mehrheit schnell zum Missverständnis.",
+          },
+        ],
+        solutionLabel: "Unsere Antwort",
+        solutionTitle: "Problem, Lösung, Bewegung – in einer klaren Logik",
+        solutionIntro:
+          "VoiceOpenGov will die öffentliche Form verbessern. eDebatte macht diese Form praktisch nutzbar.",
+        movementLabel: "Die Bewegung",
+        movementTitle: "VoiceOpenGov ist mehr als ein Tool-Label.",
+        movementBody:
+          "Wir suchen Bürger, Initiativen und Unterstützer, die eine neue demokratische Kultur nicht nur fordern, sondern strukturell mit aufbauen wollen – unabhängig, nachvollziehbar und ohne versteckte Einflusslogik.",
+        movementCards: [
+          {
+            title: "Für Bürger",
+            body:
+              "Wer mittragen will, dass Beteiligung verständlicher, fairer und direkter wird, findet hier einen öffentlichen Rahmen.",
+          },
+          {
+            title: "Für Initiativen",
+            body:
+              "Wer Themen, Erfahrungen und Perspektiven anschlussfähig machen will, braucht keine neue Empörungsbühne, sondern eine tragfähige Form.",
+          },
+          {
+            title: "Für Unterstützer",
+            body:
+              "Wer Unabhängigkeit ernst meint, hilft beim Aufbau einer Infrastruktur, die nicht von Werbung, Lobby oder Exit-Logik getrieben ist.",
+          },
+        ],
+        movementPrimary: "Jetzt unterstützen",
+        movementSecondary: "Zu eDebatte",
+        joinTitle: "Mitglied werden und intern mitwirken",
+        joinBody:
+          "Mitgliedschaft ist kostenfrei. Interne Themenräume zu Veranstaltungen, Treffen, Satzung oder Prioritäten sollen innerhalb der Mitgliedschaft geführt werden – datenschutzsauber und nicht künstlich öffentlich gemacht.",
+      }
+    : {
+        heroBadge: "Initiative for traceable public evidence and participation",
+        heroKicker: "Private initiative · globally open, locally usable",
+        heroTitleA: "VoiceOpenGov",
+        heroTitleB: "for a new",
+        heroTitleC: "direct-democratic discussion culture.",
+        heroLead:
+          "Not more noise. Not more fog. A form in which public issues can be handled in a way that is understandable, verifiable, majoritarian and status-guided.",
+        heroBody:
+          "We want to rebuild trust in public opinion-forming through a new information architecture that makes problems, evidence, options, responsibility and outcomes readable again. eDebatte is the tool for that. VoiceOpenGov is the movement and the public frame.",
+        primaryCta: "Support",
+        secondaryCta: "Understand the movement",
+        tertiaryLabel: "Practical tool:",
+        tertiaryLink: "See eDebatte",
+        principleEyebrow: "Majority needs form",
+        principleTitle: "Majority is responsibility, not a mood spike.",
+        principleBody:
+          "A majority should become visible – but not as sheer loudness. It needs context, options, consequences, minority visibility and a traceable path from issue to status.",
+        principlePoints: [
+          "Majorities should become readable, not artificially manufactured.",
+          "Minorities remain visible even when they do not prevail.",
+          "Participation without follow-through creates disappointment, not legitimacy.",
+        ],
+        problemLabel: "The problem",
+        problemTitle: "Why so many debates lose trust today",
+        problemIntro:
+          "Public discussion often fails not because people do not care, but because the form is broken.",
+        problems: [
+          {
+            title: "Fragmented information",
+            body:
+              "Claims, links, comments and outrage sit next to each other, but rarely in a shared and traceable structure.",
+          },
+          {
+            title: "Missing follow-through",
+            body:
+              "Even when participation happens, it often stays unclear what follows, who is responsible and what status a topic is in.",
+          },
+          {
+            title: "Majority without depth",
+            body:
+              "Numbers alone explain nothing. Without options, consequences and context, majority itself becomes misleading.",
+          },
+        ],
+        solutionLabel: "Our answer",
+        solutionTitle: "Problem, solution, movement – in one clear logic",
+        solutionIntro:
+          "VoiceOpenGov improves the public form. eDebatte makes that form usable in practice.",
+        movementLabel: "The movement",
+        movementTitle: "VoiceOpenGov is more than a tool label.",
+        movementBody:
+          "We are looking for citizens, initiatives and supporters who do not only demand a new democratic culture, but want to help build it in a structured and independent way.",
+        movementCards: [
+          {
+            title: "For citizens",
+            body:
+              "If you want participation to become clearer, fairer and more direct, this is a public frame to stand behind.",
+          },
+          {
+            title: "For initiatives",
+            body:
+              "If you want to make issues and perspectives connectable, you need more than outrage – you need a form that can carry them.",
+          },
+          {
+            title: "For supporters",
+            body:
+              "If you take independence seriously, you help build an infrastructure that is not driven by ads, lobbying or exit logic.",
+          },
+        ],
+        movementPrimary: "Support now",
+        movementSecondary: "Go to eDebatte",
+        joinTitle: "Become a member and participate internally",
+        joinBody:
+          "Membership is free. Internal topic spaces around events, meetings, statutes or priorities should live within membership – privacy-safe and not artificially exposed in public.",
+      };
+
+  const solutionSteps = isGerman
+    ? [
+        {
+          title: "Check",
+          body: "Begriffe, Behauptungen und Zuständigkeiten werden so geklärt, dass aus einem Thema eine prüfbare Ausgangsfrage wird.",
+        },
+        {
+          title: "Dossier",
+          body: "Quellen, Konflikte, Optionen, Folgen und Verantwortung werden in eine lesbare Struktur übersetzt.",
+        },
+        {
+          title: "Beteiligung",
+          body: "Mehrheiten werden nicht behauptet, sondern in klaren Ergebnisarten sichtbar gemacht: Stimmung, Priorisierung, Empfehlung oder Entscheidung.",
+        },
+        {
+          title: "Status",
+          body: "Nach dem Ergebnis bleibt sichtbar, was daraus folgt, wo es hängt und wer Verantwortung trägt.",
+        },
+      ]
+    : [
+        {
+          title: "Check",
+          body: "Terms, claims and responsibilities are clarified until an issue becomes a verifiable starting question.",
+        },
+        {
+          title: "Dossier",
+          body: "Sources, conflicts, options, consequences and responsibility are translated into a readable structure.",
+        },
+        {
+          title: "Participation",
+          body: "Majorities are not claimed but made visible through clear result types: mood, prioritization, recommendation or decision.",
+        },
+        {
+          title: "Status",
+          body: "After an outcome, it remains visible what follows, where it stalls and who carries responsibility.",
+        },
+      ];
 
   const resetForm = () => {
     setMemberType("person");
@@ -238,173 +427,92 @@ export default function HomeClient({
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
-      <section
-        id="hero"
-        className="relative overflow-hidden border-b border-slate-800/70 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900"
-      >
-        <div className="pointer-events-none absolute -right-20 top-12 h-64 w-64 rounded-full bg-cyan-500/20 blur-3xl" />
-        <div className="pointer-events-none absolute -left-24 top-40 h-72 w-72 rounded-full bg-sky-500/20 blur-3xl" />
-        <div className="mx-auto max-w-6xl px-4 pb-14 pt-12">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(14,165,233,0.16),transparent_28%),linear-gradient(to_bottom,#020617,#020617,#081226)] pb-16 text-slate-100">
+      <section id="hero" className="relative overflow-hidden border-b border-slate-800/70">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
+        <div className="pointer-events-none absolute -left-32 top-16 h-96 w-96 rounded-full bg-sky-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute right-0 top-24 h-[28rem] w-[28rem] rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-14 md:pb-20 md:pt-16">
+          <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div className="space-y-7">
               <div className="flex flex-wrap items-center gap-2">
-                <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-sky-300">
-                  {strings.hero.badge}
+                <div className="inline-flex items-center rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+                  {copy.heroBadge}
                 </div>
-                <div className="inline-flex items-center rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-xs font-semibold text-slate-200">
-                  Private Initiative
+                <div className="inline-flex items-center rounded-full border border-slate-700/80 bg-slate-900/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-300">
+                  {copy.heroKicker}
                 </div>
               </div>
-              <div className="space-y-4">
-                <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
-                  <span className="block headline-gradient">{strings.hero.title}</span>
-                  <span className="block text-slate-100">{strings.hero.subtitle}</span>
+
+              <div className="max-w-4xl space-y-5">
+                <h1 className="max-w-4xl text-5xl font-black leading-[1.02] tracking-[-0.04em] text-white md:text-7xl">
+                  <span className="block headline-gradient">{copy.heroTitleA}</span>
+                  <span className="block text-slate-100">{copy.heroTitleB}</span>
+                  <span className="block text-slate-100">{copy.heroTitleC}</span>
                 </h1>
-                <p className="max-w-2xl text-base font-semibold text-slate-100 md:text-lg">
-                  {strings.hero.oneLiner}
+                <p className="max-w-3xl text-lg font-semibold leading-8 text-slate-100 md:text-xl">
+                  {copy.heroLead}
                 </p>
-                <p className="max-w-2xl text-sm text-slate-300">
-                  {strings.hero.lead.pre}{" "}
-                  <span className="text-slate-100">{strings.hero.lead.highlight1}</span>{" "}
-                  {strings.hero.lead.mid1}{" "}
-                  <span className="text-slate-100">{strings.hero.lead.highlight2}</span>{" "}
-                  {strings.hero.lead.mid2}{" "}
-                  <span className="text-slate-100">{strings.hero.lead.highlight3}</span>{" "}
-                  {strings.hero.lead.post}
+                <p className="max-w-3xl text-sm leading-7 text-slate-300 md:text-base">
+                  {copy.heroBody}
                 </p>
-                <div className="mt-6 grid gap-4 md:grid-cols-3">
-                  <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-slate-300 shadow-sm">
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {highlightLabels.focus}
-                    </p>
-                    <p className="mt-2 text-sm font-semibold text-slate-100 leading-relaxed">
-                      {strings.hero.focus}
-                    </p>
-                  </article>
-                  <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-slate-300 shadow-sm">
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {highlightLabels.scalable}
-                    </p>
-                    <p className="mt-2 text-sm text-slate-200 leading-relaxed">
-                      {strings.hero.scalable}
-                    </p>
-                  </article>
-                  <article className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-slate-300 shadow-sm">
-                    <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                      {highlightLabels.mobility}
-                    </p>
-                    <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-                      {strings.hero.micro.line1}
-                    </p>
-                    <p className="text-sm text-slate-400 leading-relaxed">
-                      {strings.hero.micro.line2}
-                    </p>
-                  </article>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  <Link href="/#join" className="btn btn-primary">
-                    {strings.hero.ctas.join}
-                  </Link>
-                  <Link href={VOG_SUPPORT_PATH} className="btn btn-ghost">
-                    {strings.hero.ctas.support}
-                  </Link>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {strings.hero.badges.map((badge) => (
-                    <span
-                      key={badge}
-                      className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-200"
-                    >
-                      {badge}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-300">
-                  <span className="font-semibold text-slate-300">
-                    {strings.hero.more.label}
-                  </span>
-                  <a
-                    href={EDEBATTE_SIGNUP_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-semibold text-slate-100 underline underline-offset-2"
-                  >
-                    {strings.hero.more.edebatte}
-                  </a>
-                  <a
-                    href={EDEBATTE_PREORDER_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-semibold text-slate-100 underline underline-offset-2"
-                  >
-                    {strings.hero.more.preorder}
-                  </a>
-                  <span className="text-slate-500">·</span>
-                  <Link
-                    href="/howtoworks/bewegung"
-                    className="font-semibold text-slate-100 underline underline-offset-2"
-                  >
-                    {strings.hero.ctas.how}
-                  </Link>
-                </div>
-                <div className="mt-6 grid gap-3 md:grid-cols-4">
-                  {strings.hero.steps.map((item) => (
-                    <Link
-                      key={item.title}
-                      href={item.href}
-                      className="group rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-left shadow-sm transition hover:border-sky-400/60"
-                    >
-                      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 group-hover:text-sky-200">
-                        {item.title}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-100">{item.body}</p>
-                      <p className="mt-2 text-xs text-slate-400 group-hover:text-slate-300">
-                        {strings.hero.learnMore}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  {strings.hero.cards.map((item) => (
-                    <div
-                      key={item.title}
-                      className="rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-xs text-slate-300 shadow-sm"
-                    >
-                      <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                        {item.title}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-slate-100">{item.body}</p>
-                    </div>
-                  ))}
-                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <Link href={VOG_SUPPORT_PATH} className="btn btn-primary">
+                  {copy.primaryCta}
+                </Link>
+                <Link href="/howtoworks/bewegung" className="btn btn-ghost">
+                  {copy.secondaryCta}
+                </Link>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-300">
+                <span className="font-semibold text-slate-400">{copy.tertiaryLabel}</span>
+                <a
+                  href={EDEBATTE_SIGNUP_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-slate-100 underline underline-offset-4"
+                >
+                  {copy.tertiaryLink}
+                </a>
+                <span className="text-slate-500">·</span>
+                <Link
+                  href="/howtoworks/edebatte"
+                  className="font-semibold text-slate-100 underline underline-offset-4"
+                >
+                  {isGerman ? "Wie die Informationsarchitektur funktioniert" : "How the information architecture works"}
+                </Link>
               </div>
             </div>
 
             <div className="relative">
-              <div className="absolute -right-8 top-10 h-40 w-40 rounded-full bg-sky-500/20 blur-3xl" />
-              <div className="relative rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-soft">
-                <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  <span>{strings.decisionCard.label}</span>
-                  <span className="rounded-full border border-slate-700 bg-slate-950/70 px-2 py-0.5 text-[10px] text-slate-300">
-                    {strings.decisionCard.tag}
+              <div className="absolute -right-4 top-10 h-44 w-44 rounded-full bg-sky-500/10 blur-3xl" />
+              <div className="relative overflow-hidden rounded-[2rem] border border-slate-800/90 bg-slate-900/80 p-6 shadow-[0_24px_80px_rgba(2,6,23,0.45)]">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                    {copy.principleEyebrow}
+                  </p>
+                  <span className="rounded-full border border-sky-400/20 bg-sky-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-200">
+                    {isGerman ? "Mehrheitsprinzip" : "Majority principle"}
                   </span>
                 </div>
-                <h2 className="mt-3 text-xl font-semibold text-slate-100">
-                  {strings.decisionCard.title}
+                <h2 className="mt-4 text-2xl font-semibold leading-tight text-slate-100">
+                  {copy.principleTitle}
                 </h2>
-                <div className="mt-4 grid gap-2">
-                  {strings.decisionCard.steps.map((step) => (
+                <p className="mt-4 text-sm leading-7 text-slate-300">
+                  {copy.principleBody}
+                </p>
+                <div className="mt-6 space-y-3">
+                  {copy.principlePoints.map((point) => (
                     <div
-                      key={step}
-                      className="rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-2 text-xs text-slate-300"
+                      key={point}
+                      className="rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-200"
                     >
-                      {step}
+                      {point}
                     </div>
                   ))}
-                </div>
-                <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-xs text-slate-400">
-                  {strings.decisionCard.note}
                 </div>
               </div>
             </div>
@@ -413,109 +521,125 @@ export default function HomeClient({
       </section>
 
       <section className="mx-auto mt-16 max-w-6xl px-4">
-        <div className="space-y-4 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            {strings.foundations.label}
+        <div className="max-w-3xl space-y-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+            {copy.problemLabel}
           </p>
-          <h2 className="text-2xl font-bold text-slate-100 headline-gradient">
-            {strings.foundations.title}
+          <h2 className="text-3xl font-bold tracking-[-0.03em] text-slate-100 md:text-4xl">
+            <span className="headline-gradient">{copy.problemTitle}</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-sm text-slate-400">
-            {strings.foundations.subtitle}
-          </p>
-          <p className="text-base font-semibold text-slate-100">
-            {strings.foundations.bandLine}
-          </p>
-          <p className="mx-auto max-w-2xl text-sm text-slate-400">
-            {strings.foundations.bandHint}
+          <p className="text-sm leading-7 text-slate-300 md:text-base">
+            {copy.problemIntro}
           </p>
         </div>
-
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {strings.foundations.items.map((item) => {
-            const slug = String(item.href || "").split("/").pop() || "";
-            const band = getBand(slug);
-            const covers = getCovers(slug);
-            const showBandSubtitle = !item.subtitle && locale === "de";
-            return (
-              <div
-                key={item.title}
-                className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm"
-              >
-                {covers?.front ? (
-                  <div className="mb-4">
-                    <CoverLightbox
-                      frontSrc={covers.front}
-                      backSrc={covers.back}
-                      title={`${band?.title ?? item.title}`}
-                      thumbClassName="bg-slate-950/30"
-                    />
-                  </div>
-                ) : null}
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  {strings.foundations.bandLabel} {band?.roman ?? ""}
-                </p>
-                <h3 className="mt-2 text-lg font-semibold text-slate-100">
-                  {band?.title ?? item.title}
-                </h3>
-                {item.subtitle ? (
-                  <p className="mt-1 text-sm text-slate-400">{item.subtitle}</p>
-                ) : showBandSubtitle && band?.subtitle ? (
-                  <p className="mt-1 text-sm text-slate-400">{band.subtitle}</p>
-                ) : null}
-                <p className="mt-3 text-sm text-slate-300">{item.body}</p>
-                <Link
-                  href={item.href}
-                  className="mt-4 inline-block text-sm font-semibold text-sky-300 hover:underline"
-                >
-                  {item.cta}
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-
-        <p className="mt-6 text-center text-xs text-slate-400">
-          {strings.foundations.footerNote}
-        </p>
-
-        <div className="mt-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            {strings.foundations.architectureLabel}
-          </p>
-          <p className="mt-4 flex flex-wrap justify-center gap-3 text-sm text-slate-300">
-            {strings.foundations.architectureFlow.join(" → ")} →{" "}
-            <span className="text-slate-100 font-semibold">
-              {strings.foundations.architectureStrong}
-            </span>
-          </p>
-        </div>
-
-        <div className="mt-10 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-center shadow-sm">
-          <h3 className="text-lg font-semibold text-slate-100">
-            {strings.foundations.ctaTitle}
-          </h3>
-          <p className="mt-2 text-sm text-slate-300">{strings.foundations.ctaBody}</p>
-          <Link href="/#join" className="btn btn-ghost mt-4">
-            {strings.foundations.ctaButton}
-          </Link>
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          {copy.problems.map((item) => (
+            <article
+              key={item.title}
+              className="rounded-[1.75rem] border border-slate-800/90 bg-slate-900/75 p-6 shadow-sm"
+            >
+              <p className="text-sm font-semibold text-slate-100">{item.title}</p>
+              <p className="mt-3 text-sm leading-7 text-slate-300">{item.body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="mitmachen" className="mx-auto mt-12 max-w-6xl px-4">
-        <div id="join" className="scroll-mt-24" />
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                {strings.membership.label}
+      <section className="mx-auto mt-16 max-w-6xl px-4">
+        <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+              {copy.solutionLabel}
+            </p>
+            <h2 className="text-3xl font-bold tracking-[-0.03em] text-slate-100 md:text-4xl">
+              <span className="headline-gradient">{copy.solutionTitle}</span>
+            </h2>
+            <p className="max-w-2xl text-sm leading-7 text-slate-300 md:text-base">
+              {copy.solutionIntro}
+            </p>
+          </div>
+          <div className="rounded-[1.75rem] border border-sky-400/20 bg-sky-500/10 p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+              {isGerman ? "Unser öffentliches Versprechen" : "Our public promise"}
+            </p>
+            <p className="mt-3 text-sm leading-7 text-slate-200">
+              {isGerman
+                ? "Wir versprechen keine perfekte Wahrheit. Wir versprechen eine bessere öffentliche Form: verständlicher, evidenznäher, mehrheitsfähig und mit sichtbarem Anschluss nach der Beteiligung."
+                : "We do not promise perfect truth. We promise a better public form: more understandable, more evidence-aware, capable of majority formation and with visible follow-through after participation."}
+            </p>
+          </div>
+        </div>
+        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {solutionSteps.map((item) => (
+            <article
+              key={item.title}
+              className="rounded-[1.75rem] border border-slate-800/90 bg-slate-900/75 p-6 shadow-sm"
+            >
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                {item.title}
               </p>
-              <h2 className="text-2xl font-bold text-slate-100">{strings.membership.title}</h2>
-              <p className="mt-1 text-xs text-slate-400">{strings.membership.subtitle}</p>
-            </div>
+              <p className="mt-3 text-sm leading-7 text-slate-200">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-16 max-w-6xl px-4">
+        <div className="rounded-[2rem] border border-slate-800/90 bg-slate-900/80 p-6 md:p-8 shadow-sm">
+          <div className="max-w-3xl space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+              {copy.movementLabel}
+            </p>
+            <h2 className="text-3xl font-bold tracking-[-0.03em] text-slate-100 md:text-4xl">
+              <span className="headline-gradient">{copy.movementTitle}</span>
+            </h2>
+            <p className="text-sm leading-7 text-slate-300 md:text-base">
+              {copy.movementBody}
+            </p>
+          </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {copy.movementCards.map((item) => (
+              <article
+                key={item.title}
+                className="rounded-[1.5rem] border border-slate-800 bg-slate-950/50 p-5"
+              >
+                <p className="text-sm font-semibold text-slate-100">{item.title}</p>
+                <p className="mt-3 text-sm leading-7 text-slate-300">{item.body}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={VOG_SUPPORT_PATH} className="btn btn-primary">
+              {copy.movementPrimary}
+            </Link>
+            <a
+              href={EDEBATTE_SIGNUP_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-ghost"
+            >
+              {copy.movementSecondary}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="mitmachen" className="mx-auto mt-16 max-w-6xl px-4">
+        <div id="join" className="scroll-mt-24" />
+        <div className="rounded-[2rem] border border-slate-800/90 bg-slate-900/80 p-6 shadow-sm md:p-8">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+              {strings.membership.label}
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-[-0.03em] text-slate-100">
+              <span className="headline-gradient">{copy.joinTitle}</span>
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300 md:text-base">
+              {copy.joinBody}
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
               <div className="flex flex-col gap-3 md:flex-row md:items-end">
                 <div className="flex-1 space-y-1">
@@ -763,8 +887,8 @@ export default function HomeClient({
                 {strings.footer.supportNoteLink}
               </Link>{" "}
               {strings.footer.supportNoteAfter}{" "}
-              <a href="mailto:members@voiceopengov.org" className="font-semibold text-slate-100">
-                members@voiceopengov.org
+              <a href={`mailto:${contactEmail}`} className="font-semibold text-slate-100">
+                {contactEmail}
               </a>
               .
             </p>
@@ -773,44 +897,57 @@ export default function HomeClient({
         </div>
       </section>
 
-      <section id="voiceopengov-support" className="mx-auto mt-14 max-w-6xl px-4 pb-10">
-        <div className="grid gap-6">
-          <MembershipCalculator_VOG
-            strings={strings.supportCalculator}
-            canOpen={canOpenCalculator}
-            onRequestEmail={handleRequestEmail}
-          />
-
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 text-center shadow-sm">
-            <p className="text-sm font-semibold text-slate-100">
-              {strings.supportAfterCta.title}
+      <section id="voiceopengov-support" className="mx-auto mt-12 max-w-6xl px-4 pb-12">
+        <div className="rounded-[2rem] border border-slate-800/90 bg-slate-900/80 p-6 shadow-sm md:p-8">
+          <div className="max-w-3xl space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+              {strings.supportSection.label}
             </p>
-            <p className="mt-2 text-sm text-slate-300">{strings.supportAfterCta.body}</p>
-            <Link href="/#join" className="btn btn-primary mt-4">
-              {strings.supportAfterCta.cta}
-            </Link>
+            <h2 className="text-3xl font-bold tracking-[-0.03em] text-slate-100 md:text-4xl">
+              <span className="headline-gradient">{strings.supportSection.title}</span>
+            </h2>
+            <p className="text-sm leading-7 text-slate-300 md:text-base">
+              {strings.supportSection.body}
+            </p>
           </div>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h4 className="text-lg font-semibold text-slate-100">
-                  {strings.supportBank.title}
-                </h4>
-                <p className="mt-2 text-sm text-slate-300">{strings.supportBank.body}</p>
-              </div>
-            </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setSupportOpen((prev) => !prev)}
+            >
+              {strings.supportSection.ctaSupport}
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => setSupportContactOpen((prev) => !prev)}
+            >
+              {strings.supportBank.contact.title}
+            </button>
+          </div>
 
-            <div className="mt-4 rounded-2xl border border-dashed border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-400">
-              {strings.supportBank.noDetails}
+          {supportOpen && (
+            <div className="mt-6">
+              <MembershipCalculator_VOG
+                strings={strings.supportCalculator}
+                canOpen={canOpenCalculator}
+                onRequestEmail={handleRequestEmail}
+              />
             </div>
+          )}
 
-            <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+          {supportContactOpen && (
+            <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                {strings.supportBank.contact.title}
+                {strings.supportBank.title}
               </p>
-              <p className="mt-2 text-xs text-slate-300">{strings.supportBank.contact.body}</p>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <p className="mt-2 text-sm text-slate-300">{strings.supportBank.body}</p>
+              <p className="mt-3 text-xs text-slate-400">{strings.supportBank.noDetails}</p>
+              <p className="mt-3 text-xs text-slate-300">{strings.supportBank.contact.body}</p>
+
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
                 <label className="space-y-1 text-xs font-medium text-slate-300">
                   <span>{strings.supportBank.contact.firstName}</span>
                   <input
@@ -862,13 +999,11 @@ export default function HomeClient({
                 <button type="button" onClick={handleContactSubmit} className="btn btn-ghost">
                   {strings.supportBank.contact.submit}
                 </button>
-                {contactError ? (
-                  <span className="text-xs text-amber-300">{contactError}</span>
-                ) : null}
+                {contactError ? <span className="text-xs text-amber-300">{contactError}</span> : null}
               </div>
+              <p className="mt-3 text-xs text-slate-400">{strings.supportBank.afterNote}</p>
             </div>
-            <p className="mt-3 text-xs text-slate-400">{strings.supportBank.afterNote}</p>
-          </div>
+          )}
         </div>
       </section>
     </main>

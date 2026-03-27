@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import {
   DEFAULT_LOCALE,
   type SupportedLocale,
-  isSupportedLocale,
+  isCoreLocale,
 } from "@/config/locales";
 
 type LocaleContextValue = {
@@ -33,7 +33,8 @@ export function LocaleProvider({
   initialLocale = DEFAULT_LOCALE,
   children,
 }: ProviderProps) {
-  const [locale, setLocaleState] = useState<SupportedLocale>(initialLocale);
+  const fallbackLocale = isCoreLocale(initialLocale) ? initialLocale : DEFAULT_LOCALE;
+  const [locale, setLocaleState] = useState<SupportedLocale>(fallbackLocale);
   const router = useRouter();
   const didSync = useRef(false);
 
@@ -43,12 +44,12 @@ export function LocaleProvider({
     try {
       const url = new URL(window.location.href);
       const urlLocale = url.searchParams.get("lang");
-      if (isSupportedLocale(urlLocale)) {
+      if (isCoreLocale(urlLocale)) {
         setLocaleState(urlLocale);
         persistLocale(urlLocale);
         updateHtmlAttrs(urlLocale);
         didSync.current = true;
-        if (urlLocale !== initialLocale) {
+        if (urlLocale !== fallbackLocale) {
           router.refresh();
         }
         return;
@@ -59,27 +60,28 @@ export function LocaleProvider({
 
     try {
       const stored = window.localStorage.getItem("vog:locale");
-      if (isSupportedLocale(stored)) {
+      if (isCoreLocale(stored)) {
         setLocaleState(stored);
         updateHtmlAttrs(stored);
       } else {
-        updateHtmlAttrs(initialLocale);
+        updateHtmlAttrs(fallbackLocale);
       }
     } catch {
-      updateHtmlAttrs(initialLocale);
+      updateHtmlAttrs(fallbackLocale);
     }
     didSync.current = true;
-  }, [initialLocale, router]);
+  }, [fallbackLocale, router]);
 
   useEffect(() => {
     updateHtmlAttrs(locale);
   }, [locale]);
 
   const setLocale = useCallback((next: SupportedLocale) => {
-    setLocaleState(next);
-    persistLocale(next);
-    syncUrl(next);
-    updateHtmlAttrs(next);
+    const normalized = isCoreLocale(next) ? next : DEFAULT_LOCALE;
+    setLocaleState(normalized);
+    persistLocale(normalized);
+    syncUrl(normalized);
+    updateHtmlAttrs(normalized);
   }, []);
 
   const value = useMemo(

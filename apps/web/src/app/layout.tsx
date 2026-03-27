@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
 import { LocaleProvider } from "@/context/LocaleContext";
-import { DEFAULT_LOCALE, type SupportedLocale, isSupportedLocale } from "@/config/locales";
+import { DEFAULT_LOCALE, type SupportedLocale, isCoreLocale } from "@/config/locales";
 import { SiteHeader } from "./(components)/SiteHeader";
 import { getPrivacyStrings } from "./privacyStrings";
 import { VogCookieBanner } from "@/components/privacy/VogCookieBanner";
@@ -43,7 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 async function detectInitialLocale(cookieStore: Awaited<ReturnType<typeof cookies>>): Promise<SupportedLocale> {
   const cookieLocale = cookieStore.get("lang")?.value;
-  if (isSupportedLocale(cookieLocale)) return cookieLocale;
+  if (isCoreLocale(cookieLocale)) return cookieLocale;
 
   const headerStore = await headers();
   const acceptLanguage = headerStore.get("accept-language");
@@ -51,7 +51,7 @@ async function detectInitialLocale(cookieStore: Awaited<ReturnType<typeof cookie
     const primary = acceptLanguage.split(",")[0]?.split(";")[0]?.trim();
     if (primary) {
       const short = primary.slice(0, 2).toLowerCase();
-      if (isSupportedLocale(short)) return short;
+      if (isCoreLocale(short)) return short;
     }
   }
 

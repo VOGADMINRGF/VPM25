@@ -26,7 +26,7 @@ Statusmodell:
   - Anlassraum / RePro / eDebatte sind klar unterscheidbar.
 
 ### VOG-SITE-P0-02 – Startseite in Initiative-Logik schärfen
-- Status: `todo`
+- Status: `done`
 - Priorität: hoch
 - Ziel: Startseite erklärt VoiceOpenGov als Initiative, nicht nur als Produkt oder Buchprojekt.
 - Deliverables:
@@ -37,8 +37,56 @@ Statusmodell:
   - eine neue Person versteht in unter 3 Minuten Mission, Unterschied und Nutzen,
   - CTAs führen in „So funktioniert’s“, „Mitmachen“ und „Unterstützen“.
 
+### VOG-SITE-P0-09 – Header & Navigation stabilisieren
+- Status: `done`
+- Priorität: hoch
+- Ziel: öffentliche, ruhige, funktionale Top-Navigation ohne Debug-/Overlay-Anmutung.
+- Deliverables:
+  - reduzierte, belastbare Hauptnavigation,
+  - Unterstützen als klarer CTA,
+  - kompaktes Locale-UI ohne Überladung.
+- Akzeptanzkriterien:
+  - Header wirkt release-reif und ruhig,
+  - Navigation ist verständlich und nicht überfrachtet.
+
+### VOG-SITE-P0-10 – Sprachumschaltung konsistent (nur gepflegte Sprachen)
+- Status: `done`
+- Priorität: hoch
+- Ziel: Sprachumschaltung sichtbar korrekt und ohne Fake-Multi-Lang.
+- Deliverables:
+  - stabile Locale-Logik (URL/Cookie/Context),
+  - sichtbare Auswahl nur für gepflegte Sprachen (DE/EN),
+  - keine Fallback-Erklärung im UI.
+- Akzeptanzkriterien:
+  - Locale-Wechsel ist nachvollziehbar,
+  - keine Mischsprache im UI,
+  - kein Drift zwischen URL, Context und Render-State.
+
+### VOG-SITE-P0-11 – Docs-Status synchronisieren & Legacy markieren
+- Status: `done`
+- Priorität: mittel
+- Ziel: Dokumente spiegeln den tatsächlichen Frontend-Stand wider.
+- Deliverables:
+  - OpenTasks aktualisiert,
+  - Legacy-/Superseded-Hinweise gesetzt.
+- Akzeptanzkriterien:
+  - kein Drift zwischen Docs und UI-Status,
+  - überholte Dateien sind als solche markiert.
+
+### VOG-SITE-P0-12 – Mitmachen/Unterstützen-Bereich beruhigen (mobile-first)
+- Status: `done`
+- Priorität: hoch
+- Ziel: der untere Bereich wirkt ruhiger, klarer und mobile-first.
+- Deliverables:
+  - zusammengeführte Support-Fläche mit progressiver Offenlegung,
+  - reduzierte CTA-Dichte,
+  - klare Reihenfolge: Mitgliedschaft zuerst, Unterstützung danach.
+- Akzeptanzkriterien:
+  - weniger visuelle Brüche,
+  - klare, ruhige Nutzerführung auf Mobile.
+
 ### VOG-SITE-P0-03 – „So funktioniert’s“ als RePro-Nutzerreise bauen
-- Status: `todo`
+- Status: `in_progress`
 - Priorität: hoch
 - Ziel: RePro öffentlich lesbar und praktisch verständlich machen.
 - Deliverables:
@@ -183,6 +231,18 @@ Statusmodell:
 - Akzeptanzkriterien:
   - Governance ist nicht nur intern/spec-seitig dokumentiert,
   - Vertrauen entsteht auch ohne tiefes Produktwissen.
+
+### VOG-SITE-P1-07 – Vollständige Mehrsprachigkeit ausrollen
+- Status: `todo`
+- Priorität: mittel
+- Ziel: alle vorgesehenen Sprachen mit vollständig gepflegten Kernseiten versorgen.
+- Deliverables:
+  - Übersetzungen für Home, Bewegung, eDebatte, Unterstützen, Mitmachen,
+  - konsistentes Terminologie-Mapping über alle Sprachen,
+  - QA-Check auf Mischsprache und RTL/LTR-Probleme.
+- Akzeptanzkriterien:
+  - keine Fallbacks mehr für Kernseiten,
+  - Sprachumschaltung ist inhaltlich vollständig.
 
 ---
 
