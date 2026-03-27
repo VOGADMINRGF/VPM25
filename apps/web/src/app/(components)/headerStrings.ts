@@ -27,7 +27,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "Worum VoiceOpenGov steht und was es tragen soll.",
       },
       {
-        href: "/howtoworks/edebatte",
+        href: "/howtoworks",
         label: "So funktioniert’s",
         description: "Wie eDebatte Struktur und Evidenz sichtbar macht.",
       },
@@ -69,7 +69,7 @@ const STRINGS: Record<SupportedLocale, HeaderStrings> = {
         description: "What VoiceOpenGov stands for and wants to build.",
       },
       {
-        href: "/howtoworks/edebatte",
+        href: "/howtoworks",
         label: "How it works",
         description: "How eDebatte makes structure and evidence visible.",
       },

@@ -44,11 +44,14 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Mitmachen" },
         { href: "/dossier", label: "Dossier" },
+        { href: "/mini-case", label: "Mini-Case" },
         { href: VOG_SUPPORT_PATH, label: "Unterstützen" },
       ],
       initiatives: [{ href: "/initiatives", label: "Für Initiativen" }],
       legal: [
         { href: "/kontakt", label: "Kontakt" },
+        { href: "/transparenz", label: "Evidenz & Transparenz" },
+        { href: "/stiftung", label: "Stiftungsperspektive" },
         { href: "/impressum", label: "Impressum" },
         { href: "/datenschutz", label: "Datenschutz" },
       ],
@@ -74,11 +77,14 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
       main: [
         { href: "/#mitmachen", label: "Join" },
         { href: "/dossier", label: "Dossier" },
+        { href: "/mini-case", label: "Mini case" },
         { href: VOG_SUPPORT_PATH, label: "Support" },
       ],
       initiatives: [{ href: "/initiatives", label: "For initiatives" }],
       legal: [
         { href: "/kontakt", label: "Contact" },
+        { href: "/transparenz", label: "Evidence & transparency" },
+        { href: "/stiftung", label: "Foundation perspective" },
         { href: "/impressum", label: "Legal notice" },
         { href: "/datenschutz", label: "Privacy" },
       ],

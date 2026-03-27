@@ -115,7 +115,7 @@ Statusmodell:
   - öffentliche Seiten wirken ruhiger und harmonischer.
 
 ### VOG-SITE-P0-03 – „So funktioniert’s“ als RePro-Nutzerreise bauen
-- Status: `in_progress`
+- Status: `done`
 - Priorität: hoch
 - Ziel: RePro öffentlich lesbar und praktisch verständlich machen.
 - Deliverables:
@@ -127,7 +127,7 @@ Statusmodell:
   - Status und Monitoring sind als Pflichtbestandteil sichtbar.
 
 ### VOG-SITE-P0-04 – Anlassräume als Kernseite bauen
-- Status: `todo`
+- Status: `done`
 - Priorität: hoch
 - Ziel: Anlassräume als neue öffentliche Diskussionsform einführen.
 - Deliverables:
@@ -139,7 +139,7 @@ Statusmodell:
   - klar ist, was hineingehört und was nicht.
 
 ### VOG-SITE-P0-05 – „Evidenz & Transparenz“ veröffentlichen
-- Status: `todo`
+- Status: `done`
 - Priorität: hoch
 - Ziel: Glaubwürdigkeit über Prozesszusagen herstellen.
 - Deliverables:
@@ -150,7 +150,7 @@ Statusmodell:
   - keine widersprüchlichen Aussagen zu Wahrheit, Empfehlung oder Einfluss.
 
 ### VOG-SITE-P0-06 – Unterstützen-Seite mit Integritätslogik bauen
-- Status: `todo`
+- Status: `done`
 - Priorität: hoch
 - Ziel: Finanzierung offen und vertrauensfähig erklären.
 - Deliverables:
@@ -163,7 +163,7 @@ Statusmodell:
   - CTA klar, nüchtern und glaubwürdig.
 
 ### VOG-SITE-P0-07 – Stiftungsperspektive als Roadmap formulieren
-- Status: `todo`
+- Status: `done`
 - Priorität: hoch
 - Ziel: spätere Stiftung als ernsthafte Zukunftsoption, nicht als vorschnelles Etikett, darstellen.
 - Deliverables:
@@ -175,7 +175,7 @@ Statusmodell:
   - keine Unklarheit über aktuellen Rechtsstatus.
 
 ### VOG-SITE-P0-08 – Mini-Case / Demo-Fall erstellen
-- Status: `todo`
+- Status: `done`
 - Priorität: hoch
 - Ziel: die abstrakte Logik an einem konkreten Beispiel zeigen.
 - Deliverables:
