@@ -1,73 +1,129 @@
-# VoiceOpenGov / eDbtt – Monorepo
+# VoiceOpenGov
 
-eDbtt bündelt die VoiceOpenGov-Apps (Next.js 15 App Router), die Domain-Logik und die KI-Orchestrierung für den E150-Standard. Ziel ist eine transparente Plattform für demokratische Beteiligung mit klarer Trennung von Kern-, Votes- und PII-Daten.
+> **Willkommen Nachbar.**
+>
+> Wir kennen uns wahrscheinlich nicht. Trotzdem treffen wir jeden Tag Entscheidungen, die unser gemeinsames Leben beeinflussen. Vielleicht wird es Zeit, dass wir anfangen, sie gemeinsam besser zu verstehen.
 
-## Architektur-Überblick
+VoiceOpenGov ist eine offene, internationale Mitgliederbewegung für nachvollziehbare Politik, echte Beteiligung, gesellschaftliche Souveränität und eine Kultur des Vertrauens.
 
-- **apps/web** – Next.js 15 Frontend (App Router) inkl. Admin-Tools.
-- **core** – Domain-Logik (Tri-Mongo, Identity/Verification, Telemetrie, Orchestrator).
-- **features** – Wiederverwendbare UI- und Domain-Module.
-- **packages/tri-mongo** – DB-Abstraktion für `core`, `votes`, `pii`, `ai_reader`.
-- **packages/ui** u. a. – gemeinsame UI-Bausteine.
+Wir bauen keine Plattform, auf der Menschen einer Meinung sein müssen. Wir schaffen eine Bewegung und eine Infrastruktur, in der Menschen trotz unterschiedlicher Meinungen gemeinsam verantwortbare Entscheidungen entwickeln können.
 
-## Tech-Stack
+## Die Rollen sind klar
 
-- Node.js 20, pnpm 10.x
-- Next.js 15 (App Router)
-- MongoDB (Tri-Mongo), Redis; optional Neo4j / Graph-Komponenten
-- KI-Orchestrierung mit mehreren Providern (OpenAI, Anthropic, Gemini, Mistral, You.com)
+- **Vote4Gov** ist die persönliche öffentliche Stimme von Ricky Gerd Fleischer: Geschichte, Motivation, Verantwortung und Vision.
+- **VoiceOpenGov** ist die Mitgliederbewegung: Werte, Charta, Governance, Transparenz und gemeinsames Handeln.
+- **eDebatte** ist die unabhängige Arbeits- und Entscheidungsinfrastruktur: Quellen, Claims, Dossiers, Alternativen, Beteiligung, Mehrheitsbilder, Wirkung und Lernen.
+- **Voxy** erklärt, strukturiert und übersetzt. Voxy hilft beim Verstehen. Voxy entscheidet nicht.
 
-## Getting Started
+## Wofür wir stehen
 
-1) Abhängigkeiten installieren
+- Verstehen vor Bewerten
+- Quellen vor Behauptungen
+- Transparenz vor Vertrauen auf Zuruf
+- Verantwortung statt bloßer Reichweite
+- Mehrheiten mit sichtbaren Minderheiten
+- offene Unsicherheit statt künstlicher Gewissheit
+- Lernen und Korrigieren statt politischem Gesichtsverlust
+- Geld ermöglicht Arbeit, kauft aber keine Stimme
+
+## Mitgliedschaft ist kein Newsletter
+
+VoiceOpenGov ist auf Mitgliedschaften ausgelegt. Mitglieder können die Charta mitentwickeln, Themen einbringen, regionale und thematische Gruppen aufbauen, an Entscheidungen der Bewegung teilnehmen und Verantwortung übernehmen.
+
+Mögliche Rollen reichen vom Nachbarn und Quellenfinder über Moderation, Übersetzung und regionale Verantwortung bis zu Fördermitgliedern und Partnerorganisationen. Finanzielle Unterstützung führt niemals zu mehr politischer Gewichtung.
+
+## Transparenz ist unser Betriebssystem
+
+Wir verlangen nichts, was wir nicht selbst tun.
+
+Darum machen wir schrittweise sichtbar:
+
+- Finanzierung und Abhängigkeiten
+- Mitgliederentwicklung
+- Entscheidungen und Verantwortlichkeiten
+- Partnerschaften und Interessenkonflikte
+- Charta-Versionen
+- Einsatz von KI
+- offene Fehler, Risiken und Lernstände
+- Wirkung und Kursänderungen
+
+Wir behaupten nicht, objektiv oder unabhängig von jeder Beziehung zu sein. Wir machen nachvollziehbar, wie Einschätzungen entstehen und welche Abhängigkeiten bestehen.
+
+## eDebatte: Dort arbeitet die Bewegung
+
+In eDebatte wird aus Information keine schnelle Meinung, sondern ein nachvollziehbarer Weg:
+
+```text
+Quelle
+↓
+Beobachtung
+↓
+Claim und Evidenz
+↓
+Interpretation und Annahme
+↓
+Zielkonflikt und Alternativen
+↓
+Orientierung
+↓
+Beteiligung und Mehrheitsbild
+↓
+Entscheidung
+↓
+Wirkung
+↓
+Lernen und neue Version
+```
+
+Der Reasoning Graph gehört in den methodischen und technischen Kern von eDebatte. VoiceOpenGov definiert den Transparenzanspruch; eDebatte macht ihn praktisch überprüfbar.
+
+## Die ersten 50 öffentlichen Fragen
+
+Die erste Seed-Welle besteht aus 50 großen, international verständlichen Orientierungsfragen – nicht aus klassischen Parteikapiteln oder Ministeriumsschubladen.
+
+Jeder Raum erhält eine Leitfrage, Zielkonflikte, Werte- und Rechtsbezüge, betroffene Gruppen, internationale Perspektiven, Quellen, Claims, Unsicherheiten, Alternativen, Erfolgskriterien, Beteiligung, Versionierung und Wirkungsprüfung.
+
+Siehe: [`docs/VOICEOPENGOV-50-FRAGEN.md`](docs/VOICEOPENGOV-50-FRAGEN.md)
+
+## Relaunch-Grundlage
+
+Die kanonische Marken-, Mitgliedschafts- und Vertrauensarchitektur liegt hier:
+
+[`docs/VOICEOPENGOV-MOVEMENT-RELAUNCH-2026.md`](docs/VOICEOPENGOV-MOVEMENT-RELAUNCH-2026.md)
+
+## Technische Architektur
+
+Das Repository ist ein Monorepo mit:
+
+- **apps/web** – Next.js 15 Frontend und öffentliche Bewegungssurfaces
+- **core** – Domain-Logik, Identity, Telemetrie und Orchestrierung
+- **features** – wiederverwendbare UI- und Domain-Module
+- **packages/tri-mongo** – Datenzugriff für `core`, `votes`, `pii` und `ai_reader`
+- **packages/ui** – gemeinsame UI-Bausteine
+
+### Stack
+
+- Node.js 20 und pnpm 10.x
+- Next.js 15 App Router
+- MongoDB, Redis und optionale Graph-Komponenten
+- KI-Orchestrierung mit mehreren Providern
+
+### Lokaler Start
 
 ```bash
 pnpm install --frozen-lockfile
-```
-
-2) ENV vorbereiten (siehe `apps/web/.env.example` als Referenz)
-
-```bash
 cp apps/web/.env.example apps/web/.env.local
-# Werte anpassen (keine Secrets ins Repo committen)
-```
-
-3) Dev-Server starten
-
-```bash
 pnpm -C apps/web dev
 ```
 
-## Qualität & Builds
-
-- `pnpm -C apps/web exec tsc --noEmit` – TypeScript-Check für die Web-App
-- `pnpm -C apps/web run lint` – ESLint
-- `pnpm -C apps/web run build` – Next.js Production-Build
-
-## CI-Überblick (`.github/workflows/e150-ci.yml`)
-
-- Läuft auf Ubuntu mit Node 20 + pnpm 10.17
-- Services: MongoDB, Redis, Neo4j
-- Schritte: Install, Typecheck, Lint, optionale Tests (`test:ci`), Web-Build, Semgrep, Gitleaks, Docker Build + Trivy, ZAP-Baseline-Scan
-
-## Orphan-Scanner (VPM25)
-
-Markdown-Report per Script:
+### Qualität
 
 ```bash
-pnpm exec tsx scripts/orphan_features_scan.ts
+pnpm -C apps/web exec tsc --noEmit
+pnpm -C apps/web run lint
+pnpm -C apps/web run build
 ```
 
-Die Ergebnisse können in `docs/ORPHAN_FEATURES_VPM25.md` eingetragen werden.
+## Nordstern für jede Änderung
 
-## Admin-Dashboards
-
-- Identity-Funnel: `/admin/telemetry/identity` – zeigt pro Zeitraum Event-Zählungen vom Register bis „strong completed“.
-- AI-Usage: `/admin/telemetry/ai/usage` – Tokens, Kosten, Calls und Fehler pro Provider/Pipeline.
-- Orchestrator-Smoke: `/admin/telemetry/ai/orchestrator` – einfacher Smoketest für die AI-Pipelines.
-
-Alle Admin-APIs prüfen die Rolle via `u_role`-Cookie; Endpunkte liegen unter `apps/web/src/app/api/admin/**`. Die Dashboards sind nur für Staff/Admin gedacht und greifen ausschließlich auf Telemetrie-Aggregate zu, nicht auf PII.
-
-## Datenschutz & PII
-
-Die Trennung von PII und Nicht-PII ist in `docs/PII_ZONES_E150.md` dokumentiert. PII darf nur über die ausgewiesenen Core-Helper (`core/db/pii/**`) angesprochen werden.
+> **Steigert diese Änderung nachvollziehbares Vertrauen?**
