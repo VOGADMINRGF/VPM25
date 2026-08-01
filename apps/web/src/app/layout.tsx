@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <LocaleProvider initialLocale={initialLocale}>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
-            <EcosystemChrome />
+            <EcosystemChrome footer={false} />
             <main className="flex-1">{children}</main>
             <EcosystemChrome />
             <SiteFooter locale={initialLocale} />
