@@ -30,7 +30,7 @@ const ECOSYSTEM = [
   },
 ];
 
-export function EcosystemChrome() {
+export function EcosystemChrome({ footer = true }: { footer?: boolean }) {
   useEffect(() => {
     const brandLink = document.querySelector<HTMLAnchorElement>("header a[href='/']");
     if (!brandLink || brandLink.dataset.ecosystemLogo === "true") return;
@@ -44,6 +44,8 @@ export function EcosystemChrome() {
       </picture>
     `;
   }, []);
+
+  if (!footer) return null;
 
   return (
     <section
