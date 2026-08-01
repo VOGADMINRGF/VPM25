@@ -9,10 +9,11 @@ import { getPrivacyStrings } from "./privacyStrings";
 import { VogCookieBanner } from "@/components/privacy/VogCookieBanner";
 import { CONSENT_COOKIE_NAME, parseConsentCookie } from "@/lib/privacy/consent";
 import SiteFooter from "@/components/SiteFooter";
+import { EcosystemChrome } from "@/components/brand/EcosystemChrome";
 
 export const metadata: Metadata = {
   title: "VoiceOpenGov",
-  description: "VoiceOpenGov – robuste, nachvollziehbare Beteiligung.",
+  description: "VoiceOpenGov – internationale Mitgliederbewegung für nachvollziehbare Entscheidungen.",
 };
 export const viewport = {
   themeColor: "#06b6d4",
@@ -30,7 +31,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <LocaleProvider initialLocale={initialLocale}>
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
+            <EcosystemChrome />
             <main className="flex-1">{children}</main>
+            <EcosystemChrome />
             <SiteFooter locale={initialLocale} />
             <div className="h-[env(safe-area-inset-bottom)]" />
             <VogCookieBanner strings={privacyStrings} initialConsent={initialConsent} />
