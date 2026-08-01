@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
 import { getDossierStrings } from "./strings";
+import { EDEBATTE_URL } from "@/config/links";
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
@@ -63,7 +64,7 @@ export default async function DirekteDemokratieDossierPage() {
             </div>
             <div className="flex flex-wrap gap-3">
               <a
-                href="https://edebatte.org"
+                href={EDEBATTE_URL}
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-primary"

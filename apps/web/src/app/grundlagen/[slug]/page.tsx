@@ -7,6 +7,7 @@ import { getLatestRelease } from "../versioning";
 import GrundlagenReaderClient from "./reader-client";
 import { getCovers } from "../covers";
 import { getLinks, KDP_SELECT_ENABLED, PRICES } from "../editions";
+import { VOICEOPENGOV_URL } from "@/config/links";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -17,10 +18,7 @@ export async function generateMetadata({ params }: PageProps) {
   const entry = getGrundlagenSourceEntry(slug);
   if (!entry) return {};
 
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://voiceopengov.org").replace(
-    /\/$/,
-    "",
-  );
+  const base = VOICEOPENGOV_URL;
   const canonical = `${base}/grundlagen/${slug}`;
   const ogImage = `${base}/api/og?type=band&slug=${encodeURIComponent(
     slug,
@@ -60,7 +58,7 @@ export default async function GrundlagenDetailPage({ params }: PageProps) {
   if (!entry) notFound();
 
   const release = getLatestRelease(slug);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voiceopengov.org";
+  const siteUrl = VOICEOPENGOV_URL;
   const covers = getCovers(slug);
   const links = getLinks(slug);
   const preorderEmail = process.env.VOG_PREORDER_EMAIL || "members@voiceopengov.org";

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import { getInitiativesStrings } from "./strings";
 import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { EDEBATTE_URL } from "@/config/links";
 
 export async function generateMetadata() {
   const locale = await getRequestLocale();
@@ -55,7 +56,7 @@ export default async function InitiativesPage() {
             {strings.tool.body}
           </p>
           <a
-            href="https://edebatte.org"
+            href={EDEBATTE_URL}
             target="_blank"
             rel="noreferrer"
             className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-300"

@@ -7,7 +7,7 @@ import { getLatestRelease } from "./versioning";
 import CoverLightbox from "@/components/media/CoverLightbox";
 import { getCovers } from "./covers";
 import { getLinks, KDP_SELECT_ENABLED, PRICES } from "./editions";
-import { VOG_SUPPORT_PATH } from "@/config/links";
+import { VOG_SUPPORT_PATH, VOICEOPENGOV_URL } from "@/config/links";
 
 function formatDate(locale: string, value?: string) {
   if (!value) return "";
@@ -30,10 +30,7 @@ export async function generateMetadata() {
     getGrundlagenStrings("de"),
     getGrundlagenStrings(locale),
   );
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://voiceopengov.org").replace(
-    /\/$/,
-    "",
-  );
+  const base = VOICEOPENGOV_URL;
   const canonical = `${base}/grundlagen`;
   const ogImage = `${base}/api/og?type=grundlagen&locale=${encodeURIComponent(locale)}`;
   return {
@@ -67,7 +64,7 @@ export default async function GrundlagenOverviewPage() {
 
   const slugs = Object.keys(GRUNDLAGEN_BANDS);
   const entriesBySlug = new Map(strings.entries.map((entry) => [entry.slug, entry]));
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voiceopengov.org";
+  const siteUrl = VOICEOPENGOV_URL;
   const preorderEmail = process.env.VOG_PREORDER_EMAIL || "members@voiceopengov.org";
   const bundleCovers = getCovers("bundle");
   const bundleLinks = getLinks("bundle");

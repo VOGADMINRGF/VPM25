@@ -9,13 +9,28 @@ import { getPrivacyStrings } from "./privacyStrings";
 import { VogCookieBanner } from "@/components/privacy/VogCookieBanner";
 import { CONSENT_COOKIE_NAME, parseConsentCookie } from "@/lib/privacy/consent";
 import SiteFooter from "@/components/SiteFooter";
+import { VOICEOPENGOV_URL } from "@/config/links";
+import { getRequestLocale } from "@/lib/locale";
 
-export const metadata: Metadata = {
-  title: "VoiceOpenGov",
-  description: "VoiceOpenGov – robuste, nachvollziehbare Beteiligung.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getRequestLocale();
+  const isGerman = locale === "de";
+
+  return {
+    metadataBase: new URL(VOICEOPENGOV_URL),
+    title: {
+      default: isGerman
+        ? "VoiceOpenGov | Internationale Mitgliederbewegung"
+        : "VoiceOpenGov | International membership movement",
+      template: "%s | VoiceOpenGov",
+    },
+    description: isGerman
+      ? "VoiceOpenGov ist die internationale Mitgliederbewegung für nachvollziehbare Erkenntnis, echte Beteiligung und gemeinsam verantwortete Entscheidungen."
+      : "VoiceOpenGov is the international membership movement for traceable insight, genuine participation and decisions carried through shared responsibility.",
+  };
+}
 export const viewport = {
-  themeColor: "#06b6d4",
+  themeColor: "#07110f",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -26,11 +41,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={initialLocale} dir={initialLocale === "ar" ? "rtl" : "ltr"} className="h-full">
-      <body className="min-h-screen bg-slate-950 text-slate-100 antialiased">
+      <body className="min-h-screen bg-[#07110f] text-[#f4f1e8] antialiased">
         <LocaleProvider initialLocale={initialLocale}>
           <div className="flex min-h-screen flex-col">
+            <a
+              href="#main-content"
+              className="fixed left-4 top-4 z-[70] -translate-y-24 rounded-full bg-[#d6ff65] px-4 py-2 font-bold text-[#07110f] transition focus:translate-y-0"
+            >
+              {initialLocale === "de" ? "Zum Inhalt" : "Skip to content"}
+            </a>
             <SiteHeader />
-            <main className="flex-1">{children}</main>
+            <div id="main-content" className="flex-1" tabIndex={-1}>
+              {children}
+            </div>
             <SiteFooter locale={initialLocale} />
             <div className="h-[env(safe-area-inset-bottom)]" />
             <VogCookieBanner strings={privacyStrings} initialConsent={initialConsent} />

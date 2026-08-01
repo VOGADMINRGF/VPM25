@@ -1,5 +1,11 @@
 import { DEFAULT_LOCALE, type SupportedLocale } from "@/config/locales";
-import { VOG_SUPPORT_PATH } from "@/config/links";
+import {
+  VOG_JOIN_PATH,
+  VOG_QUESTIONS_PATH,
+  VOG_ROLES_PATH,
+  VOG_SUPPORT_PATH,
+  VOG_TRANSPARENCY_PATH,
+} from "@/config/links";
 
 type FooterStrings = {
   brand: {
@@ -27,12 +33,12 @@ type FooterStrings = {
 const STRINGS: Record<SupportedLocale, FooterStrings> = {
   de: {
     brand: {
-      claim: "Bewegung für robuste, nachvollziehbare Entscheidungen.",
-      body: "VoiceOpenGov verbindet Menschen, Initiativen und Organisationen, die klare Verfahren und transparente Beteiligung aufbauen wollen.",
+      claim: "Internationale Mitgliederbewegung.",
+      body: "Für nachvollziehbare Erkenntnis, echte Beteiligung und gemeinsam verantwortete Entscheidungen.",
     },
     columns: {
-      main: "Mitmachen",
-      initiatives: "Für Initiativen",
+      main: "Bewegung",
+      initiatives: "Vertiefen",
       legal: "Kontakt & Rechtliches",
     },
     aria: {
@@ -42,11 +48,16 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
     },
     links: {
       main: [
-        { href: "/#mitmachen", label: "Mitmachen" },
-        { href: "/dossier", label: "Dossier" },
+        { href: VOG_JOIN_PATH, label: "Mitglied werden" },
+        { href: VOG_QUESTIONS_PATH, label: "50 öffentliche Fragen" },
+        { href: VOG_TRANSPARENCY_PATH, label: "Transparenz" },
+        { href: VOG_ROLES_PATH, label: "Mitwirkungsrollen" },
         { href: VOG_SUPPORT_PATH, label: "Unterstützen" },
       ],
-      initiatives: [{ href: "/initiatives", label: "Für Initiativen" }],
+      initiatives: [
+        { href: "/initiatives", label: "Für Initiativen" },
+        { href: "/dossier", label: "Öffentliche Dossiers" },
+      ],
       legal: [
         { href: "/kontakt", label: "Kontakt" },
         { href: "/impressum", label: "Impressum" },
@@ -57,12 +68,12 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
   },
   en: {
     brand: {
-      claim: "Movement for robust, traceable decisions.",
-      body: "VoiceOpenGov connects people, initiatives and organisations who want to build clear processes and transparent participation.",
+      claim: "International membership movement.",
+      body: "For traceable insight, genuine participation and decisions carried through shared responsibility.",
     },
     columns: {
-      main: "Join",
-      initiatives: "For initiatives",
+      main: "Movement",
+      initiatives: "Explore",
       legal: "Contact & legal",
     },
     aria: {
@@ -72,11 +83,16 @@ const STRINGS: Record<SupportedLocale, FooterStrings> = {
     },
     links: {
       main: [
-        { href: "/#mitmachen", label: "Join" },
-        { href: "/dossier", label: "Dossier" },
+        { href: VOG_JOIN_PATH, label: "Become a member" },
+        { href: VOG_QUESTIONS_PATH, label: "50 public questions" },
+        { href: VOG_TRANSPARENCY_PATH, label: "Transparency" },
+        { href: VOG_ROLES_PATH, label: "Ways to contribute" },
         { href: VOG_SUPPORT_PATH, label: "Support" },
       ],
-      initiatives: [{ href: "/initiatives", label: "For initiatives" }],
+      initiatives: [
+        { href: "/initiatives", label: "For initiatives" },
+        { href: "/dossier", label: "Public dossiers" },
+      ],
       legal: [
         { href: "/kontakt", label: "Contact" },
         { href: "/impressum", label: "Legal notice" },
