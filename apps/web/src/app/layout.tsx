@@ -18,7 +18,6 @@ import SiteFooter from "@/components/SiteFooter";
 import { VOICEOPENGOV_URL } from "@/config/links";
 import { getRequestLocale } from "@/lib/locale";
 import { localeAlternates } from "@/lib/i18n/localeContract";
-import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 
 const META: Partial<
   Record<SupportedLocale, { title: string; description: string; skip: string }>
@@ -112,7 +111,6 @@ export default async function RootLayout({
               {meta.skip}
             </a>
             <SiteHeader />
-            <TranslationStatusNotice locale={initialLocale} />
             <div id="main-content" className="flex-1" tabIndex={-1}>
               {children}
             </div>
