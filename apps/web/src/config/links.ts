@@ -29,7 +29,6 @@ export const VOG_SUPPORT_PATH = "/#voiceopengov-support";
 export const VOG_QUESTIONS_PATH = "/fragen";
 export const VOG_TRANSPARENCY_PATH = "/transparenz";
 export const VOG_ROLES_PATH = "/mitmachen/rollen";
-export const VOG_REGIONAL_PATH = "/vor-ort";
 
 export const VOG_SUPPORT_URL = `${VOICEOPENGOV_URL}${VOG_SUPPORT_PATH}`;
 export const EDEBATTE_SIGNUP_URL = `${EDEBATTE_URL}?destination=home`;
