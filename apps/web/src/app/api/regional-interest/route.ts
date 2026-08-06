@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { regionalInterestCol } from "@/lib/vogMongo";
 import {
-  regionalInterestCol,
+  REGIONAL_INTEREST_INTENTS,
+  REGIONAL_INTEREST_SOURCE_PATH,
   type RegionalInterestIntent,
-} from "@/lib/vogMongo";
+} from "@/lib/regionalInterestContract";
 import { verifyHumanTokenDetailed } from "@/lib/security/human-token";
 import { sendMail } from "@/lib/mail/sendMail";
 import {
@@ -15,23 +17,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const RATE_LIMIT = { limit: 4, windowMs: 30 * 60 * 1000 };
-const INTENT_VALUES = [
-  "stay_informed",
-  "join_meetup",
-  "start_meetup",
-  "help_organize",
-  "offer_space",
-  "offer_contacts",
-  "offer_expertise",
-  "regional_long_term",
-] as const satisfies readonly RegionalInterestIntent[];
 
 const IntakeSchema = z.object({
   contactName: z.string().trim().min(2).max(120),
   contactEmail: z.string().trim().email().max(320),
   location: z.string().trim().min(2).max(160),
   topic: z.string().trim().max(240).optional(),
-  intents: z.array(z.enum(INTENT_VALUES)).min(1).max(INTENT_VALUES.length),
+  intents: z
+    .array(z.enum(REGIONAL_INTEREST_INTENTS))
+    .min(1)
+    .max(REGIONAL_INTEREST_INTENTS.length),
   notes: z.string().trim().max(1500).optional(),
   contactConsent: z.literal(true),
   matchingConsent: z.boolean(),
@@ -125,7 +120,7 @@ export async function POST(req: NextRequest) {
     matchingConsent: parsed.data.matchingConsent,
     privacyAccepted: true,
     status: "new",
-    sourcePath: "/vor-ort",
+    sourcePath: REGIONAL_INTEREST_SOURCE_PATH,
     createdAt: now,
   });
 
