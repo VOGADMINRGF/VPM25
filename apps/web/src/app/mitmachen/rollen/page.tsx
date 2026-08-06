@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import { VOG_JOIN_PATH, VOG_QUESTIONS_PATH } from "@/config/links";
+import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 
 type Language = "de" | "en";
 
@@ -17,15 +18,14 @@ const COPY = {
       { title: "Erklärer", body: "Du machst komplexe Zusammenhänge verständlicher, ohne Unsicherheit oder Zielkonflikte glattzubügeln." },
       { title: "Übersetzer", body: "Du hilfst Menschen über Sprachen und kulturelle Kontexte hinweg, dieselbe Frage wirklich zu verstehen." },
       { title: "Moderator", body: "Du schützt das Verfahren, sorgst für respektvollen Widerspruch und trennst Moderation von politischer Bewertung." },
-      { title: "Vor Ort aktiv", body: "Du möchtest Menschen in deiner Nähe kennenlernen, bei einem Stammtisch dabei sein, selbst einen Austausch anstoßen oder mit Raum, Kontakten und Erfahrung helfen." },
+      { title: "Vor Ort aktiv", body: "Du möchtest Menschen aus deiner Region kennenlernen, bei einem Stammtisch dabei sein, einen ersten Austausch anstoßen oder bei Termin, Raum und Organisation helfen." },
       { title: "Prüfer", body: "Du hinterfragst Quellenlage, Rechtsbezug, Annahmen, Repräsentativität und mögliche Interessenkonflikte." },
       { title: "Fördermitglied", body: "Du ermöglichst Recherche, Technik und Community-Arbeit. Dein Beitrag kauft keine zusätzliche Stimme oder Sichtbarkeit." },
       { title: "Partnerorganisation", body: "Du bringst Wissen, Reichweite oder Infrastruktur ein – mit offengelegten Interessen und ohne bevorzugte politische Gewichtung." },
     ],
     nextEyebrow: "Dein erster Schritt",
-    nextTitle: "Du kannst Mitglied werden – oder erst einmal sagen, was du vor Ort suchst.",
-    nextBody: "Du brauchst keine fertige Rolle und musst keinen ganzen Regionalverband aufbauen. Vielleicht möchtest du nur bei einem ersten Stammtisch dabei sein. Vielleicht kannst du helfen. Vielleicht gibst du den ersten Impuls. Beides ist ein guter Anfang.",
-    regional: "In meiner Region aktiv werden",
+    nextTitle: "Du entscheidest, wo du anfangen möchtest.",
+    nextBody: "Du kannst kostenfrei Mitglied werden oder zunächst eine der offenen Fragen verfolgen. Der direkte regionale Einstieg mit Stammtischinteresse wird im nächsten, bereits angelegten Produktschritt ergänzt.",
     join: "Kostenfrei Mitglied werden",
     question: "Eine Frage auswählen",
   },
@@ -41,15 +41,14 @@ const COPY = {
       { title: "Explainer", body: "You make complex relationships easier to understand without smoothing over uncertainty or trade-offs." },
       { title: "Translator", body: "You help people across languages and cultural contexts understand the same question fully." },
       { title: "Moderator", body: "You protect the process, enable respectful dissent and keep moderation separate from political judgement." },
-      { title: "Active locally", body: "You would like to meet people nearby, join a meetup, help start a conversation or contribute a room, contacts or experience." },
+      { title: "Get active locally", body: "You would like to meet people nearby, join a local gathering, start a first conversation or help with timing, a venue or organisation." },
       { title: "Reviewer", body: "You challenge sources, legal context, assumptions, representativeness and potential conflicts of interest." },
       { title: "Supporting member", body: "You enable research, technology and community work. Your contribution buys no additional voice or visibility." },
       { title: "Partner organisation", body: "You contribute knowledge, reach or infrastructure with disclosed interests and without privileged political weight." },
     ],
     nextEyebrow: "Your first step",
-    nextTitle: "You can become a member – or first tell us what you are looking for locally.",
-    nextBody: "You do not need a finished role and you do not need to build an entire regional organisation. You may simply want to join a first meetup, help with one part or provide the initial impulse. All are good ways to begin.",
-    regional: "Get active in my region",
+    nextTitle: "You decide where to begin.",
+    nextBody: "You can become a member for free or follow one of the open questions first. The direct regional entry for meetup interest is being added in the next, already defined product slice.",
     join: "Become a member for free",
     question: "Choose a question",
   },
@@ -67,36 +66,41 @@ export default async function RolesPage() {
   const copy = COPY[language];
 
   return (
-    <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
-      <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_78%_20%,rgba(214,255,101,0.15),transparent_32%)]">
-        <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p>
-          <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {copy.roles.map((role) => (
-            <article key={role.title} className="rounded-3xl border border-[#f4f1e8]/10 bg-[#0b1714] p-6 transition hover:-translate-y-1 hover:border-[#d6ff65]/40">
-              <h2 className="text-xl font-black">{role.title}</h2>
-              <p className="mt-3 leading-7 text-[#f4f1e8]/58">{role.body}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-12 rounded-3xl border border-[#d6ff65]/25 bg-[#d6ff65]/8 p-8">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-[#d6ff65]">{copy.nextEyebrow}</p>
-          <h2 className="mt-3 text-3xl font-black">{copy.nextTitle}</h2>
-          <p className="mt-4 max-w-3xl leading-7 text-[#f4f1e8]/58">{copy.nextBody}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/vor-ort" className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.regional}</Link>
-            <Link href={VOG_JOIN_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.join}</Link>
-            <Link href={VOG_QUESTIONS_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.question}</Link>
+    <>
+      <TranslationStatusNotice
+        locale={locale}
+        status={locale === "de" ? "source" : locale === "en" ? "human_reviewed" : "missing"}
+      />
+      <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
+        <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_78%_20%,rgba(214,255,101,0.15),transparent_32%)]">
+          <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p>
+            <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {copy.roles.map((role) => (
+              <article key={role.title} className="rounded-3xl border border-[#f4f1e8]/10 bg-[#0b1714] p-6 transition hover:-translate-y-1 hover:border-[#d6ff65]/40">
+                <h2 className="text-xl font-black">{role.title}</h2>
+                <p className="mt-3 leading-7 text-[#f4f1e8]/58">{role.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12 rounded-3xl border border-[#d6ff65]/25 bg-[#d6ff65]/8 p-8">
+            <p className="text-sm font-black uppercase tracking-[0.2em] text-[#d6ff65]">{copy.nextEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-black">{copy.nextTitle}</h2>
+            <p className="mt-4 max-w-3xl leading-7 text-[#f4f1e8]/58">{copy.nextBody}</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href={VOG_JOIN_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.join}</Link>
+              <Link href={VOG_QUESTIONS_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.question}</Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }

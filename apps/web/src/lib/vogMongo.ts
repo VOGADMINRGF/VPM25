@@ -119,53 +119,6 @@ export async function chapterIntakeCol(): Promise<Collection<ChapterIntakeDoc>> 
   return col;
 }
 
-export type RegionalInterestIntent =
-  | "stay_informed"
-  | "join_meetup"
-  | "start_meetup"
-  | "help_organize"
-  | "offer_space"
-  | "offer_contacts"
-  | "offer_expertise"
-  | "regional_long_term";
-
-export type RegionalInterestStatus = "new" | "reviewed" | "matched" | "closed";
-
-export type RegionalInterestDoc = {
-  _id?: any;
-
-  contactName: string;
-  contactEmail: string;
-  location: string;
-  topic?: string;
-  intents: RegionalInterestIntent[];
-  notes?: string;
-
-  contactConsent: true;
-  matchingConsent: boolean;
-  privacyAccepted: true;
-
-  status: RegionalInterestStatus;
-  sourcePath: "/vor-ort";
-
-  createdAt: Date;
-  reviewedAt?: Date;
-  matchedAt?: Date;
-  closedAt?: Date;
-};
-
-export async function regionalInterestCol(): Promise<Collection<RegionalInterestDoc>> {
-  const db = await vogDb();
-  const col = db.collection<RegionalInterestDoc>("regional_interest_intake");
-
-  await col.createIndex({ status: 1, createdAt: -1 }).catch(() => {});
-  await col.createIndex({ location: 1, status: 1 }).catch(() => {});
-  await col.createIndex({ contactEmail: 1, createdAt: -1 }).catch(() => {});
-  await col.createIndex({ intents: 1 }).catch(() => {});
-
-  return col;
-}
-
 export type MapOverridesDoc = MapOverrides & {
   _id: "default";
   updatedAt?: Date;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import { VOG_QUESTIONS_PATH, VOG_ROLES_PATH } from "@/config/links";
+import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 
 type Language = "de" | "en";
 
@@ -55,38 +56,44 @@ export default async function TransparencyPage() {
   const copy = COPY[language];
 
   return (
-    <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
-      <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_82%_18%,rgba(72,167,143,0.22),transparent_34%)]">
-        <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p>
-          <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p>
-        </div>
-      </section>
+    <>
+      <TranslationStatusNotice
+        locale={locale}
+        status={locale === "de" ? "source" : locale === "en" ? "human_reviewed" : "missing"}
+      />
+      <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
+        <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_82%_18%,rgba(72,167,143,0.22),transparent_34%)]">
+          <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p>
+            <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p>
+          </div>
+        </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {copy.sections.map((section) => (
-            <article key={section.title} className="rounded-3xl border border-[#f4f1e8]/10 bg-[#0b1714] p-6">
-              <span className="inline-flex rounded-full border border-[#d6ff65]/25 bg-[#d6ff65]/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#d6ff65]">
-                {section.status}
-              </span>
-              <h2 className="mt-4 text-xl font-black">{section.title}</h2>
-              <p className="mt-3 leading-7 text-[#f4f1e8]/58">{section.description}</p>
-            </article>
-          ))}
-        </div>
+        <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {copy.sections.map((section) => (
+              <article key={section.title} className="rounded-3xl border border-[#f4f1e8]/10 bg-[#0b1714] p-6">
+                <span className="inline-flex rounded-full border border-[#d6ff65]/25 bg-[#d6ff65]/10 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#d6ff65]">
+                  {section.status}
+                </span>
+                <h2 className="mt-4 text-xl font-black">{section.title}</h2>
+                <p className="mt-3 leading-7 text-[#f4f1e8]/58">{section.description}</p>
+              </article>
+            ))}
+          </div>
 
-        <div className="mt-12 rounded-3xl border border-[#07110f]/10 bg-[#f0eee5] p-7 text-[#07110f] md:p-9">
-          <h2 className="text-2xl font-black">{copy.limitsTitle}</h2>
-          <p className="mt-3 max-w-3xl leading-7 text-[#07110f]/65">{copy.limitsBody}</p>
-        </div>
+          <div className="mt-12 rounded-3xl border border-[#07110f]/10 bg-[#f0eee5] p-7 text-[#07110f] md:p-9">
+            <h2 className="text-2xl font-black">{copy.limitsTitle}</h2>
+            <p className="mt-3 max-w-3xl leading-7 text-[#07110f]/65">{copy.limitsBody}</p>
+          </div>
 
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link href={VOG_QUESTIONS_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.questions}</Link>
-          <Link href={VOG_ROLES_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.roles}</Link>
-        </div>
-      </section>
-    </main>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href={VOG_QUESTIONS_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.questions}</Link>
+            <Link href={VOG_ROLES_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.roles}</Link>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
