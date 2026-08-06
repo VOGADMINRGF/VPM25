@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
-import { VOG_JOIN_PATH, VOG_QUESTIONS_PATH } from "@/config/links";
+import {
+  VOG_JOIN_PATH,
+  VOG_QUESTIONS_PATH,
+  VOG_REGIONAL_PATH,
+} from "@/config/links";
+import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 
 type Language = "de" | "en";
 
@@ -17,15 +22,16 @@ const COPY = {
       { title: "Erklärer", body: "Du machst komplexe Zusammenhänge verständlicher, ohne Unsicherheit oder Zielkonflikte glattzubügeln." },
       { title: "Übersetzer", body: "Du hilfst Menschen über Sprachen und kulturelle Kontexte hinweg, dieselbe Frage wirklich zu verstehen." },
       { title: "Moderator", body: "Du schützt das Verfahren, sorgst für respektvollen Widerspruch und trennst Moderation von politischer Bewertung." },
-      { title: "Regionaler Organisator", body: "Du baust vor Ort Räume auf, verbindest lokale Fragen mit überregionalen Erkenntnissen und hältst Verantwortung sichtbar." },
+      { title: "Vor Ort aktiv", body: "Du möchtest Menschen aus deiner Region kennenlernen, bei einem Stammtisch dabei sein, einen ersten Austausch anstoßen oder bei Termin, Raum und Organisation helfen." },
       { title: "Prüfer", body: "Du hinterfragst Quellenlage, Rechtsbezug, Annahmen, Repräsentativität und mögliche Interessenkonflikte." },
       { title: "Fördermitglied", body: "Du ermöglichst Recherche, Technik und Community-Arbeit. Dein Beitrag kauft keine zusätzliche Stimme oder Sichtbarkeit." },
       { title: "Partnerorganisation", body: "Du bringst Wissen, Reichweite oder Infrastruktur ein – mit offengelegten Interessen und ohne bevorzugte politische Gewichtung." },
     ],
     nextEyebrow: "Dein erster Schritt",
-    nextTitle: "Mitglied werden. Rolle später wählen.",
-    nextBody: "Die Mitgliedschaft verpflichtet dich nicht zu einer fertigen Aufgabe. Nach der Bestätigung folgt der Einstieg: Region wählen, Themen auswählen und mit einer kleinen, konkreten Handlung beginnen.",
+    nextTitle: "Du entscheidest, wo du anfangen möchtest.",
+    nextBody: "Du kannst kostenfrei Mitglied werden, zunächst eine Frage verfolgen oder dich unverbindlich für einen Austausch in deiner Region melden. Niemand muss sofort eine fertige Rolle oder Verantwortung übernehmen.",
     join: "Kostenfrei Mitglied werden",
+    regional: "In meiner Region aktiv werden",
     question: "Eine Frage auswählen",
   },
   en: {
@@ -40,15 +46,16 @@ const COPY = {
       { title: "Explainer", body: "You make complex relationships easier to understand without smoothing over uncertainty or trade-offs." },
       { title: "Translator", body: "You help people across languages and cultural contexts understand the same question fully." },
       { title: "Moderator", body: "You protect the process, enable respectful dissent and keep moderation separate from political judgement." },
-      { title: "Regional organiser", body: "You build spaces locally, connect local questions with wider insight and keep responsibility visible." },
+      { title: "Get active locally", body: "You would like to meet people nearby, join a local gathering, start a first conversation or help with timing, a venue or organisation." },
       { title: "Reviewer", body: "You challenge sources, legal context, assumptions, representativeness and potential conflicts of interest." },
       { title: "Supporting member", body: "You enable research, technology and community work. Your contribution buys no additional voice or visibility." },
       { title: "Partner organisation", body: "You contribute knowledge, reach or infrastructure with disclosed interests and without privileged political weight." },
     ],
     nextEyebrow: "Your first step",
-    nextTitle: "Become a member. Choose your role later.",
-    nextBody: "Membership does not commit you to a finished task. After confirmation, your entry path begins: choose a region, select topics and start with one small, concrete action.",
+    nextTitle: "You decide where to begin.",
+    nextBody: "You can become a member for free, follow a question first or register your interest in meeting people in your region. Nobody has to choose a finished role or take responsibility immediately.",
     join: "Become a member for free",
+    regional: "Get active in my region",
     question: "Choose a question",
   },
 };
@@ -65,35 +72,42 @@ export default async function RolesPage() {
   const copy = COPY[language];
 
   return (
-    <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
-      <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_78%_20%,rgba(214,255,101,0.15),transparent_32%)]">
-        <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p>
-          <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {copy.roles.map((role) => (
-            <article key={role.title} className="rounded-3xl border border-[#f4f1e8]/10 bg-[#0b1714] p-6 transition hover:-translate-y-1 hover:border-[#d6ff65]/40">
-              <h2 className="text-xl font-black">{role.title}</h2>
-              <p className="mt-3 leading-7 text-[#f4f1e8]/58">{role.body}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-12 rounded-3xl border border-[#d6ff65]/25 bg-[#d6ff65]/8 p-8">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-[#d6ff65]">{copy.nextEyebrow}</p>
-          <h2 className="mt-3 text-3xl font-black">{copy.nextTitle}</h2>
-          <p className="mt-4 max-w-3xl leading-7 text-[#f4f1e8]/58">{copy.nextBody}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href={VOG_JOIN_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.join}</Link>
-            <Link href={VOG_QUESTIONS_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.question}</Link>
+    <>
+      <TranslationStatusNotice
+        locale={locale}
+        status={locale === "de" ? "source" : locale === "en" ? "human_reviewed" : "missing"}
+      />
+      <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
+        <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_78%_20%,rgba(214,255,101,0.15),transparent_32%)]">
+          <div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+            <p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p>
+            <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {copy.roles.map((role) => (
+              <article key={role.title} className="rounded-3xl border border-[#f4f1e8]/10 bg-[#0b1714] p-6 transition hover:-translate-y-1 hover:border-[#d6ff65]/40">
+                <h2 className="text-xl font-black">{role.title}</h2>
+                <p className="mt-3 leading-7 text-[#f4f1e8]/58">{role.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12 rounded-3xl border border-[#d6ff65]/25 bg-[#d6ff65]/8 p-8">
+            <p className="text-sm font-black uppercase tracking-[0.2em] text-[#d6ff65]">{copy.nextEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-black">{copy.nextTitle}</h2>
+            <p className="mt-4 max-w-3xl leading-7 text-[#f4f1e8]/58">{copy.nextBody}</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href={VOG_JOIN_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.join}</Link>
+              <Link href={VOG_REGIONAL_PATH} className="rounded-full border border-[#18cfc8]/45 px-5 py-3 font-bold text-[#18cfc8] transition hover:border-[#18cfc8] hover:bg-[#18cfc8]/8">{copy.regional}</Link>
+              <Link href={VOG_QUESTIONS_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.question}</Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
