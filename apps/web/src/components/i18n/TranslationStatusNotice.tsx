@@ -12,6 +12,7 @@ const COPY: Partial<
       source: string;
       reviewed: string;
       assisted: string;
+      missing: string;
       original: string;
     }
   >
@@ -20,30 +21,35 @@ const COPY: Partial<
     source: "Original version",
     reviewed: "Human-reviewed translation",
     assisted: "Machine-assisted translation – not an independent source",
+    missing: "This page is not yet available in the selected language. The reviewed English version is shown.",
     original: "Read the German original",
   },
   fr: {
     source: "Version originale",
     reviewed: "Traduction vérifiée par une personne",
     assisted: "Traduction assistée par IA – ce n’est pas une source indépendante",
+    missing: "Cette page n’est pas encore disponible en français. La version anglaise vérifiée est affichée.",
     original: "Lire l’original allemand",
   },
   es: {
     source: "Versión original",
     reviewed: "Traducción revisada por una persona",
     assisted: "Traducción asistida por IA; no es una fuente independiente",
+    missing: "Esta página aún no está disponible en español. Se muestra la versión inglesa revisada.",
     original: "Leer el original en alemán",
   },
   tr: {
     source: "Özgün sürüm",
     reviewed: "İnsan tarafından gözden geçirilmiş çeviri",
     assisted: "Yapay zekâ destekli çeviri; bağımsız bir kaynak değildir",
+    missing: "Bu sayfa henüz Türkçe sunulmuyor. Gözden geçirilmiş İngilizce sürüm gösteriliyor.",
     original: "Almanca özgün metni oku",
   },
   ar: {
     source: "النسخة الأصلية",
     reviewed: "ترجمة راجعها شخص",
     assisted: "ترجمة بمساعدة الذكاء الاصطناعي وليست مصدراً مستقلاً",
+    missing: "هذه الصفحة غير متاحة بالعربية بعد. تُعرض النسخة الإنجليزية التي تمت مراجعتها.",
     original: "قراءة الأصل الألماني",
   },
 };
@@ -59,7 +65,7 @@ export default function TranslationStatusNotice({
   originalLocale?: SupportedLocale;
   status?: TranslationStatus;
 }) {
-  if (locale === originalLocale) return null;
+  if (locale === originalLocale && (!status || status === "source")) return null;
 
   const config = getLocaleConfig(locale);
   const actualStatus = status ?? config.defaultTranslationStatus;
@@ -69,7 +75,9 @@ export default function TranslationStatusNotice({
       ? copy.reviewed
       : actualStatus === "source"
         ? copy.source
-        : copy.assisted;
+        : actualStatus === "missing"
+          ? copy.missing
+          : copy.assisted;
 
   return (
     <aside
