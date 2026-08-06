@@ -32,11 +32,7 @@ export type RegionalActivationStrings = {
       privacy: { before: string; link: string; after: string };
       honeypot: string;
     };
-    placeholders: {
-      location: string;
-      topic: string;
-      notes: string;
-    };
+    placeholders: { location: string; topic: string; notes: string };
     intentionOptions: Array<{ value: string; label: string; hint: string }>;
     notices: {
       intentionRequired: string;
@@ -49,6 +45,54 @@ export type RegionalActivationStrings = {
     submitting: string;
   };
   humanCheck: HumanCheckStrings;
+};
+
+const deHumanCheck: HumanCheckStrings = {
+  compact: {
+    title: "Kurze Bestätigung",
+    description: "Ein kleiner Anti-Spam-Check – ohne Werbetracking.",
+    open: "Bestätigung öffnen",
+  },
+  loading: "Lade kurze Bestätigung …",
+  promptTitle: "Kurze Bestätigung: Bist du ein Mensch?",
+  verified: "✓ geprüft",
+  intro: "Bitte löse die kleine Aufgabe. Sie schützt das Formular vor automatischem Spam.",
+  honeypotLabel: "Bitte leer lassen",
+  answerLabel: "Ergebnis eintragen",
+  buttonChecking: "Prüfen …",
+  buttonSolved: "Bestätigt",
+  buttonIdle: "Kurz prüfen",
+  messages: {
+    alreadySolved: "Sicherheitscheck bereits erledigt.",
+    numberRequired: "Bitte trage das Ergebnis als Zahl ein.",
+    verifyFailed: "Die Bestätigung hat nicht geklappt. Bitte versuche es erneut.",
+    techError: "Es gab ein technisches Problem. Bitte später erneut versuchen.",
+    verified: "Danke – kurz bestätigt.",
+  },
+};
+
+const enHumanCheck: HumanCheckStrings = {
+  compact: {
+    title: "Quick confirmation",
+    description: "A small anti-spam check without advertising trackers.",
+    open: "Open confirmation",
+  },
+  loading: "Loading confirmation …",
+  promptTitle: "Quick confirmation: Are you human?",
+  verified: "✓ verified",
+  intro: "Please solve the small task. It protects the form from automated spam.",
+  honeypotLabel: "Please leave empty",
+  answerLabel: "Enter the result",
+  buttonChecking: "Checking …",
+  buttonSolved: "Confirmed",
+  buttonIdle: "Check",
+  messages: {
+    alreadySolved: "Security check already completed.",
+    numberRequired: "Please enter the result as a number.",
+    verifyFailed: "The confirmation failed. Please try again.",
+    techError: "There was a technical problem. Please try again later.",
+    verified: "Thank you – confirmed.",
+  },
 };
 
 const DE: RegionalActivationStrings = {
@@ -114,33 +158,10 @@ const DE: RegionalActivationStrings = {
     submit: "Regional Interesse anmelden",
     submitting: "Wird übermittelt …",
   },
-  humanCheck: {
-    compact: {
-      title: "Kurze Bestätigung",
-      description: "Ein kleiner Anti-Spam-Check – ohne Werbetracking.",
-      open: "Bestätigung öffnen",
-    },
-    loading: "Lade kurze Bestätigung …",
-    promptTitle: "Kurze Bestätigung: Bist du ein Mensch?",
-    verified: "✓ geprüft",
-    intro: "Bitte löse die kleine Aufgabe. Sie schützt das Formular vor automatischem Spam.",
-    honeypotLabel: "Bitte leer lassen",
-    answerLabel: "Ergebnis eintragen",
-    buttonChecking: "Prüfen …",
-    buttonSolved: "Bestätigt",
-    buttonIdle: "Kurz prüfen",
-    messages: {
-      alreadySolved: "Sicherheitscheck bereits erledigt.",
-      numberRequired: "Bitte trage das Ergebnis als Zahl ein.",
-      verifyFailed: "Die Bestätigung hat nicht geklappt. Bitte versuche es erneut.",
-      techError: "Es gab ein technisches Problem. Bitte später erneut versuchen.",
-      verified: "Danke – kurz bestätigt.",
-    },
-  },
+  humanCheck: deHumanCheck,
 };
 
 const EN: RegionalActivationStrings = {
-  ...DE,
   meta: {
     title: "Get active in your region | VoiceOpenGov",
     description: "Register your interest if you would like to meet people nearby, join a local gathering or help start the first conversation.",
@@ -164,7 +185,6 @@ const EN: RegionalActivationStrings = {
     rolesLink: "See more ways to contribute",
   },
   form: {
-    ...DE.form,
     title: "What would you like to do in your region?",
     subtitle: "You may select several options. Your details initially remain internal.",
     labels: {
@@ -204,6 +224,7 @@ const EN: RegionalActivationStrings = {
     submit: "Register regional interest",
     submitting: "Submitting …",
   },
+  humanCheck: enHumanCheck,
 };
 
 export function getRegionalActivationStrings(locale: SupportedLocale): RegionalActivationStrings {
