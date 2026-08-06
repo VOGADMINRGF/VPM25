@@ -17,14 +17,15 @@ const COPY = {
       { title: "Erklärer", body: "Du machst komplexe Zusammenhänge verständlicher, ohne Unsicherheit oder Zielkonflikte glattzubügeln." },
       { title: "Übersetzer", body: "Du hilfst Menschen über Sprachen und kulturelle Kontexte hinweg, dieselbe Frage wirklich zu verstehen." },
       { title: "Moderator", body: "Du schützt das Verfahren, sorgst für respektvollen Widerspruch und trennst Moderation von politischer Bewertung." },
-      { title: "Regionaler Organisator", body: "Du baust vor Ort Räume auf, verbindest lokale Fragen mit überregionalen Erkenntnissen und hältst Verantwortung sichtbar." },
+      { title: "Vor Ort aktiv", body: "Du möchtest Menschen in deiner Nähe kennenlernen, bei einem Stammtisch dabei sein, selbst einen Austausch anstoßen oder mit Raum, Kontakten und Erfahrung helfen." },
       { title: "Prüfer", body: "Du hinterfragst Quellenlage, Rechtsbezug, Annahmen, Repräsentativität und mögliche Interessenkonflikte." },
       { title: "Fördermitglied", body: "Du ermöglichst Recherche, Technik und Community-Arbeit. Dein Beitrag kauft keine zusätzliche Stimme oder Sichtbarkeit." },
       { title: "Partnerorganisation", body: "Du bringst Wissen, Reichweite oder Infrastruktur ein – mit offengelegten Interessen und ohne bevorzugte politische Gewichtung." },
     ],
     nextEyebrow: "Dein erster Schritt",
-    nextTitle: "Mitglied werden. Rolle später wählen.",
-    nextBody: "Die Mitgliedschaft verpflichtet dich nicht zu einer fertigen Aufgabe. Nach der Bestätigung folgt der Einstieg: Region wählen, Themen auswählen und mit einer kleinen, konkreten Handlung beginnen.",
+    nextTitle: "Du kannst Mitglied werden – oder erst einmal sagen, was du vor Ort suchst.",
+    nextBody: "Du brauchst keine fertige Rolle und musst keinen ganzen Regionalverband aufbauen. Vielleicht möchtest du nur bei einem ersten Stammtisch dabei sein. Vielleicht kannst du helfen. Vielleicht gibst du den ersten Impuls. Beides ist ein guter Anfang.",
+    regional: "In meiner Region aktiv werden",
     join: "Kostenfrei Mitglied werden",
     question: "Eine Frage auswählen",
   },
@@ -40,14 +41,15 @@ const COPY = {
       { title: "Explainer", body: "You make complex relationships easier to understand without smoothing over uncertainty or trade-offs." },
       { title: "Translator", body: "You help people across languages and cultural contexts understand the same question fully." },
       { title: "Moderator", body: "You protect the process, enable respectful dissent and keep moderation separate from political judgement." },
-      { title: "Regional organiser", body: "You build spaces locally, connect local questions with wider insight and keep responsibility visible." },
+      { title: "Active locally", body: "You would like to meet people nearby, join a meetup, help start a conversation or contribute a room, contacts or experience." },
       { title: "Reviewer", body: "You challenge sources, legal context, assumptions, representativeness and potential conflicts of interest." },
       { title: "Supporting member", body: "You enable research, technology and community work. Your contribution buys no additional voice or visibility." },
       { title: "Partner organisation", body: "You contribute knowledge, reach or infrastructure with disclosed interests and without privileged political weight." },
     ],
     nextEyebrow: "Your first step",
-    nextTitle: "Become a member. Choose your role later.",
-    nextBody: "Membership does not commit you to a finished task. After confirmation, your entry path begins: choose a region, select topics and start with one small, concrete action.",
+    nextTitle: "You can become a member – or first tell us what you are looking for locally.",
+    nextBody: "You do not need a finished role and you do not need to build an entire regional organisation. You may simply want to join a first meetup, help with one part or provide the initial impulse. All are good ways to begin.",
+    regional: "Get active in my region",
     join: "Become a member for free",
     question: "Choose a question",
   },
@@ -89,7 +91,8 @@ export default async function RolesPage() {
           <h2 className="mt-3 text-3xl font-black">{copy.nextTitle}</h2>
           <p className="mt-4 max-w-3xl leading-7 text-[#f4f1e8]/58">{copy.nextBody}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href={VOG_JOIN_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.join}</Link>
+            <Link href="/vor-ort" className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.regional}</Link>
+            <Link href={VOG_JOIN_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.join}</Link>
             <Link href={VOG_QUESTIONS_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.question}</Link>
           </div>
         </div>
