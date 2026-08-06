@@ -11,7 +11,10 @@ const QUESTION_ID_PATTERN = /^vog-question-(0[1-9]|[1-4][0-9]|50)$/;
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id")?.trim() || "";
   if (!QUESTION_ID_PATTERN.test(id)) {
-    return NextResponse.json({ ok: false, error: "invalid_question_id" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "invalid_question_id" },
+      { status: 400 },
+    );
   }
 
   const locale = normalizeLocale(request.nextUrl.searchParams.get("lang"));
@@ -26,7 +29,7 @@ export async function GET(request: NextRequest) {
     errorCorrectionLevel: "M",
   });
 
-  return new NextResponse(svg, {
+  return new Response(svg, {
     status: 200,
     headers: {
       "Content-Type": "image/svg+xml; charset=utf-8",
