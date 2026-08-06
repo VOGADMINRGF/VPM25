@@ -1,5 +1,11 @@
 import { MongoClient, Db, Collection } from "mongodb";
 import type { MapOverrides } from "@/config/mapOverrides.default";
+import {
+  REGIONAL_INTEREST_COLLECTION,
+  REGIONAL_INTEREST_SOURCE_PATH,
+  type RegionalInterestIntent,
+  type RegionalInterestStatus,
+} from "@/lib/regionalInterestContract";
 
 let _client: MongoClient | null = null;
 let _db: Db | null = null;
@@ -108,22 +114,6 @@ export async function chapterIntakeCol(): Promise<Collection<ChapterIntakeDoc>> 
   return col;
 }
 
-export type RegionalInterestIntent =
-  | "stay_informed"
-  | "join_meetup"
-  | "start_meetup"
-  | "help_organize"
-  | "offer_space"
-  | "offer_contacts"
-  | "offer_expertise"
-  | "regional_long_term";
-
-export type RegionalInterestStatus =
-  | "new"
-  | "reviewed"
-  | "matched"
-  | "closed";
-
 export type RegionalInterestDoc = {
   _id?: any;
   contactName: string;
@@ -136,7 +126,7 @@ export type RegionalInterestDoc = {
   matchingConsent: boolean;
   privacyAccepted: true;
   status: RegionalInterestStatus;
-  sourcePath: "/vor-ort";
+  sourcePath: typeof REGIONAL_INTEREST_SOURCE_PATH;
   createdAt: Date;
   reviewedAt?: Date;
   matchedAt?: Date;
@@ -147,7 +137,7 @@ export async function regionalInterestCol(): Promise<
   Collection<RegionalInterestDoc>
 > {
   const db = await vogDb();
-  const col = db.collection<RegionalInterestDoc>("regional_interest_intake");
+  const col = db.collection<RegionalInterestDoc>(REGIONAL_INTEREST_COLLECTION);
 
   await col.createIndex({ status: 1, createdAt: -1 }).catch(() => {});
   await col.createIndex({ location: 1, status: 1 }).catch(() => {});
