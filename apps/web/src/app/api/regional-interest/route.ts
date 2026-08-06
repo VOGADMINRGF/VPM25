@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import { regionalInterestCol } from "@/lib/vogMongo";
 import {
-  REGIONAL_INTEREST_INTENTS,
   REGIONAL_INTEREST_SOURCE_PATH,
+  RegionalInterestInputSchema,
   type RegionalInterestIntent,
 } from "@/lib/regionalInterestContract";
 import { verifyHumanTokenDetailed } from "@/lib/security/human-token";
@@ -17,23 +16,6 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const RATE_LIMIT = { limit: 4, windowMs: 30 * 60 * 1000 };
-
-const IntakeSchema = z.object({
-  contactName: z.string().trim().min(2).max(120),
-  contactEmail: z.string().trim().email().max(320),
-  location: z.string().trim().min(2).max(160),
-  topic: z.string().trim().max(240).optional(),
-  intents: z
-    .array(z.enum(REGIONAL_INTEREST_INTENTS))
-    .min(1)
-    .max(REGIONAL_INTEREST_INTENTS.length),
-  notes: z.string().trim().max(1500).optional(),
-  contactConsent: z.literal(true),
-  matchingConsent: z.boolean(),
-  privacyAccepted: z.literal(true),
-  humanToken: z.string().min(10),
-  hp_regional: z.string().optional(),
-});
 
 const INTENT_LABELS: Record<RegionalInterestIntent, string> = {
   stay_informed: "Informiert bleiben",
@@ -84,7 +66,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const parsed = IntakeSchema.safeParse(payload);
+  const parsed = RegionalInterestInputSchema.safeParse(payload);
   if (!parsed.success) {
     return NextResponse.json(
       { ok: false, error: "invalid_payload" },
