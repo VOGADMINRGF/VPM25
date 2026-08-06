@@ -1,0 +1,97 @@
+:root{
+  --brand-cyan:#18cfc8;
+  --brand-blue:#1a8cff;
+  --brand-accent-1:#1a8cff;
+  --brand-accent-2:#18cfc8;
+  --grad-from:26 140 255;
+  --grad-to:24 207 200;
+  --font-sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea{
+  font-family:var(--font-sans)!important;
+}
+
+main.min-h-screen{
+  background:#020617!important;
+  color:#f8fafc!important;
+}
+
+main.min-h-screen > header{
+  background:rgba(2,6,23,.88)!important;
+}
+
+main.min-h-screen > section:first-of-type > div.absolute{
+  background:
+    radial-gradient(circle at 78% 18%,rgba(26,140,255,.24),transparent 31%),
+    radial-gradient(circle at 20% 75%,rgba(24,207,200,.18),transparent 35%)!important;
+}
+
+[class*="bg-[#07110f]"]{
+  background-color:#020617!important;
+}
+
+[class*="bg-[#0b1714]"]{
+  background-color:#0b1220!important;
+}
+
+[class*="bg-[#0d1d19]"]{
+  background-color:#0f1c31!important;
+}
+
+[class*="bg-[#d6ff65]"]{
+  background:#1a8cff!important;
+  background-image:linear-gradient(90deg,#1a8cff,#18cfc8)!important;
+}
+
+[class*="text-[#d6ff65]"]{
+  color:#18cfc8!important;
+}
+
+[class*="border-[#d6ff65]"]{
+  border-color:rgba(24,207,200,.58)!important;
+}
+
+[class*="hover:border-[#d6ff65]"]:hover{
+  border-color:rgba(24,207,200,.72)!important;
+}
+
+[class*="focus:border-[#d6ff65]"]:focus{
+  border-color:#18cfc8!important;
+}
+
+[class*="text-[#07110f]"]{
+  color:#071727!important;
+}
+
+[class*="border-[#07110f]"]{
+  border-color:#071727!important;
+}
+
+[class*="bg-[#f0eee5]"]{
+  background:#f8fafc!important;
+}
+
+[class*="text-[#07110f]/65"]{
+  color:rgba(7,23,39,.68)!important;
+}
+
+main.min-h-screen a.rounded-full.bg-\[\#d6ff65\],
+main.min-h-screen button.bg-\[\#d6ff65\]{
+  box-shadow:0 12px 28px rgba(26,140,255,.22);
+}
+
+main.min-h-screen a.rounded-full.bg-\[\#d6ff65\]:hover,
+main.min-h-screen button.bg-\[\#d6ff65\]:hover{
+  box-shadow:0 16px 34px rgba(26,140,255,.28);
+}
+
+:focus-visible{
+  outline:3px solid rgba(24,207,200,.95)!important;
+  outline-offset:3px!important;
+}
