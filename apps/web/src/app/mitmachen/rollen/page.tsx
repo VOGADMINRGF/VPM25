@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
-import {
-  VOG_JOIN_PATH,
-  VOG_QUESTIONS_PATH,
-  VOG_REGIONAL_PATH,
-} from "@/config/links";
+import { VOG_JOIN_PATH, VOG_QUESTIONS_PATH } from "@/config/links";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 
 type Language = "de" | "en";
@@ -29,9 +25,8 @@ const COPY = {
     ],
     nextEyebrow: "Dein erster Schritt",
     nextTitle: "Du entscheidest, wo du anfangen möchtest.",
-    nextBody: "Du kannst kostenfrei Mitglied werden, zunächst eine Frage verfolgen oder dich unverbindlich für einen Austausch in deiner Region melden. Niemand muss sofort eine fertige Rolle oder Verantwortung übernehmen.",
+    nextBody: "Du kannst kostenfrei Mitglied werden oder zunächst eine der offenen Fragen verfolgen. Der direkte regionale Einstieg mit Stammtischinteresse wird im nächsten, bereits angelegten Produktschritt ergänzt.",
     join: "Kostenfrei Mitglied werden",
-    regional: "In meiner Region aktiv werden",
     question: "Eine Frage auswählen",
   },
   en: {
@@ -53,9 +48,8 @@ const COPY = {
     ],
     nextEyebrow: "Your first step",
     nextTitle: "You decide where to begin.",
-    nextBody: "You can become a member for free, follow a question first or register your interest in meeting people in your region. Nobody has to choose a finished role or take responsibility immediately.",
+    nextBody: "You can become a member for free or follow one of the open questions first. The direct regional entry for meetup interest is being added in the next, already defined product slice.",
     join: "Become a member for free",
-    regional: "Get active in my region",
     question: "Choose a question",
   },
 };
@@ -102,7 +96,6 @@ export default async function RolesPage() {
             <p className="mt-4 max-w-3xl leading-7 text-[#f4f1e8]/58">{copy.nextBody}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href={VOG_JOIN_PATH} className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] transition hover:-translate-y-0.5">{copy.join}</Link>
-              <Link href={VOG_REGIONAL_PATH} className="rounded-full border border-[#18cfc8]/45 px-5 py-3 font-bold text-[#18cfc8] transition hover:border-[#18cfc8] hover:bg-[#18cfc8]/8">{copy.regional}</Link>
               <Link href={VOG_QUESTIONS_PATH} className="rounded-full border border-[#f4f1e8]/18 px-5 py-3 font-bold transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]">{copy.question}</Link>
             </div>
           </div>
