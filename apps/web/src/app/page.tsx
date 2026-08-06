@@ -1,4 +1,5 @@
 import HomeClient from "@/components/home/HomeClient";
+import RegionalActivationTeaser from "@/components/home/RegionalActivationTeaser";
 
 export default function HomePage() {
   const contactEmail =
@@ -11,5 +12,10 @@ export default function HomePage() {
     referencePrefix: process.env.VOG_PAYMENT_REFERENCE_PREFIX,
   };
 
-  return <HomeClient supportBank={supportBank} contactEmail={contactEmail} />;
+  return (
+    <>
+      <HomeClient supportBank={supportBank} contactEmail={contactEmail} />
+      <RegionalActivationTeaser />
+    </>
+  );
 }
