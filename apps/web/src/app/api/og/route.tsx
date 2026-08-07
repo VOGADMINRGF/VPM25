@@ -148,7 +148,7 @@ export async function GET(request: Request) {
             fontWeight: 600,
           }}
         >
-          <div>voiceopengov.org/grundlagen</div>
+          <div>www.voiceopengov.org/grundlagen</div>
           <div>Check → Dossier → Beteiligung → Status</div>
         </div>
       </div>

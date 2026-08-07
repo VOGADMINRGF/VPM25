@@ -1,6 +1,9 @@
 import HomeClient from "@/components/home/HomeClient";
+import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
+import { getRequestLocale } from "@/lib/locale";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const locale = await getRequestLocale();
   const contactEmail =
     process.env.VOG_MEMBERSHIP_CONTACT_EMAIL || "members@voiceopengov.org";
   const supportBank = {
@@ -11,5 +14,13 @@ export default function HomePage() {
     referencePrefix: process.env.VOG_PAYMENT_REFERENCE_PREFIX,
   };
 
-  return <HomeClient supportBank={supportBank} contactEmail={contactEmail} />;
+  return (
+    <>
+      <TranslationStatusNotice
+        locale={locale}
+        status={locale === "de" ? "source" : locale === "en" ? "human_reviewed" : "missing"}
+      />
+      <HomeClient supportBank={supportBank} contactEmail={contactEmail} />
+    </>
+  );
 }
