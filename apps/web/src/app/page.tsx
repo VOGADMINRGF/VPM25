@@ -1,4 +1,5 @@
 import HomeClient from "@/components/home/HomeClient";
+import RegionalActivationTeaser from "@/components/home/RegionalActivationTeaser";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 import { getRequestLocale } from "@/lib/locale";
 
@@ -18,9 +19,16 @@ export default async function HomePage() {
     <>
       <TranslationStatusNotice
         locale={locale}
-        status={locale === "de" ? "source" : locale === "en" ? "human_reviewed" : "missing"}
+        status={
+          locale === "de"
+            ? "source"
+            : locale === "en"
+              ? "human_reviewed"
+              : "missing"
+        }
       />
       <HomeClient supportBank={supportBank} contactEmail={contactEmail} />
+      <RegionalActivationTeaser />
     </>
   );
 }

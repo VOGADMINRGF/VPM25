@@ -21,5 +21,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm -C apps/web exec tsc --noEmit -p tsconfig.json
-      - run: pnpm -C apps/web exec vitest run tests/i18n.locale-contract.test.ts
+      - run: >-
+          pnpm -C apps/web exec vitest run
+          tests/i18n.locale-contract.test.ts
+          tests/regional-interest.contract.test.ts
       - run: pnpm build
