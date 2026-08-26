@@ -37,7 +37,8 @@ export function LocaleProvider({
   const router = useRouter();
   const didSync = useRef(false);
 
-  // Hydrate from localStorage/query once on mount
+  // Hydrate from localStorage/query once on mount.
+  // The query parameter wins, then persisted browser state, then the server locale.
   useEffect(() => {
     if (didSync.current) return;
     try {
@@ -62,6 +63,10 @@ export function LocaleProvider({
       if (isSupportedLocale(stored)) {
         setLocaleState(stored);
         updateHtmlAttrs(stored);
+        if (stored !== initialLocale) {
+          persistLocale(stored);
+          router.refresh();
+        }
       } else {
         updateHtmlAttrs(initialLocale);
       }
@@ -75,12 +80,20 @@ export function LocaleProvider({
     updateHtmlAttrs(locale);
   }, [locale]);
 
-  const setLocale = useCallback((next: SupportedLocale) => {
-    setLocaleState(next);
-    persistLocale(next);
-    syncUrl(next);
-    updateHtmlAttrs(next);
-  }, []);
+  const setLocale = useCallback(
+    (next: SupportedLocale) => {
+      setLocaleState(next);
+      persistLocale(next);
+      syncUrl(next);
+      updateHtmlAttrs(next);
+
+      // Several public surfaces (footer, privacy copy, metadata and server
+      // components) derive their locale from the request cookie. Refreshing here
+      // keeps the entire page on one locale instead of leaving a mixed-language UI.
+      router.refresh();
+    },
+    [router],
+  );
 
   const value = useMemo(
     () => ({
