@@ -1,40 +1,45 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StructuredData from "@/components/seo/StructuredData";
-import { REQUIRED_LAUNCH_LOCALES } from "@/config/locales";
+import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
+import { REQUIRED_LAUNCH_LOCALES, getLocaleConfig } from "@/config/locales";
 import { EDEBATTE_URL, VOICEOPENGOV_URL } from "@/config/links";
 import {
   INITIATOR_THESES_COPY,
   initiatorThesesLocale,
 } from "@/content/initiatorTheses";
-import { localeAlternates } from "@/lib/i18n/localeContract";
+import {
+  localeAlternates,
+  localizedCanonicalUrl,
+} from "@/lib/i18n/localeContract";
 import { getRequestLocale } from "@/lib/locale";
 
 const PATH = "/thesen/ricky-gerd-fleischer";
 
 function localHref(path: string, locale: string) {
   const url = new URL(path, VOICEOPENGOV_URL);
-  url.searchParams.set("lang", locale);
+  if (locale !== "de") url.searchParams.set("lang", locale);
   return `${url.pathname}${url.search}`;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = initiatorThesesLocale(await getRequestLocale());
   const copy = INITIATOR_THESES_COPY[locale];
-  const canonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const baseCanonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const canonical = localizedCanonicalUrl(baseCanonical, locale);
 
   return {
     title: copy.title,
     description: copy.intro,
     alternates: {
       canonical,
-      languages: localeAlternates(canonical, REQUIRED_LAUNCH_LOCALES),
+      languages: localeAlternates(baseCanonical, REQUIRED_LAUNCH_LOCALES),
     },
     openGraph: {
       title: copy.title,
       description: copy.intro,
       url: canonical,
-      type: "profile",
+      type: "website",
     },
   };
 }
@@ -42,7 +47,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RickyGerdFleischerThesesPage() {
   const locale = initiatorThesesLocale(await getRequestLocale());
   const copy = INITIATOR_THESES_COPY[locale];
-  const canonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const baseCanonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const canonical = localizedCanonicalUrl(baseCanonical, locale);
 
   return (
     <main className="bg-[#020617] text-[#f8fafc]">
@@ -55,9 +61,10 @@ export default async function RickyGerdFleischerThesesPage() {
             url: canonical,
             name: copy.title,
             description: copy.intro,
+            inLanguage: getLocaleConfig(locale).bcp47,
             mainEntity: {
               "@type": "Person",
-              "@id": `${canonical}#person`,
+              "@id": `${baseCanonical}#person`,
               name: "Ricky Gerd Fleischer",
               description: "Initiator of VoiceOpenGov",
             },
@@ -73,11 +80,15 @@ export default async function RickyGerdFleischerThesesPage() {
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "VoiceOpenGov", item: `${VOICEOPENGOV_URL}/` },
-              { "@type": "ListItem", position: 2, name: "Thesen", item: `${VOICEOPENGOV_URL}/thesen/ricky-gerd-fleischer` },
+              { "@type": "ListItem", position: 2, name: "Thesen", item: baseCanonical },
               { "@type": "ListItem", position: 3, name: "Ricky Gerd Fleischer", item: canonical },
             ],
           },
         ]}
+      />
+      <TranslationStatusNotice
+        locale={locale}
+        status={getLocaleConfig(locale).defaultTranslationStatus}
       />
 
       <section className="mx-auto max-w-5xl px-5 py-16 sm:px-8 lg:py-24">
