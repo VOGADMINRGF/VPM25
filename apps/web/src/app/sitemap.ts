@@ -1,4 +1,3 @@
-import type { MetadataRoute } from "next";
 import { REQUIRED_LAUNCH_LOCALES, getLocaleConfig } from "@/config/locales";
 import { VOICEOPENGOV_URL } from "@/config/links";
 
@@ -20,7 +19,7 @@ function localizedUrl(path: string, locale: string) {
   return url.toString();
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default function sitemap() {
   const now = new Date();
 
   return PUBLIC_PATHS.map((path, index) => {
