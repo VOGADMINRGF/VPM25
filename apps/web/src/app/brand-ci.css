@@ -1,0 +1,194 @@
+/*
+ * VoiceOpenGov canonical family CI.
+ * Human-approved 2026-08-26: same visual family as eDebatte.
+ * This file is imported by the root App Router layout AFTER globals.css so
+ * the brand cannot depend on a separately injected public stylesheet.
+ */
+
+:root {
+  --vog-ink: #020617 !important;
+  --vog-surface: #0b1220 !important;
+  --vog-surface-raised: #0f1c31 !important;
+  --vog-text: #f8fafc !important;
+  --vog-accent: #18cfc8 !important;
+  --vog-green: #1a8cff !important;
+  --vog-cream: #f8fafc !important;
+
+  --brand-cyan: #18cfc8 !important;
+  --brand-blue: #1a8cff !important;
+  --brand-accent-1: #1a8cff !important;
+  --brand-accent-2: #18cfc8 !important;
+  --brand-from: #eafcfb !important;
+  --brand-to: #f8fafc !important;
+
+  /* Tailwind theme compatibility: remove the temporary lime/green remap. */
+  --color-slate-950: #020617 !important;
+  --color-slate-900: #0b1220 !important;
+  --color-slate-800: #0f1c31 !important;
+  --color-slate-700: #1e293b !important;
+  --color-slate-600: #475569 !important;
+  --color-slate-500: #64748b !important;
+  --color-slate-400: #94a3b8 !important;
+  --color-slate-300: #cbd5e1 !important;
+  --color-slate-200: #e2e8f0 !important;
+  --color-slate-100: #f1f5f9 !important;
+
+  --color-cyan-700: #0e8e91 !important;
+  --color-cyan-600: #0fb4b3 !important;
+  --color-cyan-500: #18cfc8 !important;
+  --color-cyan-400: #45ddd7 !important;
+  --color-cyan-300: #79e9e4 !important;
+  --color-cyan-200: #b6f4f1 !important;
+
+  --color-sky-800: #075b9c !important;
+  --color-sky-700: #0b73c7 !important;
+  --color-sky-600: #1a8cff !important;
+  --color-sky-500: #43a2ff !important;
+  --color-sky-400: #6db7ff !important;
+  --color-sky-300: #9bceff !important;
+  --color-sky-200: #c8e5ff !important;
+  --color-blue-600: #1a8cff !important;
+  --color-blue-500: #43a2ff !important;
+}
+
+html,
+body {
+  background: #020617 !important;
+  color: #f8fafc;
+}
+
+body {
+  background-image: linear-gradient(180deg, #020617 0%, #0b1220 52%, #020617 100%) !important;
+}
+
+main.min-h-screen {
+  background: #020617 !important;
+  color: #f8fafc !important;
+}
+
+header,
+main.min-h-screen > header {
+  background: rgba(2, 6, 23, 0.94) !important;
+}
+
+main.min-h-screen > section:first-of-type > div.absolute {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(26, 140, 255, 0.28), transparent 31%),
+    radial-gradient(circle at 20% 75%, rgba(24, 207, 200, 0.20), transparent 35%) !important;
+}
+
+/* Legacy relaunch arbitrary colors -> canonical family colors. */
+[class~="bg-[#07110f]"],
+[class~="bg-[#07110f]/92"],
+[class~="bg-[#07110f]/98"] {
+  background-color: #020617 !important;
+}
+
+[class~="bg-[#0b1714]"] {
+  background-color: #0b1220 !important;
+}
+
+[class~="bg-[#0d1d19]"] {
+  background-color: #0f1c31 !important;
+}
+
+[class~="bg-[#d6ff65]"] {
+  background-color: #1a8cff !important;
+  background-image: linear-gradient(90deg, #1a8cff, #18cfc8) !important;
+}
+
+[class~="text-[#d6ff65]"] {
+  color: #18cfc8 !important;
+}
+
+[class~="border-[#d6ff65]"],
+[class~="border-[#d6ff65]/25"],
+[class~="border-[#d6ff65]/35"],
+[class~="border-[#d6ff65]/50"] {
+  border-color: rgba(24, 207, 200, 0.62) !important;
+}
+
+[class~="bg-[#d6ff65]/10"] {
+  background-color: rgba(24, 207, 200, 0.10) !important;
+}
+
+[class~="text-[#f4f1e8]"] {
+  color: #f8fafc !important;
+}
+
+[class~="border-[#f4f1e8]/10"] {
+  border-color: rgba(248, 250, 252, 0.10) !important;
+}
+
+[class~="border-[#f4f1e8]/15"] {
+  border-color: rgba(248, 250, 252, 0.15) !important;
+}
+
+[class~="bg-[#f0eee5]"],
+[class~="bg-[#f4f1e8]"] {
+  background-color: #f8fafc !important;
+}
+
+[class~="text-[#07110f]"] {
+  color: #071727 !important;
+}
+
+[class~="border-[#07110f]"] {
+  border-color: #071727 !important;
+}
+
+[class~="text-[#07110f]/65"],
+[class~="text-[#07110f]/70"] {
+  color: rgba(7, 23, 39, 0.70) !important;
+}
+
+/* Interactive legacy lime states. */
+[class~="hover:border-[#d6ff65]/45"]:hover,
+[class~="hover:border-[#d6ff65]/50"]:hover,
+[class~="hover:border-[#d6ff65]/55"]:hover,
+[class~="hover:border-[#d6ff65]/60"]:hover {
+  border-color: rgba(24, 207, 200, 0.75) !important;
+}
+
+[class~="hover:text-[#d6ff65]"]:hover {
+  color: #18cfc8 !important;
+}
+
+[class~="hover:bg-[#d6ff65]/10"]:hover {
+  background-color: rgba(24, 207, 200, 0.12) !important;
+}
+
+[class~="hover:bg-[#e2ff8a]"]:hover {
+  background-color: #18cfc8 !important;
+  background-image: linear-gradient(90deg, #1a8cff, #18cfc8) !important;
+}
+
+[class~="focus:border-[#d6ff65]"]:focus {
+  border-color: #18cfc8 !important;
+}
+
+/* Existing generic helpers must resolve to the same family palette. */
+.vog-head,
+.headline-gradient {
+  background-image: linear-gradient(90deg, #18cfc8, #1a8cff) !important;
+}
+
+.vog-btn-pri,
+.btn-primary,
+.cta,
+.btn-grad,
+.bg-brand-grad {
+  background-color: #1a8cff !important;
+  background-image: linear-gradient(90deg, #1a8cff, #18cfc8) !important;
+}
+
+.btn-primary,
+.cta,
+.btn-grad,
+.vog-btn-pri {
+  color: #071727 !important;
+}
+
+:focus-visible {
+  outline-color: #18cfc8 !important;
+}
