@@ -90,16 +90,25 @@ export function buildLocaleHandoffUrl(
   return url.toString();
 }
 
+export function localizedCanonicalUrl(
+  baseUrl: string,
+  locale: SupportedLocale,
+): string {
+  if (locale === DEFAULT_LOCALE) return baseUrl;
+  const url = new URL(baseUrl);
+  url.searchParams.set("lang", locale);
+  return url.toString();
+}
+
 export function localeAlternates(
   baseUrl: string,
   locales: readonly SupportedLocale[],
 ): Record<string, string> {
   const alternates = Object.fromEntries(
-    locales.map((locale) => {
-      const url = new URL(baseUrl);
-      url.searchParams.set("lang", locale);
-      return [getLocaleConfig(locale).bcp47, url.toString()];
-    }),
+    locales.map((locale) => [
+      getLocaleConfig(locale).bcp47,
+      localizedCanonicalUrl(baseUrl, locale),
+    ]),
   );
 
   return {
