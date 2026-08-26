@@ -1,31 +1,36 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import StructuredData from "@/components/seo/StructuredData";
-import { REQUIRED_LAUNCH_LOCALES } from "@/config/locales";
+import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
+import { REQUIRED_LAUNCH_LOCALES, getLocaleConfig } from "@/config/locales";
 import { VOICEOPENGOV_URL } from "@/config/links";
 import { REGIONAL_SEO_COPY, regionalSeoLocale } from "@/content/regionalSeo";
-import { localeAlternates } from "@/lib/i18n/localeContract";
+import {
+  localeAlternates,
+  localizedCanonicalUrl,
+} from "@/lib/i18n/localeContract";
 import { getRequestLocale } from "@/lib/locale";
 
 const PATH = "/regionen/deutschland/berlin";
 
 function href(path: string, locale: string) {
   const url = new URL(path, VOICEOPENGOV_URL);
-  url.searchParams.set("lang", locale);
+  if (locale !== "de") url.searchParams.set("lang", locale);
   return `${url.pathname}${url.search}`;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = regionalSeoLocale(await getRequestLocale());
   const copy = REGIONAL_SEO_COPY[locale].berlin;
-  const canonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const baseCanonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const canonical = localizedCanonicalUrl(baseCanonical, locale);
 
   return {
     title: copy.title,
     description: copy.intro,
     alternates: {
       canonical,
-      languages: localeAlternates(canonical, REQUIRED_LAUNCH_LOCALES),
+      languages: localeAlternates(baseCanonical, REQUIRED_LAUNCH_LOCALES),
     },
     openGraph: {
       title: copy.title,
@@ -39,7 +44,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function BerlinRegionPage() {
   const locale = regionalSeoLocale(await getRequestLocale());
   const copy = REGIONAL_SEO_COPY[locale].berlin;
-  const canonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const baseCanonical = `${VOICEOPENGOV_URL}${PATH}`;
+  const canonical = localizedCanonicalUrl(baseCanonical, locale);
 
   return (
     <main className="bg-[#020617] text-[#f8fafc]">
@@ -52,6 +58,7 @@ export default async function BerlinRegionPage() {
             url: canonical,
             name: copy.title,
             description: copy.intro,
+            inLanguage: getLocaleConfig(locale).bcp47,
             isPartOf: {
               "@type": "WebSite",
               "@id": `${VOICEOPENGOV_URL}/#website`,
@@ -78,6 +85,10 @@ export default async function BerlinRegionPage() {
             ],
           },
         ]}
+      />
+      <TranslationStatusNotice
+        locale={locale}
+        status={getLocaleConfig(locale).defaultTranslationStatus}
       />
 
       <section className="mx-auto max-w-5xl px-5 py-16 sm:px-8 lg:py-24">
