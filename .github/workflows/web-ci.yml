@@ -19,6 +19,22 @@ jobs:
           node-version: "20"
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
+      - name: Brand CI contract
+        run: |
+          test -f apps/web/src/app/brand-ci.css
+          globals_line="$(grep -nF 'import "./globals.css";' apps/web/src/app/layout.tsx | head -1 | cut -d: -f1)"
+          brand_line="$(grep -nF 'import "./brand-ci.css";' apps/web/src/app/layout.tsx | head -1 | cut -d: -f1)"
+          test -n "$globals_line"
+          test -n "$brand_line"
+          test "$brand_line" -gt "$globals_line"
+          grep -F '#020617' apps/web/src/app/brand-ci.css
+          grep -F '#1a8cff' apps/web/src/app/brand-ci.css
+          grep -F '#18cfc8' apps/web/src/app/brand-ci.css
+          grep -F '#f8fafc' apps/web/src/app/brand-ci.css
+          if grep -Eq -- '--vog-accent:[[:space:]]*#d6ff65|--vog-green:[[:space:]]*#48a78f' apps/web/src/app/brand-ci.css; then
+            echo 'Legacy lime/green must not become canonical VoiceOpenGov brand tokens.' >&2
+            exit 1
+          fi
       - run: pnpm lint
       - run: pnpm -C apps/web exec tsc --noEmit -p tsconfig.json
       - run: >-
