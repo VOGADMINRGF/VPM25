@@ -94,11 +94,16 @@ export function localeAlternates(
   baseUrl: string,
   locales: readonly SupportedLocale[],
 ): Record<string, string> {
-  return Object.fromEntries(
+  const alternates = Object.fromEntries(
     locales.map((locale) => {
       const url = new URL(baseUrl);
       url.searchParams.set("lang", locale);
       return [getLocaleConfig(locale).bcp47, url.toString()];
     }),
   );
+
+  return {
+    ...alternates,
+    "x-default": baseUrl,
+  };
 }
