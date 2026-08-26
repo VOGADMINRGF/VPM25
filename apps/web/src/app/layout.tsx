@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
+import "./brand-ci.css";
 import { LocaleProvider } from "@/context/LocaleContext";
 import {
   DEFAULT_LOCALE,
