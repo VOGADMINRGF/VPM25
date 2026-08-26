@@ -13,16 +13,22 @@ const PUBLIC_LOCALES = new Set([
   "zh",
 ]);
 
+type NextResponseWithNext = typeof NextResponse & {
+  next(init?: { request?: { headers?: Headers } }): Response;
+};
+
+const nextResponse = NextResponse as NextResponseWithNext;
+
 export function middleware(request: NextRequest) {
   const requestedLocale = request.nextUrl.searchParams.get("lang")?.toLowerCase();
   if (!requestedLocale || !PUBLIC_LOCALES.has(requestedLocale)) {
-    return NextResponse.next();
+    return nextResponse.next();
   }
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-vog-locale", requestedLocale);
 
-  return NextResponse.next({
+  return nextResponse.next({
     request: {
       headers: requestHeaders,
     },
