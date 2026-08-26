@@ -19,7 +19,10 @@ import SiteFooter from "@/components/SiteFooter";
 import StructuredData from "@/components/seo/StructuredData";
 import { VOICEOPENGOV_URL } from "@/config/links";
 import { getRequestLocale } from "@/lib/locale";
-import { localeAlternates } from "@/lib/i18n/localeContract";
+import {
+  localeAlternates,
+  localizedCanonicalUrl,
+} from "@/lib/i18n/localeContract";
 
 const META: Partial<
   Record<SupportedLocale, { title: string; description: string; skip: string }>
@@ -65,6 +68,7 @@ const META: Partial<
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale();
   const copy = META[locale] ?? META.en!;
+  const canonical = localizedCanonicalUrl(VOICEOPENGOV_URL, locale);
 
   return {
     metadataBase: new URL(VOICEOPENGOV_URL),
@@ -75,7 +79,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: copy.description,
     alternates: {
-      canonical: VOICEOPENGOV_URL,
+      canonical,
       languages: localeAlternates(VOICEOPENGOV_URL, REQUIRED_LAUNCH_LOCALES),
     },
     openGraph: {
@@ -83,7 +87,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "VoiceOpenGov",
       title: copy.title,
       description: copy.description,
-      url: VOICEOPENGOV_URL,
+      url: canonical,
       locale: getLocaleConfig(locale).bcp47.replace("-", "_"),
     },
     robots: {
