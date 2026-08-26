@@ -1,0 +1,14 @@
+# Human ownership for brand-critical and locale-contract surfaces.
+# Effective enforcement additionally requires branch protection with
+# "Require review from Code Owners" enabled for main.
+
+/AGENTS.md @VOGADMINRGF
+/apps/web/public/edebatte-ci.css @VOGADMINRGF
+/apps/web/src/app/globals.css @VOGADMINRGF
+/apps/web/src/app/head.tsx @VOGADMINRGF
+/apps/web/src/app/(components)/SiteHeader.tsx @VOGADMINRGF
+/apps/web/src/context/LocaleContext.tsx @VOGADMINRGF
+/apps/web/src/config/locales.ts @VOGADMINRGF
+/apps/web/src/lib/locale.ts @VOGADMINRGF
+/apps/web/src/lib/i18n/ @VOGADMINRGF
+/.github/CODEOWNERS @VOGADMINRGF
