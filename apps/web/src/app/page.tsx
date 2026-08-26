@@ -1,5 +1,6 @@
 import HomeClient from "@/components/home/HomeClient";
 import RegionalActivationTeaser from "@/components/home/RegionalActivationTeaser";
+import HomeDiscoverabilityLinks from "@/components/home/HomeDiscoverabilityLinks";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 import { getRequestLocale } from "@/lib/locale";
 
@@ -29,6 +30,7 @@ export default async function HomePage() {
       />
       <HomeClient supportBank={supportBank} contactEmail={contactEmail} />
       <RegionalActivationTeaser />
+      <HomeDiscoverabilityLinks locale={locale} />
     </>
   );
 }

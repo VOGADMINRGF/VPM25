@@ -21,6 +21,7 @@ type Target = keyof typeof TARGETS;
 const EDEBATTE_DESTINATIONS: Record<string, string> = {
   home: "/",
   pricing: "/pricing",
+  create: "/create",
 };
 
 export async function GET(
