@@ -1,10 +1,19 @@
 :root{
-  --brand-cyan:#18cfc8;
-  --brand-blue:#1a8cff;
-  --brand-accent-1:#1a8cff;
-  --brand-accent-2:#18cfc8;
-  --grad-from:26 140 255;
-  --grad-to:24 207 200;
+  --vog-ink:#020617!important;
+  --vog-surface:#0b1220!important;
+  --vog-surface-raised:#0f1c31!important;
+  --vog-text:#f8fafc!important;
+  --vog-accent:#18cfc8!important;
+  --vog-green:#1a8cff!important;
+  --vog-cream:#f8fafc!important;
+  --brand-cyan:#18cfc8!important;
+  --brand-blue:#1a8cff!important;
+  --brand-accent-1:#1a8cff!important;
+  --brand-accent-2:#18cfc8!important;
+  --brand-from:#eafcf6!important;
+  --brand-to:#fefefe!important;
+  --grad-from:26 140 255!important;
+  --grad-to:24 207 200!important;
   --font-sans:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
@@ -17,13 +26,15 @@ textarea{
   font-family:var(--font-sans)!important;
 }
 
+body,
 main.min-h-screen{
   background:#020617!important;
   color:#f8fafc!important;
 }
 
+header,
 main.min-h-screen > header{
-  background:rgba(2,6,23,.88)!important;
+  background:rgba(2,6,23,.90)!important;
 }
 
 main.min-h-screen > section:first-of-type > div.absolute{
@@ -73,8 +84,13 @@ main.min-h-screen > section:first-of-type > div.absolute{
   border-color:#071727!important;
 }
 
-[class*="bg-[#f0eee5]"]{
+[class*="bg-[#f0eee5]"],
+[class*="bg-[#f4f1e8]"]{
   background:#f8fafc!important;
+}
+
+[class*="text-[#f4f1e8]"]{
+  color:#f8fafc!important;
 }
 
 [class*="text-[#07110f]/65"]{
