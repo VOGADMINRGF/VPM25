@@ -6,6 +6,7 @@ import { LocaleProvider } from "@/context/LocaleContext";
 import {
   DEFAULT_LOCALE,
   REQUIRED_LAUNCH_LOCALES,
+  getLocaleConfig,
   getTextDirection,
   type SupportedLocale,
   isSupportedLocale,
@@ -15,6 +16,7 @@ import { getPrivacyStrings } from "./privacyStrings";
 import { VogCookieBanner } from "@/components/privacy/VogCookieBanner";
 import { CONSENT_COOKIE_NAME, parseConsentCookie } from "@/lib/privacy/consent";
 import SiteFooter from "@/components/SiteFooter";
+import StructuredData from "@/components/seo/StructuredData";
 import { VOICEOPENGOV_URL } from "@/config/links";
 import { getRequestLocale } from "@/lib/locale";
 import { localeAlternates } from "@/lib/i18n/localeContract";
@@ -66,6 +68,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(VOICEOPENGOV_URL),
+    applicationName: "VoiceOpenGov",
     title: {
       default: copy.title,
       template: "%s | VoiceOpenGov",
@@ -74,6 +77,25 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: VOICEOPENGOV_URL,
       languages: localeAlternates(VOICEOPENGOV_URL, REQUIRED_LAUNCH_LOCALES),
+    },
+    openGraph: {
+      type: "website",
+      siteName: "VoiceOpenGov",
+      title: copy.title,
+      description: copy.description,
+      url: VOICEOPENGOV_URL,
+      locale: getLocaleConfig(locale).bcp47.replace("-", "_"),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
   };
 }
@@ -95,6 +117,36 @@ export default async function RootLayout({
   const privacyStrings = getPrivacyStrings(initialLocale);
   const meta = META[initialLocale] ?? META.en!;
 
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": `${VOICEOPENGOV_URL}/#organization`,
+      name: "VoiceOpenGov",
+      url: `${VOICEOPENGOV_URL}/`,
+      description: meta.description,
+      knowsAbout: [
+        "democratic participation",
+        "civic engagement",
+        "transparency",
+        "deliberative democracy",
+        "digital democracy",
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": `${VOICEOPENGOV_URL}/#website`,
+      name: "VoiceOpenGov",
+      url: `${VOICEOPENGOV_URL}/`,
+      description: meta.description,
+      publisher: { "@id": `${VOICEOPENGOV_URL}/#organization` },
+      inLanguage: REQUIRED_LAUNCH_LOCALES.map(
+        (locale) => getLocaleConfig(locale).bcp47,
+      ),
+    },
+  ];
+
   return (
     <html
       lang={initialLocale}
@@ -102,6 +154,7 @@ export default async function RootLayout({
       className="h-full"
     >
       <body className="min-h-screen bg-[#020617] text-[#f8fafc] antialiased">
+        <StructuredData data={structuredData} />
         <LocaleProvider initialLocale={initialLocale}>
           <div className="flex min-h-screen flex-col">
             <a
@@ -130,10 +183,13 @@ export default async function RootLayout({
 async function detectInitialLocale(
   cookieStore: Awaited<ReturnType<typeof cookies>>,
 ): Promise<SupportedLocale> {
+  const headerStore = await headers();
+  const routedLocale = headerStore.get("x-vog-locale");
+  if (isSupportedLocale(routedLocale)) return routedLocale;
+
   const cookieLocale = cookieStore.get("lang")?.value;
   if (isSupportedLocale(cookieLocale)) return cookieLocale;
 
-  const headerStore = await headers();
   const acceptLanguage = headerStore.get("accept-language");
   if (acceptLanguage) {
     const candidates = acceptLanguage
