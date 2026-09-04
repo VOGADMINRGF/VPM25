@@ -66,7 +66,7 @@ function renderPage(opts: {
   const initials = initialsFromName(name || "VoiceOpenGov");
   const avatarSrc = member?.supporterImageUrl || member?.avatarUrl || "";
   const avatarUrl = avatarSrc ? escapeHtml(avatarSrc) : "";
-  const statusColor = ok ? "#0ea5e9" : "#ef4444";
+  const statusColor = ok ? "#18cfc8" : "#ef4444";
 
   const profileCard = member
     ? `
@@ -104,6 +104,24 @@ function renderPage(opts: {
     `
     : "";
 
+  const accountSteps = ok
+    ? `
+        <li>Wenn du beim Beitritt ein Passwort vergeben hast, kannst du dich jetzt direkt anmelden.</li>
+        <li>Schon früher Mitglied geworden? Über „Zugang einrichten“ kannst du dir per E-Mail ein Passwort setzen.</li>
+        <li>Chat & Zusammenarbeit werden als nächster Bereich an dein Mitgliedskonto angebunden.</li>
+      `
+    : `
+        <li>Bitte prüfe den Bestätigungslink oder fordere bei Bedarf einen neuen Beitrittslink an.</li>
+        <li>Wenn deine Mitgliedschaft bereits bestätigt ist, kannst du deinen Zugang separat einrichten.</li>
+      `;
+
+  const accountActions = ok
+    ? `
+        <a href="${baseUrl}/login" style="background: linear-gradient(90deg,#1a8cff,#18cfc8); color: #071727; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 700; font-size: 13px;">Zum Login</a>
+        <a href="${baseUrl}/konto/passwort" style="background: #0b1220; color: #f8fafc; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Zugang einrichten</a>
+      `
+    : "";
+
   const html = `<!doctype html>
   <html lang="de">
     <head>
@@ -111,27 +129,26 @@ function renderPage(opts: {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>${escapeHtml(title)}</title>
     </head>
-    <body style="margin:0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #f1f5f9; color: #0f172a;">
+    <body style="margin:0; font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #020617; color: #f8fafc;">
       <div style="max-width: 720px; margin: 40px auto; padding: 0 20px;">
-        <div style="border-radius: 20px; background: #ffffff; box-shadow: 0 20px 50px rgba(15,23,42,0.08); padding: 28px;">
-          <div style="height: 6px; border-radius: 999px; background: linear-gradient(90deg,#06b6d4,#0ea5e9,#2563eb); margin-bottom: 18px;"></div>
+        <div style="border-radius: 20px; background: #ffffff; color:#0f172a; box-shadow: 0 20px 50px rgba(0,0,0,0.28); padding: 28px;">
+          <div style="height: 6px; border-radius: 999px; background: linear-gradient(90deg,#1a8cff,#18cfc8); margin-bottom: 18px;"></div>
           <h1 style="margin: 0 0 10px; font-size: 24px; font-weight: 800;">${escapeHtml(title)}</h1>
           <p style="margin: 0 0 16px; font-size: 14px; color: #475569; line-height: 1.6;">${escapeHtml(message)}</p>
-          <div style="display: inline-block; padding: 6px 12px; border-radius: 999px; background: ${statusColor}; color: #ffffff; font-size: 12px; font-weight: 700;">
+          <div style="display: inline-block; padding: 6px 12px; border-radius: 999px; background: ${statusColor}; color: #071727; font-size: 12px; font-weight: 700;">
             ${ok ? "Bestätigt" : "Nicht bestätigt"}
           </div>
           ${profileCard}
           <div style="margin-top: 18px; padding: 14px; border-radius: 14px; background: #f8fafc; border: 1px solid #e2e8f0;">
             <div style="font-weight: 700; margin-bottom: 6px;">Nächste Schritte</div>
-            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #475569;">
-              <li>Profil & Passwort kommen als nächster Schritt (in Arbeit).</li>
-              <li>Chat & Zusammenarbeit folgen danach, damit Chapters lokal sichtbar werden.</li>
-              <li>Wenn du Fragen hast, melde dich jederzeit.</li>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #475569; line-height:1.6;">
+              ${accountSteps}
             </ul>
           </div>
           <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px;">
-            <a href="${baseUrl}/" style="background: #0ea5e9; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Zur Startseite</a>
-            <a href="${VOG_SUPPORT_URL}" style="background: #06b6d4; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Initiative unterstützen</a>
+            ${accountActions}
+            <a href="${baseUrl}/" style="background: #1a8cff; color: #ffffff; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Zur Startseite</a>
+            <a href="${VOG_SUPPORT_URL}" style="background: #18cfc8; color: #071727; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Initiative unterstützen</a>
             <a href="${baseUrl}/kontakt" style="background: #e2e8f0; color: #0f172a; text-decoration: none; padding: 10px 16px; border-radius: 999px; font-weight: 600; font-size: 13px;">Fragen?</a>
           </div>
         </div>
@@ -189,7 +206,7 @@ export async function GET(req: Request) {
 
   return renderPage({
     title: "E-Mail bestätigt",
-    message: "Danke! Deine Mitgliedschaft ist jetzt aktiv. Unten siehst du eine Vorschau.",
+    message: "Danke! Deine Mitgliedschaft ist jetzt aktiv. Dein Mitgliedszugang ist damit freigeschaltet.",
     ok: true,
     baseUrl: base,
     member: member as MemberPreview,
