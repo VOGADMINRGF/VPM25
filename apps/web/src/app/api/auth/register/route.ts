@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
   if (!credentials.success) return jsonError("invalid_credentials_payload", 400);
 
   const passwordValidation = validateMemberPassword(credentials.data.password);
-  if (!passwordValidation.ok) return jsonError(passwordValidation.error, 400);
+  if ("error" in passwordValidation) return jsonError(passwordValidation.error, 400);
 
   const email = normalizeMemberEmail(credentials.data.email);
   const members = await membersCol();
