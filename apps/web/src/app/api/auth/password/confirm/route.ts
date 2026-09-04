@@ -4,6 +4,7 @@ import { z } from "zod";
 import { membersCol } from "@/lib/vogMongo";
 import {
   consumePasswordSetupToken,
+  revokeAllMemberSessions,
   setMemberPassword,
   validateMemberPassword,
 } from "@/lib/memberAuth";
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
   }
 
   const passwordValidation = validateMemberPassword(parsed.data.password);
-  if (!passwordValidation.ok) {
+  if ("error" in passwordValidation) {
     return NextResponse.json(
       { ok: false, error: passwordValidation.error },
       { status: 400 },
@@ -58,5 +59,6 @@ export async function POST(req: NextRequest) {
   }
 
   await setMemberPassword(String(member._id), member.email, parsed.data.password);
+  await revokeAllMemberSessions(String(member._id));
   return NextResponse.json({ ok: true, redirectUrl: "/login" });
 }
