@@ -53,10 +53,10 @@ export async function POST(req: NextRequest) {
       to: email,
       subject: "VoiceOpenGov – Zugang einrichten",
       html: [
-        `<div style="font-family: 'Segoe UI', Arial, sans-serif; color:#0f172a;">`,
+        `<div style="font-family:'Segoe UI',Arial,sans-serif;color:#0f172a;">`,
         `<h2>Zugang zu VoiceOpenGov einrichten</h2>`,
         `<p>Über diesen Link kannst du dein Passwort neu setzen oder deinen bestehenden Mitgliedszugang erstmals aktivieren.</p>`,
-        `<p><a href="${setupUrl}" style="display:inline-block;padding:10px 18px;border-radius:999px;background:#d6ff65;color:#07110f;text-decoration:none;font-weight:700;">Passwort einrichten</a></p>`,
+        `<p><a href="${setupUrl}" style="display:inline-block;padding:10px 18px;border-radius:999px;background:linear-gradient(90deg,#1a8cff,#18cfc8);color:#071727;text-decoration:none;font-weight:700;">Passwort einrichten</a></p>`,
         `<p style="font-size:12px;color:#64748b;">Der Link ist zwei Stunden gültig. Wenn du ihn nicht angefordert hast, kannst du diese E-Mail ignorieren.</p>`,
         `</div>`,
       ].join(""),
