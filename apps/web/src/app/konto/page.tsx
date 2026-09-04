@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/context/LocaleContext";
+import { getMemberAccountStrings } from "@/app/memberAccountStrings";
 
 type Member = {
   id: string;
@@ -25,6 +27,8 @@ type SessionResponse =
   | { authenticated: true; member: Member };
 
 export default function KontoPage() {
+  const { locale } = useLocale();
+  const strings = getMemberAccountStrings(locale);
   const [loading, setLoading] = useState(true);
   const [member, setMember] = useState<Member | null>(null);
 
@@ -54,21 +58,21 @@ export default function KontoPage() {
 
   if (loading) {
     return (
-      <main className="min-h-[72vh] bg-[#07110f] px-5 py-16 text-[#f4f1e8] md:px-8">
-        <div className="mx-auto max-w-3xl text-[#f4f1e8]/60">Konto wird geladen …</div>
+      <main className="min-h-[72vh] bg-slate-950 px-5 py-16 text-slate-50 md:px-8">
+        <div className="mx-auto max-w-3xl text-slate-300">{strings.account.loading}</div>
       </main>
     );
   }
 
   if (!member) {
     return (
-      <main className="min-h-[72vh] bg-[#07110f] px-5 py-16 text-[#f4f1e8] md:px-8">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-[#f4f1e8]/12 bg-[#0b1714] p-8">
-          <h1 className="text-3xl font-black">Dein Konto</h1>
-          <p className="mt-3 text-[#f4f1e8]/65">Bitte melde dich an, um deinen Mitgliedsstatus zu sehen.</p>
+      <main className="min-h-[72vh] bg-slate-950 px-5 py-16 text-slate-50 md:px-8">
+        <div className="mx-auto max-w-2xl rounded-[2rem] border border-slate-700/70 bg-slate-900 p-8">
+          <h1 className="text-3xl font-black">{strings.account.title}</h1>
+          <p className="mt-3 text-slate-300">{strings.account.unauthenticated}</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/login" className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f]">Anmelden</Link>
-            <Link href="/konto/passwort" className="rounded-full border border-[#f4f1e8]/20 px-5 py-3 font-bold">Zugang einrichten</Link>
+            <Link href="/login" className="rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-3 font-black text-[#071727]">{strings.common.login}</Link>
+            <Link href="/konto/passwort" className="rounded-full border border-slate-700 px-5 py-3 font-bold">{strings.common.setupAccess}</Link>
           </div>
         </div>
       </main>
@@ -77,75 +81,73 @@ export default function KontoPage() {
 
   const displayName =
     member.type === "organisation"
-      ? member.orgName || "Organisation"
-      : [member.firstName, member.lastName].filter(Boolean).join(" ") || "Mitglied";
+      ? member.orgName || strings.join.organisation
+      : [member.firstName, member.lastName].filter(Boolean).join(" ") || strings.join.person;
 
   return (
-    <main className="min-h-[72vh] bg-[#07110f] px-5 py-12 text-[#f4f1e8] md:px-8 md:py-16">
+    <main className="min-h-[72vh] bg-slate-950 px-5 py-12 text-slate-50 md:px-8 md:py-16">
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d6ff65]">Mitgliedskonto</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-400">{strings.account.eyebrow}</p>
             <h1 className="mt-3 text-4xl font-black tracking-tight">{displayName}</h1>
-            <p className="mt-2 text-[#f4f1e8]/55">{member.email}</p>
+            <p className="mt-2 text-slate-400">{member.email}</p>
           </div>
           <button
             type="button"
             onClick={logout}
-            className="self-start rounded-full border border-[#f4f1e8]/20 px-5 py-2.5 text-sm font-bold transition hover:border-[#d6ff65]/50 hover:text-[#d6ff65] sm:self-auto"
+            className="self-start rounded-full border border-slate-700 px-5 py-2.5 text-sm font-bold transition hover:border-cyan-400 hover:text-cyan-400 sm:self-auto"
           >
-            Abmelden
+            {strings.account.logout}
           </button>
         </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2">
-          <section className="rounded-[2rem] border border-[#d6ff65]/20 bg-[#0b1714] p-6">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#d6ff65]">Status</p>
+          <section className="rounded-[2rem] border border-cyan-500/25 bg-slate-900 p-6">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-cyan-400">{strings.account.status}</p>
             <div className="mt-4 flex items-center gap-3">
-              <span className="h-3 w-3 rounded-full bg-[#d6ff65] shadow-[0_0_18px_rgba(214,255,101,0.55)]" />
-              <span className="text-xl font-black">Mitgliedschaft aktiv</span>
+              <span className="h-3 w-3 rounded-full bg-cyan-500 shadow-[0_0_18px_rgba(24,207,200,0.55)]" />
+              <span className="text-xl font-black">{strings.account.active}</span>
             </div>
-            <p className="mt-3 text-sm leading-6 text-[#f4f1e8]/55">
-              Account und aktive Mitgliedschaft bleiben technisch getrennt. Dieser Status stammt aus dem bestätigten Mitgliedsdatensatz.
-            </p>
+            <p className="mt-3 text-sm leading-6 text-slate-400">{strings.account.statusBody}</p>
           </section>
 
-          <section className="rounded-[2rem] border border-[#f4f1e8]/12 bg-[#0b1714] p-6">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#f4f1e8]/45">Region</p>
+          <section className="rounded-[2rem] border border-slate-700/70 bg-slate-900 p-6">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">{strings.account.region}</p>
             <p className="mt-4 text-xl font-black">
-              {[member.city, member.country].filter(Boolean).join(", ") || "Noch nicht hinterlegt"}
+              {[member.city, member.country].filter(Boolean).join(", ") || strings.account.notSet}
             </p>
-            <p className="mt-3 text-sm text-[#f4f1e8]/55">
-              Öffentliche Orts-Summen: {member.isPublic ? "freigegeben" : "nicht freigegeben"}
+            <p className="mt-3 text-sm text-slate-400">
+              {strings.account.publicSums}: {member.isPublic ? strings.account.allowed : strings.account.notAllowed}
             </p>
           </section>
 
-          <section className="rounded-[2rem] border border-[#f4f1e8]/12 bg-[#0b1714] p-6 md:col-span-2">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#f4f1e8]/45">Kommunikation</p>
-            <div className="mt-4 grid gap-3 text-sm text-[#f4f1e8]/70 sm:grid-cols-3">
-              <StatusLine label="VoiceOpenGov Updates" active={member.wantsNewsletter} />
-              <StatusLine label="eDebatte Updates" active={member.wantsNewsletterEdDebatte} />
-              <StatusLine label="Unterstützer-Banner" active={member.publicSupporter} />
+          <section className="rounded-[2rem] border border-slate-700/70 bg-slate-900 p-6 md:col-span-2">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">{strings.account.communication}</p>
+            <div className="mt-4 grid gap-3 text-sm text-slate-300 sm:grid-cols-3">
+              <StatusLine label={strings.account.vogUpdates} active={member.wantsNewsletter} on={strings.account.on} off={strings.account.off} />
+              <StatusLine label={strings.account.edebatteUpdates} active={member.wantsNewsletterEdDebatte} on={strings.account.on} off={strings.account.off} />
+              <StatusLine label={strings.account.supporterBanner} active={member.publicSupporter} on={strings.account.on} off={strings.account.off} />
             </div>
           </section>
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/" className="rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f]">Zur Bewegung</Link>
-          <Link href="/konto/passwort" className="rounded-full border border-[#f4f1e8]/20 px-5 py-3 font-bold">Passwort ändern</Link>
-          <Link href="/kontakt" className="rounded-full border border-[#f4f1e8]/20 px-5 py-3 font-bold">Kontakt</Link>
+          <Link href="/" className="rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-3 font-black text-[#071727]">{strings.account.toMovement}</Link>
+          <Link href="/konto/passwort" className="rounded-full border border-slate-700 px-5 py-3 font-bold">{strings.account.changePassword}</Link>
+          <Link href="/kontakt" className="rounded-full border border-slate-700 px-5 py-3 font-bold">{strings.common.contact}</Link>
         </div>
       </div>
     </main>
   );
 }
 
-function StatusLine({ label, active }: { label: string; active: boolean }) {
+function StatusLine({ label, active, on, off }: { label: string; active: boolean; on: string; off: string }) {
   return (
-    <div className="rounded-2xl border border-[#f4f1e8]/10 bg-[#07110f]/60 px-4 py-3">
+    <div className="rounded-2xl border border-slate-700/70 bg-slate-950/60 px-4 py-3">
       <span className="font-bold">{label}</span>
-      <span className={`ml-2 ${active ? "text-[#d6ff65]" : "text-[#f4f1e8]/35"}`}>
-        {active ? "an" : "aus"}
+      <span className={`ms-2 ${active ? "text-cyan-400" : "text-slate-500"}`}>
+        {active ? on : off}
       </span>
     </div>
   );
