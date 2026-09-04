@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { MongoClient, type Collection, type Db } from "mongodb";
 
 export const MEMBER_SESSION_COOKIE = "vog_member_session";
-export const MEMBER_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+export const MEMBER_SESSION_MAX_AGE_SECONDS = sessionTtlSeconds();
 
 const PASSWORD_SETUP_TTL_MS = 2 * 60 * 60 * 1000;
 const DEFAULT_BCRYPT_ROUNDS = 11;
@@ -56,6 +56,12 @@ function bcryptRounds() {
   const parsed = Number.parseInt(process.env.BCRYPT_ROUNDS || "", 10);
   if (!Number.isFinite(parsed)) return DEFAULT_BCRYPT_ROUNDS;
   return Math.min(14, Math.max(10, parsed));
+}
+
+function sessionTtlSeconds() {
+  const parsedDays = Number.parseInt(process.env.SESSION_TTL_DAYS || "", 10);
+  const days = Number.isFinite(parsedDays) ? Math.min(90, Math.max(1, parsedDays)) : 7;
+  return days * 24 * 60 * 60;
 }
 
 function hashToken(rawToken: string) {
@@ -126,7 +132,7 @@ export async function hasMemberCredential(email: string) {
 
 export async function setMemberPassword(memberId: string, email: string, password: string) {
   const validation = validateMemberPassword(password);
-  if (!validation.ok) throw new Error(validation.error);
+  if ("error" in validation) throw new Error(validation.error);
 
   const { credentials } = await collections();
   const normalizedEmail = normalizeMemberEmail(email);
@@ -181,6 +187,11 @@ export async function revokeMemberSession(rawToken: string | undefined) {
   if (!rawToken) return;
   const { sessions } = await collections();
   await sessions.deleteOne({ tokenHash: hashToken(rawToken) });
+}
+
+export async function revokeAllMemberSessions(memberId: string) {
+  const { sessions } = await collections();
+  await sessions.deleteMany({ memberId });
 }
 
 export async function createPasswordSetupToken(memberId: string) {
