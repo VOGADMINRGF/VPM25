@@ -1,0 +1,69 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { membersCol } from "@/lib/vogMongo";
+import { createPasswordSetupToken, normalizeMemberEmail } from "@/lib/memberAuth";
+import { sendMail } from "@/lib/mail/sendMail";
+import { rateLimitFromRequest, rateLimitHeaders } from "@/utils/rateLimitHelpers";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+const RATE_LIMIT = { limit: 5, windowMs: 30 * 60 * 1000 };
+const StartSchema = z.object({ email: z.string().email().max(320) });
+
+function baseUrl() {
+  if (process.env.PUBLIC_BASE_URL) return process.env.PUBLIC_BASE_URL;
+  if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+}
+
+export async function POST(req: NextRequest) {
+  const rate = await rateLimitFromRequest(req, RATE_LIMIT.limit, RATE_LIMIT.windowMs, {
+    scope: "member-password-start",
+  });
+  if (!rate.ok) {
+    return NextResponse.json(
+      { ok: false, error: "rate_limited", retryIn: rate.retryIn },
+      { status: 429, headers: rateLimitHeaders(rate) },
+    );
+  }
+
+  const body = await req.json().catch(() => null);
+  const parsed = StartSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ ok: true });
+  }
+
+  const email = normalizeMemberEmail(parsed.data.email);
+  const members = await membersCol();
+  const member = await members.findOne(
+    { email, status: "active" },
+    { projection: { _id: 1 } },
+  );
+
+  // Always return the same public response to avoid account enumeration.
+  if (!member?._id) return NextResponse.json({ ok: true });
+
+  try {
+    const { token } = await createPasswordSetupToken(String(member._id));
+    const setupUrl = `${baseUrl()}/konto/passwort?token=${encodeURIComponent(token)}`;
+    await sendMail({
+      to: email,
+      subject: "VoiceOpenGov – Zugang einrichten",
+      html: [
+        `<div style="font-family: 'Segoe UI', Arial, sans-serif; color:#0f172a;">`,
+        `<h2>Zugang zu VoiceOpenGov einrichten</h2>`,
+        `<p>Über diesen Link kannst du dein Passwort neu setzen oder deinen bestehenden Mitgliedszugang erstmals aktivieren.</p>`,
+        `<p><a href="${setupUrl}" style="display:inline-block;padding:10px 18px;border-radius:999px;background:#d6ff65;color:#07110f;text-decoration:none;font-weight:700;">Passwort einrichten</a></p>`,
+        `<p style="font-size:12px;color:#64748b;">Der Link ist zwei Stunden gültig. Wenn du ihn nicht angefordert hast, kannst du diese E-Mail ignorieren.</p>`,
+        `</div>`,
+      ].join(""),
+    });
+  } catch (error) {
+    console.warn("[member-password-start] setup mail failed", error);
+  }
+
+  return NextResponse.json({ ok: true });
+}
