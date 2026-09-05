@@ -1,14 +1,29 @@
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { getImpressumStrings } from "./strings";
 
-export default async function ImpressumPage() {
+async function getPageBundle() {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
+  const bundle = await getTranslatedBundle({
     locale,
-    getImpressumStrings("de"),
-    getImpressumStrings(locale),
-  );
+    original: getImpressumStrings("de"),
+    reviewedEnglish: getImpressumStrings("en"),
+  });
+  return { locale, bundle };
+}
+
+export async function generateMetadata() {
+  const { bundle } = await getPageBundle();
+  return getPublicRouteMetadata("/impressum", {
+    title: bundle.value.title,
+    description: bundle.value.intro,
+  });
+}
+
+export default async function ImpressumPage() {
+  const { bundle } = await getPageBundle();
+  const strings = bundle.value;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
