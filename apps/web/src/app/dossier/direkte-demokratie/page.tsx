@@ -1,29 +1,31 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { getDossierStrings } from "./strings";
 import { EDEBATTE_URL } from "@/config/links";
 
-export async function generateMetadata() {
+async function getPageBundle() {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
+  const bundle = await getTranslatedBundle({
     locale,
-    getDossierStrings("de"),
-    getDossierStrings(locale),
-  );
-  return {
-    title: strings.meta.title,
-    description: strings.meta.description,
-  };
+    original: getDossierStrings("de"),
+    reviewedEnglish: getDossierStrings("en"),
+  });
+  return { locale, bundle };
+}
+
+export async function generateMetadata() {
+  const { bundle } = await getPageBundle();
+  return getPublicRouteMetadata("/dossier/direkte-demokratie", {
+    title: bundle.value.meta.title,
+    description: bundle.value.meta.description,
+  });
 }
 
 export default async function DirekteDemokratieDossierPage() {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getDossierStrings("de"),
-    getDossierStrings(locale),
-  );
+  const { bundle } = await getPageBundle();
+  const strings = bundle.value;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">
