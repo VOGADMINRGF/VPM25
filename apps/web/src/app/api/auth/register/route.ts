@@ -11,6 +11,12 @@ import {
   validateMemberPassword,
   verifyMemberCredential,
 } from "@/lib/memberAuth";
+import {
+  getMemberFlowStrings,
+  memberFlowDirection,
+  resolveMemberFlowLocale,
+  type MemberFlowLocale,
+} from "@/lib/i18n/memberFlowI18n";
 import { rateLimitFromRequest, rateLimitHeaders } from "@/utils/rateLimitHelpers";
 
 export const runtime = "nodejs";
@@ -43,19 +49,30 @@ function baseUrl() {
   return "http://localhost:3000";
 }
 
-async function sendExistingMemberAccessEmail(memberId: string, email: string) {
+function localeFromRequest(req: NextRequest): MemberFlowLocale {
+  return resolveMemberFlowLocale(
+    req.cookies.get("lang")?.value || req.headers.get("x-vog-locale") || undefined,
+  );
+}
+
+async function sendExistingMemberAccessEmail(
+  memberId: string,
+  email: string,
+  locale: MemberFlowLocale,
+) {
   try {
+    const strings = getMemberFlowStrings(locale);
     const { token } = await createPasswordSetupToken(memberId);
-    const setupUrl = `${baseUrl()}/konto/passwort?token=${encodeURIComponent(token)}`;
+    const setupUrl = `${baseUrl()}/konto/passwort?token=${encodeURIComponent(token)}&lang=${locale}`;
     await sendMail({
       to: email,
-      subject: "VoiceOpenGov – Mitgliedszugang",
+      subject: strings.setupSubject,
       html: [
-        `<div style="font-family:'Segoe UI',Arial,sans-serif;color:#0f172a;">`,
-        `<h2>Dein VoiceOpenGov-Mitgliedszugang</h2>`,
-        `<p>Für diese E-Mail-Adresse besteht bereits eine bestätigte Mitgliedschaft. Über den folgenden Link kannst du deinen Zugang einrichten oder dein Passwort neu setzen.</p>`,
-        `<p><a href="${setupUrl}" style="display:inline-block;padding:10px 18px;border-radius:999px;background:linear-gradient(90deg,#1a8cff,#18cfc8);color:#071727;text-decoration:none;font-weight:700;">Zugang einrichten</a></p>`,
-        `<p style="font-size:12px;color:#64748b;">Der Link ist zwei Stunden gültig. Wenn du diese Aktion nicht ausgelöst hast, kannst du die E-Mail ignorieren.</p>`,
+        `<div lang="${locale}" dir="${memberFlowDirection(locale)}" style="font-family:'Segoe UI',Arial,sans-serif;color:#0f172a;">`,
+        `<h2>${strings.setupTitle}</h2>`,
+        `<p>${strings.setupBody}</p>`,
+        `<p><a href="${setupUrl}" style="display:inline-block;padding:10px 18px;border-radius:999px;background:linear-gradient(90deg,#1a8cff,#18cfc8);color:#071727;text-decoration:none;font-weight:700;">${strings.setupButton}</a></p>`,
+        `<p style="font-size:12px;color:#64748b;">${strings.setupExpiry}</p>`,
         `</div>`,
       ].join(""),
     });
@@ -96,17 +113,19 @@ export async function POST(req: NextRequest) {
   if ("error" in passwordValidation) return jsonError(passwordValidation.error, 400);
 
   const email = normalizeMemberEmail(credentials.data.email);
+  const requestLocale = localeFromRequest(req);
   const members = await membersCol();
   const existingMember = await members.findOne(
     { email },
-    { projection: { _id: 1, status: 1 } },
+    { projection: { _id: 1, status: 1, preferredLocale: 1 } },
   );
 
   // Never disclose whether an email already belongs to an active member or
   // whether credentials already exist. Recovery continues only through the
   // mailbox controlled by that member, while the public response stays equal.
   if (existingMember?.status === "active") {
-    await sendExistingMemberAccessEmail(String(existingMember._id), email);
+    const locale = resolveMemberFlowLocale(existingMember.preferredLocale || requestLocale);
+    await sendExistingMemberAccessEmail(String(existingMember._id), email, locale);
     return publicSuccess();
   }
 
@@ -114,18 +133,20 @@ export async function POST(req: NextRequest) {
   if (existingMember?.status === "pending" && credentialExists) {
     const verified = await verifyMemberCredential(email, credentials.data.password);
     if (!verified.ok) {
-      // Same outward response as a successful registration. Do not reveal a
-      // pending membership or account state to a caller who lacks the password.
       return publicSuccess();
     }
   }
 
   const { password: _password, ...membershipPayload } = body;
   membershipPayload.email = email;
+  membershipPayload.preferredLocale = requestLocale;
 
   const forwardedRequest = new Request(req.url, {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      "x-vog-locale": requestLocale,
+    },
     body: JSON.stringify(membershipPayload),
   });
   const membershipResponse = await registerMembership(forwardedRequest);
