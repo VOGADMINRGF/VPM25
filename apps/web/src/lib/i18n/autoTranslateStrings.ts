@@ -1,10 +1,15 @@
 import { createHash } from "crypto";
 import { DEFAULT_LOCALE } from "@/config/locales";
 import { callOpenAIJson } from "@features/ai/askAny";
+import {
+  readTranslationCache,
+  writeMachineTranslationCache,
+} from "@/lib/i18n/translationCache";
 
 const MAX_TEXT_ITEMS = 600;
 const MAX_TOTAL_CHARS = 18000;
 const CACHE_TTL_MS = 1000 * 60 * 60 * 24;
+const TRANSLATION_PROMPT_VERSION = "vog-public-i18n-2026-09-v1";
 
 const SKIP_KEYS = new Set(["href", "slug", "id", "url", "email", "link", "path"]);
 
@@ -72,8 +77,14 @@ function applyTranslations<T>(base: T, paths: StringPath[], translated: string[]
   return clone;
 }
 
-function buildHash(texts: string[], locale: string) {
-  return createHash("sha1").update(`${locale}:${texts.join("\n")}`).digest("hex");
+function buildSourceHash(texts: string[]) {
+  return createHash("sha256").update(texts.join("\n")).digest("hex");
+}
+
+function buildCacheKey(sourceHash: string, locale: string) {
+  return createHash("sha256")
+    .update(`${TRANSLATION_PROMPT_VERSION}:${locale}:${sourceHash}`)
+    .digest("hex");
 }
 
 export async function getAutoTranslatedStrings<T>(
@@ -82,9 +93,6 @@ export async function getAutoTranslatedStrings<T>(
   manual?: T | null,
 ): Promise<T> {
   if (!locale || locale === DEFAULT_LOCALE) return base;
-
-  const autoFlag = process.env.VOG_AUTO_TRANSLATE_STRINGS;
-  if (autoFlag === "0" || !process.env.OPENAI_API_KEY) return manual ?? base;
 
   const items: string[] = [];
   const paths: StringPath[] = [];
@@ -95,10 +103,26 @@ export async function getAutoTranslatedStrings<T>(
   const totalChars = items.reduce((sum, item) => sum + item.length, 0);
   if (totalChars > MAX_TOTAL_CHARS) return manual ?? base;
 
-  const cacheKey = buildHash(items, locale);
-  const cache = getCache<T>();
-  const cached = cache.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) return cached.value;
+  const sourceHash = buildSourceHash(items);
+  const cacheKey = buildCacheKey(sourceHash, locale);
+  const memoryCache = getCache<T>();
+  const memoryCached = memoryCache.get(cacheKey);
+  if (memoryCached && memoryCached.expiresAt > Date.now()) return memoryCached.value;
+
+  const persistentCached = await readTranslationCache<T>(cacheKey);
+  if (persistentCached) {
+    memoryCache.set(cacheKey, {
+      value: persistentCached,
+      expiresAt: Date.now() + CACHE_TTL_MS,
+    });
+    return persistentCached;
+  }
+
+  const autoFlag = process.env.VOG_AUTO_TRANSLATE_STRINGS;
+  const liveFallbackEnabled = process.env.VOG_LIVE_TRANSLATION_FALLBACK !== "0";
+  if (autoFlag === "0" || !liveFallbackEnabled || !process.env.OPENAI_API_KEY) {
+    return manual ?? base;
+  }
 
   const targetName = LOCALE_NAMES[locale] ?? locale.toUpperCase();
   const system =
@@ -120,7 +144,17 @@ export async function getAutoTranslatedStrings<T>(
       return manual ?? base;
     }
     const translated = applyTranslations(base, paths, data as string[]);
-    cache.set(cacheKey, { value: translated, expiresAt: Date.now() + CACHE_TTL_MS });
+    memoryCache.set(cacheKey, {
+      value: translated,
+      expiresAt: Date.now() + CACHE_TTL_MS,
+    });
+    await writeMachineTranslationCache({
+      key: cacheKey,
+      locale,
+      sourceHash,
+      promptVersion: TRANSLATION_PROMPT_VERSION,
+      value: translated,
+    });
     return translated;
   } catch (error) {
     console.error("[auto-strings] translation failed", error);
