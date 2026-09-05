@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
 import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { VOG_QUESTIONS_PATH, VOG_ROLES_PATH } from "@/config/links";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
@@ -32,33 +32,30 @@ const COPY = {
   },
 };
 
-function statusFor(locale: string) {
-  if (locale === "de") return "source" as const;
-  if (locale === "en") return "human_reviewed" as const;
-  return process.env.VOG_AUTO_TRANSLATE_STRINGS !== "0" && process.env.OPENAI_API_KEY
-    ? "machine_assisted" as const
-    : "missing" as const;
-}
-
-async function getCopy(locale: string) {
-  return getAutoTranslatedStrings(locale, COPY.de, COPY.en);
+async function getPageBundle() {
+  const locale = await getRequestLocale();
+  const bundle = await getTranslatedBundle({
+    locale,
+    original: COPY.de,
+    reviewedEnglish: COPY.en,
+  });
+  return { locale, bundle };
 }
 
 export async function generateMetadata() {
-  const locale = await getRequestLocale();
-  const copy = await getCopy(locale);
+  const { bundle } = await getPageBundle();
   return getPublicRouteMetadata("/transparenz", {
-    title: copy.eyebrow,
-    description: copy.description,
+    title: bundle.value.eyebrow,
+    description: bundle.value.description,
   });
 }
 
 export default async function TransparencyPage() {
-  const locale = await getRequestLocale();
-  const copy = await getCopy(locale);
+  const { locale, bundle } = await getPageBundle();
+  const copy = bundle.value;
   return (
     <>
-      <TranslationStatusNotice locale={locale} status={statusFor(locale)} />
+      <TranslationStatusNotice locale={locale} status={bundle.status} />
       <main className="min-h-screen bg-[#07110f] text-[#f4f1e8]">
         <section className="border-b border-[#f4f1e8]/10 bg-[radial-gradient(circle_at_82%_18%,rgba(72,167,143,0.22),transparent_34%)]"><div className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28"><p className="text-sm font-black uppercase tracking-[0.24em] text-[#d6ff65]">{copy.eyebrow}</p><h1 className="mt-5 max-w-4xl text-4xl font-black tracking-[-0.04em] md:text-6xl">{copy.title}</h1><p className="mt-6 max-w-3xl text-lg leading-8 text-[#f4f1e8]/62">{copy.intro}</p></div></section>
         <section className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-22">
