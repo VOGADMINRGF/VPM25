@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
 
 const COPY = {
   de: {
@@ -27,7 +28,12 @@ const COPY = {
 
 export default async function RegionalActivationTeaser() {
   const locale = await getRequestLocale();
-  const copy = locale === "de" ? COPY.de : COPY.en;
+  const bundle = await getTranslatedBundle({
+    locale,
+    original: COPY.de,
+    reviewedEnglish: COPY.en,
+  });
+  const copy = bundle.value;
 
   return (
     <section className="border-y border-[#f4f1e8]/10 bg-[#07110f] px-5 py-20 text-[#f4f1e8] md:px-8 md:py-28">
