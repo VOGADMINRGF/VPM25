@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useLocale } from "@/context/LocaleContext";
 import {
   getLocaleConfig,
@@ -148,7 +147,6 @@ export function SiteHeader() {
   const { locale, setLocale } = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [localeOpen, setLocaleOpen] = useState(false);
-  const router = useRouter();
   const strings = getHeaderStrings(locale);
   const activeLang = locale || "de";
   const copy = PRIMARY_COPY[activeLang as SupportedLocale] ?? PRIMARY_COPY.de;
@@ -174,7 +172,6 @@ export function SiteHeader() {
     setLocale(next);
     setLocaleOpen(false);
     setMobileOpen(false);
-    router.refresh();
   };
 
   const primaryLinks = [
