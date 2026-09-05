@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { VOG_JOIN_PATH, VOG_QUESTIONS_PATH } from "@/config/links";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 
@@ -52,7 +53,10 @@ async function getCopy(locale: string) {
 export async function generateMetadata() {
   const locale = await getRequestLocale();
   const copy = await getCopy(locale);
-  return { title: copy.metaTitle, description: copy.description };
+  return getPublicRouteMetadata("/mitmachen/rollen", {
+    title: copy.metaTitle,
+    description: copy.description,
+  });
 }
 
 export default async function RolesPage() {
