@@ -1,4 +1,6 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   REQUIRED_LAUNCH_LOCALES,
@@ -21,8 +23,20 @@ import {
   VOG_QUESTION_GROUPS,
 } from "@/content/vogQuestions";
 
+const APP_ROOT = fileURLToPath(new URL("../src/app/", import.meta.url));
+
 function source(relativePath: string) {
   return readFileSync(new URL(`../src/${relativePath}`, import.meta.url), "utf8");
+}
+
+function pageFiles(directory = APP_ROOT): string[] {
+  const files: string[] = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...pageFiles(path));
+    else if (entry.name === "page.tsx") files.push(path);
+  }
+  return files;
 }
 
 const CORE_PUBLIC_SOURCES = [
@@ -135,33 +149,62 @@ describe("VoiceOpenGov locale contract", () => {
     expect(translationCache).toContain("promptVersion");
   });
 
-  it("keeps core public pages on the persistent translation bundle path", () => {
+  it("forbids page components from calling the live translation helper directly", () => {
+    for (const file of pageFiles()) {
+      const content = readFileSync(file, "utf8");
+      expect(content, file).not.toContain("getAutoTranslatedStrings");
+      expect(content, file).not.toContain("@/lib/i18n/autoTranslateStrings");
+    }
+  });
+
+  it("keeps public pages on the persistent translation bundle path", () => {
     for (const relativePath of [
       "app/page.tsx",
       "app/fragen/page.tsx",
       "app/transparenz/page.tsx",
       "app/mitmachen/rollen/page.tsx",
       "app/vor-ort/page.tsx",
+      "app/datenschutz/page.tsx",
+      "app/impressum/page.tsx",
+      "app/kontakt/page.tsx",
+      "app/initiatives/page.tsx",
+      "app/grundlagen/page.tsx",
+      "app/grundlagen/[slug]/page.tsx",
+      "app/grundlagen/bestellen/page.tsx",
+      "app/dossier/direkte-demokratie/page.tsx",
+      "app/zahlungen/page.tsx",
+      "app/not-found/page.tsx",
     ]) {
       const content = source(relativePath);
       expect(content, relativePath).toContain("getTranslatedBundle");
     }
-
-    expect(source("app/page.tsx")).not.toContain("getAutoTranslatedStrings");
-    expect(source("app/transparenz/page.tsx")).not.toContain("getAutoTranslatedStrings");
-    expect(source("app/mitmachen/rollen/page.tsx")).not.toContain("getAutoTranslatedStrings");
   });
 
-  it("has route SEO for membership and noindex metadata for account utilities", () => {
-    const membership = source("app/mitglied-werden/layout.tsx");
-    const login = source("app/login/layout.tsx");
-    const account = source("app/konto/layout.tsx");
+  it("has route SEO for public surfaces and noindex metadata for account utilities", () => {
+    for (const relativePath of [
+      "app/page.tsx",
+      "app/fragen/page.tsx",
+      "app/transparenz/page.tsx",
+      "app/mitmachen/rollen/page.tsx",
+      "app/vor-ort/page.tsx",
+      "app/datenschutz/page.tsx",
+      "app/impressum/page.tsx",
+      "app/kontakt/page.tsx",
+      "app/initiatives/page.tsx",
+      "app/grundlagen/page.tsx",
+      "app/grundlagen/[slug]/page.tsx",
+      "app/grundlagen/bestellen/page.tsx",
+      "app/dossier/direkte-demokratie/page.tsx",
+    ]) {
+      expect(source(relativePath), relativePath).toContain("getPublicRouteMetadata");
+    }
 
-    expect(membership).toContain('getPublicRouteMetadata("/mitglied-werden"');
-    expect(login).toContain("index: false");
-    expect(login).toContain("follow: false");
-    expect(account).toContain("index: false");
-    expect(account).toContain("follow: false");
+    expect(source("app/mitglied-werden/layout.tsx")).toContain('getPublicRouteMetadata("/mitglied-werden"');
+    for (const relativePath of ["app/login/layout.tsx", "app/konto/layout.tsx", "app/zahlungen/page.tsx"]) {
+      const content = source(relativePath);
+      expect(content, relativePath).toContain("index: false");
+      expect(content, relativePath).toContain("follow: false");
+    }
   });
 
   it("has public member-flow copy for every launch locale", () => {
