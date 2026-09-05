@@ -3,30 +3,30 @@ import { HOME_COPY_DE, HOME_COPY_EN } from "@/components/home/homeCopy";
 import RegionalActivationTeaser from "@/components/home/RegionalActivationTeaser";
 import HomeDiscoverabilityLinks from "@/components/home/HomeDiscoverabilityLinks";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
 import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { getRequestLocale } from "@/lib/locale";
 
-async function getHomeCopy() {
+async function getHomeBundle() {
   const locale = await getRequestLocale();
-  const copy = await getAutoTranslatedStrings(
+  const bundle = await getTranslatedBundle({
     locale,
-    HOME_COPY_DE,
-    locale === "de" ? HOME_COPY_DE : HOME_COPY_EN,
-  );
-  return { locale, copy };
+    original: HOME_COPY_DE,
+    reviewedEnglish: HOME_COPY_EN,
+  });
+  return { locale, bundle };
 }
 
 export async function generateMetadata() {
-  const { copy } = await getHomeCopy();
+  const { bundle } = await getHomeBundle();
   return getPublicRouteMetadata("/", {
-    title: copy.title,
-    description: copy.intro,
+    title: bundle.value.title,
+    description: bundle.value.intro,
   });
 }
 
 export default async function HomePage() {
-  const { locale, copy } = await getHomeCopy();
+  const { locale, bundle } = await getHomeBundle();
   const contactEmail = process.env.VOG_MEMBERSHIP_CONTACT_EMAIL || "members@voiceopengov.org";
   const supportBank = {
     recipient: process.env.VOG_PAYMENT_BANK_RECIPIENT,
@@ -36,21 +36,10 @@ export default async function HomePage() {
     referencePrefix: process.env.VOG_PAYMENT_REFERENCE_PREFIX,
   };
 
-  const autoTranslationAvailable =
-    process.env.VOG_AUTO_TRANSLATE_STRINGS !== "0" && Boolean(process.env.OPENAI_API_KEY);
-  const translationStatus =
-    locale === "de"
-      ? "source"
-      : locale === "en"
-        ? "human_reviewed"
-        : autoTranslationAvailable
-          ? "machine_assisted"
-          : "missing";
-
   return (
     <>
-      <TranslationStatusNotice locale={locale} status={translationStatus} />
-      <HomeClient supportBank={supportBank} contactEmail={contactEmail} copy={copy} />
+      <TranslationStatusNotice locale={locale} status={bundle.status} />
+      <HomeClient supportBank={supportBank} contactEmail={contactEmail} copy={bundle.value} />
       <RegionalActivationTeaser />
       <HomeDiscoverabilityLinks locale={locale} />
     </>
