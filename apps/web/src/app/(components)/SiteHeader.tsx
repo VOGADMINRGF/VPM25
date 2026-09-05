@@ -4,7 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/context/LocaleContext";
-import { getLocaleConfig, SUPPORTED_LOCALES, type SupportedLocale } from "@/config/locales";
+import {
+  getLocaleConfig,
+  REQUIRED_LAUNCH_LOCALES,
+  type SupportedLocale,
+} from "@/config/locales";
 import {
   EDEBATTE_URL,
   VOG_JOIN_PATH,
@@ -153,7 +157,7 @@ export function SiteHeader() {
     () => getLocaleConfig(activeLang as SupportedLocale),
     [activeLang],
   );
-  const localeOptions = SUPPORTED_LOCALES.map((code) => {
+  const localeOptions = REQUIRED_LAUNCH_LOCALES.map((code) => {
     const config = getLocaleConfig(code);
     return { code, label: config.label, flag: config.flagEmoji || "🏳️" };
   });
@@ -183,16 +187,16 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-[#f4f1e8]/10 bg-[#07110f]/92 text-[#f4f1e8] backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
-        <Link href="/" aria-label="VoiceOpenGov Startseite" className="group flex min-w-0 items-center gap-3">
-          <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-[#d6ff65]/35 bg-[#d6ff65]/10">
-            <span className="h-2.5 w-2.5 rounded-full bg-[#d6ff65] shadow-[0_0_22px_rgba(214,255,101,0.65)]" />
-            <span className="absolute -bottom-1 right-1 h-2.5 w-2.5 rotate-45 border-b border-r border-[#d6ff65]/35 bg-[#07110f]" />
-          </span>
+        <Link
+          href="/"
+          aria-label="VoiceOpenGov"
+          className="group flex min-w-0 shrink-0 items-center"
+        >
           <span className="min-w-0">
-            <span className="block truncate text-sm font-black uppercase tracking-[0.19em] text-[#f4f1e8] transition group-hover:text-[#d6ff65]">
+            <span className="block whitespace-nowrap bg-gradient-to-r from-[#18cfc8] to-[#1a8cff] bg-clip-text text-lg font-black tracking-[-0.025em] text-transparent transition md:text-xl">
               VoiceOpenGov
             </span>
-            <span className="hidden truncate text-[10px] font-semibold uppercase tracking-[0.13em] text-[#f4f1e8]/45 sm:block">
+            <span className="hidden truncate text-[10px] font-semibold uppercase tracking-[0.13em] text-[#f8fafc]/45 sm:block">
               {copy.tagline}
             </span>
           </span>
@@ -200,11 +204,11 @@ export function SiteHeader() {
 
         <nav aria-label={strings.navigationLabel} className="hidden items-center gap-5 text-sm font-semibold text-[#f4f1e8]/68 lg:flex">
           {primaryLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="transition hover:text-[#d6ff65]">
+            <Link key={item.href} href={item.href} className="transition hover:text-[#18cfc8]">
               {item.label}
             </Link>
           ))}
-          <a href={EDEBATTE_URL} className="transition hover:text-[#d6ff65]">
+          <a href={EDEBATTE_URL} className="transition hover:text-[#18cfc8]">
             eDebatte ↗
           </a>
         </nav>
@@ -216,7 +220,7 @@ export function SiteHeader() {
               aria-label={localeAriaLabel}
               aria-expanded={localeOpen}
               onClick={() => setLocaleOpen((open) => !open)}
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-[#f4f1e8]/15 bg-[#0b1714] px-3 text-xs font-bold uppercase tracking-wide text-[#f4f1e8]/75 transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]"
+              className="inline-flex h-10 items-center gap-2 rounded-full border border-[#f4f1e8]/15 bg-[#0b1714] px-3 text-xs font-bold uppercase tracking-wide text-[#f4f1e8]/75 transition hover:border-[#18cfc8]/55 hover:text-[#18cfc8]"
             >
               <span aria-hidden="true">{activeLocaleConfig.flagEmoji || "🏳️"}</span>
               <span>{activeLang}</span>
@@ -228,7 +232,7 @@ export function SiteHeader() {
                     key={language.code}
                     type="button"
                     onClick={() => handleLocaleSelect(language.code)}
-                    className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-[#f4f1e8]/75 transition hover:bg-[#d6ff65]/10 hover:text-[#d6ff65]"
+                    className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-[#f4f1e8]/75 transition hover:bg-[#18cfc8]/10 hover:text-[#18cfc8]"
                   >
                     <span className="inline-flex items-center gap-2">
                       <span aria-hidden="true">{language.flag}</span>
@@ -243,7 +247,7 @@ export function SiteHeader() {
 
           <Link
             href={VOG_JOIN_PATH}
-            className="hidden rounded-full bg-[#d6ff65] px-4 py-2.5 text-sm font-black text-[#07110f] transition hover:-translate-y-0.5 hover:bg-[#e2ff8a] sm:inline-flex"
+            className="hidden rounded-full bg-gradient-to-r from-[#18cfc8] to-[#1a8cff] px-4 py-2.5 text-sm font-black text-[#071727] transition hover:-translate-y-0.5 sm:inline-flex"
           >
             {copy.join}
           </Link>
@@ -252,7 +256,7 @@ export function SiteHeader() {
             aria-label={strings.aria.openNav}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((open) => !open)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#f4f1e8]/15 bg-[#0b1714] text-[#f4f1e8] transition hover:border-[#d6ff65]/55 hover:text-[#d6ff65]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#f4f1e8]/15 bg-[#0b1714] text-[#f4f1e8] transition hover:border-[#18cfc8]/55 hover:text-[#18cfc8]"
           >
             <span className="sr-only">{strings.menuLabel}</span>
             {mobileOpen ? (
@@ -272,7 +276,7 @@ export function SiteHeader() {
         <div className="border-t border-[#f4f1e8]/10 bg-[#07110f]/98 shadow-2xl shadow-black/45">
           <div className="mx-auto grid max-w-6xl gap-8 px-5 py-6 md:grid-cols-[1fr_.8fr] md:px-8">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d6ff65]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#18cfc8]">
                 {strings.navigationLabel}
               </p>
               <nav aria-label={strings.aria.mobileNav} className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -281,7 +285,7 @@ export function SiteHeader() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-2xl border border-[#f4f1e8]/10 bg-[#0b1714] px-4 py-3 font-bold transition hover:border-[#d6ff65]/45 hover:text-[#d6ff65]"
+                    className="rounded-2xl border border-[#f4f1e8]/10 bg-[#0b1714] px-4 py-3 font-bold transition hover:border-[#18cfc8]/45 hover:text-[#18cfc8]"
                   >
                     {item.label}
                   </Link>
@@ -289,7 +293,7 @@ export function SiteHeader() {
                 <Link
                   href={VOG_ROLES_PATH}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-2xl border border-[#f4f1e8]/10 bg-[#0b1714] px-4 py-3 font-bold transition hover:border-[#d6ff65]/45 hover:text-[#d6ff65]"
+                  className="rounded-2xl border border-[#f4f1e8]/10 bg-[#0b1714] px-4 py-3 font-bold transition hover:border-[#18cfc8]/45 hover:text-[#18cfc8]"
                 >
                   {copy.roles}
                 </Link>
@@ -298,7 +302,7 @@ export function SiteHeader() {
                     key={`${item.href}-${item.label}`}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-2xl border border-[#f4f1e8]/10 bg-[#0b1714] px-4 py-3 transition hover:border-[#d6ff65]/45"
+                    className="rounded-2xl border border-[#f4f1e8]/10 bg-[#0b1714] px-4 py-3 transition hover:border-[#18cfc8]/45"
                   >
                     <span className="block font-bold">{item.label}</span>
                     <span className="mt-1 block text-xs leading-5 text-[#f4f1e8]/45">{item.description}</span>
@@ -308,20 +312,20 @@ export function SiteHeader() {
               <Link
                 href={VOG_JOIN_PATH}
                 onClick={() => setMobileOpen(false)}
-                className="mt-4 inline-flex w-full justify-center rounded-full bg-[#d6ff65] px-5 py-3 font-black text-[#07110f] sm:hidden"
+                className="mt-4 inline-flex w-full justify-center rounded-full bg-gradient-to-r from-[#18cfc8] to-[#1a8cff] px-5 py-3 font-black text-[#071727] sm:hidden"
               >
                 {copy.join}
               </Link>
             </div>
 
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#d6ff65]">{copy.ecosystem}</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#18cfc8]">{copy.ecosystem}</p>
               <div className="mt-4 grid gap-2">
-                <a href={EDEBATTE_URL} className="rounded-2xl border border-[#f4f1e8]/10 p-4 transition hover:border-[#d6ff65]/45">
+                <a href={EDEBATTE_URL} className="rounded-2xl border border-[#f4f1e8]/10 p-4 transition hover:border-[#18cfc8]/45">
                   <strong className="block text-lg">eDebatte ↗</strong>
                   <span className="mt-1 block text-sm leading-5 text-[#f4f1e8]/50">{copy.edebatte}</span>
                 </a>
-                <a href={VOTE4GOV_URL} className="rounded-2xl border border-[#f4f1e8]/10 p-4 transition hover:border-[#d6ff65]/45">
+                <a href={VOTE4GOV_URL} className="rounded-2xl border border-[#f4f1e8]/10 p-4 transition hover:border-[#18cfc8]/45">
                   <strong className="block text-lg">Vote4Gov ↗</strong>
                   <span className="mt-1 block text-sm leading-5 text-[#f4f1e8]/50">{copy.vote4gov}</span>
                 </a>
