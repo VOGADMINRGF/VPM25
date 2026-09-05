@@ -116,3 +116,39 @@ export function localeAlternates(
     "x-default": baseUrl,
   };
 }
+
+function normalizePublicPath(pathname: string): string {
+  const trimmed = pathname.trim();
+  if (!trimmed || trimmed === "/") return "/";
+  const withoutQuery = trimmed.split("?")[0]?.split("#")[0] ?? "/";
+  return withoutQuery.startsWith("/") ? withoutQuery : `/${withoutQuery}`;
+}
+
+export function localizedRouteUrl(
+  siteUrl: string,
+  pathname: string,
+  locale: SupportedLocale,
+): string {
+  const url = new URL(normalizePublicPath(pathname), siteUrl);
+  if (locale !== DEFAULT_LOCALE) url.searchParams.set("lang", locale);
+  return url.toString();
+}
+
+export function routeLocaleAlternates(
+  siteUrl: string,
+  pathname: string,
+  locales: readonly SupportedLocale[],
+): Record<string, string> {
+  const defaultUrl = localizedRouteUrl(siteUrl, pathname, DEFAULT_LOCALE);
+  const alternates = Object.fromEntries(
+    locales.map((locale) => [
+      getLocaleConfig(locale).bcp47,
+      localizedRouteUrl(siteUrl, pathname, locale),
+    ]),
+  );
+
+  return {
+    ...alternates,
+    "x-default": defaultUrl,
+  };
+}
