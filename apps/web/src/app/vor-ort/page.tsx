@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
 import TranslationStatusNotice from "@/components/i18n/TranslationStatusNotice";
 import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import RegionalInterestForm from "./RegionalInterestForm";
 import { getRegionalActivationStrings } from "./strings";
 
@@ -17,7 +18,10 @@ async function getPageBundle() {
 
 export async function generateMetadata() {
   const { bundle } = await getPageBundle();
-  return bundle.value.meta;
+  return getPublicRouteMetadata("/vor-ort", {
+    title: bundle.value.meta.title,
+    description: bundle.value.meta.description,
+  });
 }
 
 export default async function RegionalActivationPage() {
