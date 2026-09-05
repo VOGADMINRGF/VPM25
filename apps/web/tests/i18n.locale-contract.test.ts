@@ -106,6 +106,64 @@ describe("VoiceOpenGov locale contract", () => {
     expect(layout).not.toContain("localeAlternates(");
   });
 
+  it("uses one server locale resolver and keeps localStorage mirror-only", () => {
+    const resolver = source("lib/locale.ts");
+    const layout = source("app/layout.tsx");
+    const context = source("context/LocaleContext.tsx");
+
+    expect(resolver).toContain('headerStore.get("x-vog-locale")');
+    expect(resolver).toContain('cookieStore.get("lang")');
+    expect(resolver).toContain('headerStore.get("accept-language")');
+    expect(layout).toContain("await getRequestLocale()");
+    expect(layout).not.toContain("detectInitialLocale");
+    expect(context).not.toContain('localStorage.getItem("vog:locale")');
+    expect(context).toContain('localStorage.setItem("vog:locale", locale)');
+  });
+
+  it("serves versioned persistent translations before live generation", () => {
+    const autoTranslate = source("lib/i18n/autoTranslateStrings.ts");
+    const translationCache = source("lib/i18n/translationCache.ts");
+
+    expect(autoTranslate).toContain("readTranslationCache");
+    expect(autoTranslate).toContain("writeMachineTranslationCache");
+    expect(autoTranslate).toContain("VOG_LIVE_TRANSLATION_FALLBACK");
+    expect(autoTranslate.indexOf("readTranslationCache")).toBeLessThan(
+      autoTranslate.indexOf("callOpenAIJson({"),
+    );
+    expect(translationCache).toContain('"i18n_translation_cache"');
+    expect(translationCache).toContain("sourceHash");
+    expect(translationCache).toContain("promptVersion");
+  });
+
+  it("keeps core public pages on the persistent translation bundle path", () => {
+    for (const relativePath of [
+      "app/page.tsx",
+      "app/fragen/page.tsx",
+      "app/transparenz/page.tsx",
+      "app/mitmachen/rollen/page.tsx",
+      "app/vor-ort/page.tsx",
+    ]) {
+      const content = source(relativePath);
+      expect(content, relativePath).toContain("getTranslatedBundle");
+    }
+
+    expect(source("app/page.tsx")).not.toContain("getAutoTranslatedStrings");
+    expect(source("app/transparenz/page.tsx")).not.toContain("getAutoTranslatedStrings");
+    expect(source("app/mitmachen/rollen/page.tsx")).not.toContain("getAutoTranslatedStrings");
+  });
+
+  it("has route SEO for membership and noindex metadata for account utilities", () => {
+    const membership = source("app/mitglied-werden/layout.tsx");
+    const login = source("app/login/layout.tsx");
+    const account = source("app/konto/layout.tsx");
+
+    expect(membership).toContain('getPublicRouteMetadata("/mitglied-werden"');
+    expect(login).toContain("index: false");
+    expect(login).toContain("follow: false");
+    expect(account).toContain("index: false");
+    expect(account).toContain("follow: false");
+  });
+
   it("has public member-flow copy for every launch locale", () => {
     for (const locale of REQUIRED_LAUNCH_LOCALES) {
       const resolved = resolveMemberFlowLocale(locale);
