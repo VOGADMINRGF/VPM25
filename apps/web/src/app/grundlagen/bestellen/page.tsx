@@ -3,19 +3,25 @@ import { getRequestLocale } from "@/lib/locale";
 import { getOrderStrings } from "./strings";
 import { getPrintPriceLabel } from "@/config/print";
 import { getGrundlagenSourceEntry } from "../source";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
+
+async function getPageBundle() {
+  const locale = await getRequestLocale();
+  const bundle = await getTranslatedBundle({
+    locale,
+    original: getOrderStrings("de"),
+    reviewedEnglish: getOrderStrings("en"),
+  });
+  return { locale, bundle };
+}
 
 export async function generateMetadata() {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getOrderStrings("de"),
-    getOrderStrings(locale),
-  );
-  return {
-    title: strings.title,
-    description: strings.body,
-  };
+  const { bundle } = await getPageBundle();
+  return getPublicRouteMetadata("/grundlagen/bestellen", {
+    title: bundle.value.title,
+    description: bundle.value.body,
+  });
 }
 
 const BAND_LABELS: Record<string, string> = {
@@ -29,12 +35,8 @@ export default async function GrundlagenOrderPage({
 }: {
   searchParams?: { band?: string };
 }) {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getOrderStrings("de"),
-    getOrderStrings(locale),
-  );
+  const { locale, bundle } = await getPageBundle();
+  const strings = bundle.value;
   const price = getPrintPriceLabel(locale);
   const bandParam = searchParams?.band || "";
   const entry = bandParam ? getGrundlagenSourceEntry(bandParam) : null;
@@ -42,7 +44,7 @@ export default async function GrundlagenOrderPage({
   const bandDisplay = bandParam && BAND_LABELS[bandParam] ? BAND_LABELS[bandParam] : bandLabel;
 
   const orderEmail = "members@voiceopengov.org";
-  const subject = `Print-Edition ${bandDisplay || "Grundlagen"} (${price})`;
+  const subject = `${strings.title} – ${bandDisplay || "Grundlagen"} (${price})`;
   const body = `${strings.fields.band}: ${bandDisplay || "-"}\n${strings.fields.price}: ${price}\n${strings.fields.address}:`;
 
   return (

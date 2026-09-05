@@ -1,21 +1,42 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
 import { PAYMENTS_COOKIE, verifyPaymentsCookie } from "@/lib/paymentSession";
 import { loginPayments, logoutPayments } from "./actions";
-import { getPaymentsStrings, getPaymentsStringsOptional } from "./strings";
+import { getPaymentsStrings } from "./strings";
+
+const MAIL_COPY = {
+  de: {
+    manageSubject: "Dauerauftrag anpassen",
+    manageBody: "Wunschbetrag:\nIntervall (monatlich/vierteljährlich/jährlich):\nHinweis:",
+    bookSubject: "Zahlung ankündigen",
+    bookBody: "Betrag:\nVerwendungszweck (optional):",
+  },
+  en: {
+    manageSubject: "Adjust recurring payment",
+    manageBody: "Preferred amount:\nInterval (monthly/quarterly/yearly):\nNote:",
+    bookSubject: "Announce a payment",
+    bookBody: "Amount:\nReference (optional):",
+  },
+};
+
+async function getPageBundle() {
+  const locale = await getRequestLocale();
+  const bundle = await getTranslatedBundle({
+    locale,
+    original: { ui: getPaymentsStrings("de"), mail: MAIL_COPY.de },
+    reviewedEnglish: { ui: getPaymentsStrings("en"), mail: MAIL_COPY.en },
+  });
+  return { locale, bundle };
+}
 
 export async function generateMetadata() {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getPaymentsStrings("de"),
-    getPaymentsStringsOptional(locale),
-  );
+  const { bundle } = await getPageBundle();
   return {
-    title: strings.meta.title,
-    description: strings.meta.description,
+    title: bundle.value.ui.meta.title,
+    description: bundle.value.ui.meta.description,
+    robots: { index: false, follow: false },
   };
 }
 
@@ -24,12 +45,9 @@ export default async function PaymentsPage({
 }: {
   searchParams?: { error?: string };
 }) {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getPaymentsStrings("de"),
-    getPaymentsStringsOptional(locale),
-  );
+  const { bundle } = await getPageBundle();
+  const strings = bundle.value.ui;
+  const mail = bundle.value.mail;
   const paymentsSecret =
     process.env.JWT_SECRET || process.env.EDITOR_TOKEN || "payments-session";
   const cookieStore = await cookies();
@@ -47,12 +65,10 @@ export default async function PaymentsPage({
   const hasBankDetails = Boolean(bankRecipient && bankIban && bankBic && bankName);
   const error = searchParams?.error;
 
-  const manageSubject = encodeURIComponent("Dauerauftrag anpassen");
-  const manageBody = encodeURIComponent(
-    `Wunschbetrag: \nIntervall (monatlich/vierteljährlich/jährlich): \nHinweis:`,
-  );
-  const bookSubject = encodeURIComponent("Zahlung ankündigen");
-  const bookBody = encodeURIComponent(`Betrag: \nVerwendungszweck (optional):`);
+  const manageSubject = encodeURIComponent(mail.manageSubject);
+  const manageBody = encodeURIComponent(mail.manageBody);
+  const bookSubject = encodeURIComponent(mail.bookSubject);
+  const bookBody = encodeURIComponent(mail.bookBody);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-100 pb-16">

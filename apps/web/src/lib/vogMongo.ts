@@ -1,5 +1,6 @@
 import { MongoClient, Db, Collection } from "mongodb";
 import type { MapOverrides } from "@/config/mapOverrides.default";
+import type { SupportedLocale } from "@/config/locales";
 import {
   REGIONAL_INTEREST_COLLECTION,
   REGIONAL_INTEREST_SOURCE_PATH,
@@ -40,6 +41,7 @@ export type MemberDoc = {
   _id?: any;
   type: MemberType;
   email: string;
+  preferredLocale?: SupportedLocale;
   firstName?: string;
   lastName?: string;
   birthDate?: string;

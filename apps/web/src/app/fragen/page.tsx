@@ -11,6 +11,7 @@ import {
   VOG_QUESTION_GROUPS,
 } from "@/content/vogQuestions";
 import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import type {
   SupportedLocale,
   TranslationStatus,
@@ -144,10 +145,10 @@ async function getPageContent(locale: SupportedLocale) {
 export async function generateMetadata() {
   const locale = await getRequestLocale();
   const bundle = await getPageContent(locale);
-  return {
+  return getPublicRouteMetadata("/fragen", {
     title: bundle.value.copy.title,
     description: bundle.value.copy.description,
-  };
+  });
 }
 
 export default async function QuestionsPage() {

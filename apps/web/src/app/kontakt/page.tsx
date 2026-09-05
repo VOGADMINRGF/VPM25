@@ -1,23 +1,38 @@
 import Link from "next/link";
 import { pickHumanChallenge } from "@/lib/spam/humanChallenge";
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import KontaktForm from "./KontaktForm";
 import { getKontaktStrings } from "./strings";
 
 export const dynamic = "force-dynamic";
+
+async function getPageBundle() {
+  const locale = await getRequestLocale();
+  const bundle = await getTranslatedBundle({
+    locale,
+    original: getKontaktStrings("de"),
+    reviewedEnglish: getKontaktStrings("en"),
+  });
+  return { locale, bundle };
+}
+
+export async function generateMetadata() {
+  const { bundle } = await getPageBundle();
+  return getPublicRouteMetadata("/kontakt", {
+    title: bundle.value.page.title,
+    description: bundle.value.page.subtitle,
+  });
+}
 
 export default async function KontaktPage({
   searchParams,
 }: {
   searchParams?: { sent?: string; error?: string };
 }) {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getKontaktStrings("de"),
-    getKontaktStrings(locale),
-  );
+  const { bundle } = await getPageBundle();
+  const strings = bundle.value;
   const sent = searchParams?.sent === "1";
   const error = searchParams?.error;
   const challenge = pickHumanChallenge();

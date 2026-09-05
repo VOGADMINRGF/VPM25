@@ -8,13 +8,11 @@ import React, {
   useEffect,
   useMemo,
   useState,
-  useRef,
 } from "react";
 import { useRouter } from "next/navigation";
 import {
   DEFAULT_LOCALE,
   type SupportedLocale,
-  isSupportedLocale,
 } from "@/config/locales";
 
 type LocaleContextValue = {
@@ -35,49 +33,12 @@ export function LocaleProvider({
 }: ProviderProps) {
   const [locale, setLocaleState] = useState<SupportedLocale>(initialLocale);
   const router = useRouter();
-  const didSync = useRef(false);
 
-  // Hydrate from localStorage/query once on mount.
-  // The query parameter wins, then persisted browser state, then the server locale.
-  useEffect(() => {
-    if (didSync.current) return;
-    try {
-      const url = new URL(window.location.href);
-      const urlLocale = url.searchParams.get("lang");
-      if (isSupportedLocale(urlLocale)) {
-        setLocaleState(urlLocale);
-        persistLocale(urlLocale);
-        updateHtmlAttrs(urlLocale);
-        didSync.current = true;
-        if (urlLocale !== initialLocale) {
-          router.refresh();
-        }
-        return;
-      }
-    } catch {
-      /* ignore */
-    }
-
-    try {
-      const stored = window.localStorage.getItem("vog:locale");
-      if (isSupportedLocale(stored)) {
-        setLocaleState(stored);
-        updateHtmlAttrs(stored);
-        if (stored !== initialLocale) {
-          persistLocale(stored);
-          router.refresh();
-        }
-      } else {
-        updateHtmlAttrs(initialLocale);
-      }
-    } catch {
-      updateHtmlAttrs(initialLocale);
-    }
-    didSync.current = true;
-  }, [initialLocale, router]);
-
+  // The server resolves URL -> cookie -> Accept-Language -> default. The client
+  // mirrors that result and never overrides it from localStorage on hydration.
   useEffect(() => {
     updateHtmlAttrs(locale);
+    persistLocale(locale);
   }, [locale]);
 
   const setLocale = useCallback(
@@ -87,9 +48,8 @@ export function LocaleProvider({
       syncUrl(next);
       updateHtmlAttrs(next);
 
-      // Several public surfaces (footer, privacy copy, metadata and server
-      // components) derive their locale from the request cookie. Refreshing here
-      // keeps the entire page on one locale instead of leaving a mixed-language UI.
+      // Server components, metadata, footer and transactional flows all derive
+      // their locale from the same request contract, so refresh after selection.
       router.refresh();
     },
     [router],
@@ -118,7 +78,7 @@ function persistLocale(locale: SupportedLocale) {
   try {
     window.localStorage.setItem("vog:locale", locale);
   } catch {
-    /* ignore */
+    /* mirror only; cookie remains the server source of truth */
   }
 
   try {

@@ -1,14 +1,15 @@
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
 import { getNotFoundStrings } from "./strings";
 
 export default async function NotfoundPage() {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
+  const bundle = await getTranslatedBundle({
     locale,
-    getNotFoundStrings("de"),
-    getNotFoundStrings(locale),
-  );
+    original: getNotFoundStrings("de"),
+    reviewedEnglish: getNotFoundStrings("en"),
+  });
+  const strings = bundle.value;
 
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-16 text-slate-100">

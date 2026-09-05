@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { VOG_SUPPORT_PATH } from "@/config/links";
+import { VOG_JOIN_PATH, VOG_SUPPORT_PATH } from "@/config/links";
 
 function formatValue(value: number) {
   return new Intl.NumberFormat("de-DE").format(value);
@@ -61,7 +61,7 @@ export function MomentumAndCtas({
           label="Mitglieder"
           value={formatValue(members)}
           hint={mHint}
-          href="/#mitmachen"
+          href={VOG_JOIN_PATH}
         />
         <StatCard
           label="Chapter"
@@ -78,7 +78,7 @@ export function MomentumAndCtas({
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-2">
-        <Link href="/#mitmachen" className={ctaPrimary}>
+        <Link href={VOG_JOIN_PATH} className={ctaPrimary}>
           Kostenfrei beitreten
         </Link>
 

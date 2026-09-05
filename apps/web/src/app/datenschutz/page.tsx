@@ -1,14 +1,29 @@
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { getPrivacyStrings } from "./strings";
 
-export default async function DatenschutzPage() {
+async function getPageBundle() {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
+  const bundle = await getTranslatedBundle({
     locale,
-    getPrivacyStrings("de"),
-    getPrivacyStrings(locale),
-  );
+    original: getPrivacyStrings("de"),
+    reviewedEnglish: getPrivacyStrings("en"),
+  });
+  return { locale, bundle };
+}
+
+export async function generateMetadata() {
+  const { bundle } = await getPageBundle();
+  return getPublicRouteMetadata("/datenschutz", {
+    title: bundle.value.title,
+    description: bundle.value.intro,
+  });
+}
+
+export default async function DatenschutzPage() {
+  const { bundle } = await getPageBundle();
+  const strings = bundle.value;
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 pb-16 text-slate-100">

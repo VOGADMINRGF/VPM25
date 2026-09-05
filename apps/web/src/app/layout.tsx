@@ -1,16 +1,14 @@
 // E200: Public root layout with locale bootstrap and consent banner.
 import type { Metadata } from "next";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import "./globals.css";
 import "./brand-ci.css";
 import { LocaleProvider } from "@/context/LocaleContext";
 import {
-  DEFAULT_LOCALE,
   REQUIRED_LAUNCH_LOCALES,
   getLocaleConfig,
   getTextDirection,
   type SupportedLocale,
-  isSupportedLocale,
 } from "@/config/locales";
 import { SiteHeader } from "./(components)/SiteHeader";
 import { getPrivacyStrings } from "./privacyStrings";
@@ -20,10 +18,6 @@ import SiteFooter from "@/components/SiteFooter";
 import StructuredData from "@/components/seo/StructuredData";
 import { VOICEOPENGOV_URL } from "@/config/links";
 import { getRequestLocale } from "@/lib/locale";
-import {
-  localeAlternates,
-  localizedCanonicalUrl,
-} from "@/lib/i18n/localeContract";
 
 const META: Partial<
   Record<SupportedLocale, { title: string; description: string; skip: string }>
@@ -69,7 +63,6 @@ const META: Partial<
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestLocale();
   const copy = META[locale] ?? META.en!;
-  const canonical = localizedCanonicalUrl(VOICEOPENGOV_URL, locale);
 
   return {
     metadataBase: new URL(VOICEOPENGOV_URL),
@@ -79,16 +72,11 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | VoiceOpenGov",
     },
     description: copy.description,
-    alternates: {
-      canonical,
-      languages: localeAlternates(VOICEOPENGOV_URL, REQUIRED_LAUNCH_LOCALES),
-    },
     openGraph: {
       type: "website",
       siteName: "VoiceOpenGov",
       title: copy.title,
       description: copy.description,
-      url: canonical,
       locale: getLocaleConfig(locale).bcp47.replace("-", "_"),
     },
     robots: {
@@ -115,7 +103,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const initialLocale = await detectInitialLocale(cookieStore);
+  const initialLocale = await getRequestLocale();
   const initialConsent = parseConsentCookie(
     cookieStore.get(CONSENT_COOKIE_NAME)?.value,
   );
@@ -183,30 +171,4 @@ export default async function RootLayout({
       </body>
     </html>
   );
-}
-
-async function detectInitialLocale(
-  cookieStore: Awaited<ReturnType<typeof cookies>>,
-): Promise<SupportedLocale> {
-  const headerStore = await headers();
-  const routedLocale = headerStore.get("x-vog-locale");
-  if (isSupportedLocale(routedLocale)) return routedLocale;
-
-  const cookieLocale = cookieStore.get("lang")?.value;
-  if (isSupportedLocale(cookieLocale)) return cookieLocale;
-
-  const acceptLanguage = headerStore.get("accept-language");
-  if (acceptLanguage) {
-    const candidates = acceptLanguage
-      .split(",")
-      .map((part) => part.split(";")[0]?.trim())
-      .filter(Boolean);
-
-    for (const candidate of candidates) {
-      const short = candidate?.slice(0, 2).toLowerCase();
-      if (isSupportedLocale(short)) return short;
-    }
-  }
-
-  return DEFAULT_LOCALE;
 }
