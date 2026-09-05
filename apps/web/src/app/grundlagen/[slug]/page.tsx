@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { getGrundlagenStrings } from "../strings";
 import { getGrundlagenSourceEntry } from "../source";
 import { getLatestRelease } from "../versioning";
@@ -11,35 +12,45 @@ import { VOICEOPENGOV_URL } from "@/config/links";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
+async function getPageBundle() {
+  const locale = await getRequestLocale();
+  const bundle = await getTranslatedBundle({
+    locale,
+    original: getGrundlagenStrings("de"),
+    reviewedEnglish: getGrundlagenStrings("en"),
+  });
+  return { locale, bundle };
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const locale = await getRequestLocale();
-
   const entry = getGrundlagenSourceEntry(slug);
   if (!entry) return {};
 
-  const base = VOICEOPENGOV_URL;
-  const canonical = `${base}/grundlagen/${slug}`;
-  const ogImage = `${base}/api/og?type=band&slug=${encodeURIComponent(
+  const metaBundle = await getTranslatedBundle({
+    locale,
+    original: entry.meta,
+  });
+  const baseMetadata = await getPublicRouteMetadata(`/grundlagen/${slug}`, {
+    title: metaBundle.value.title,
+    description: metaBundle.value.description,
+  });
+  const ogImage = `${VOICEOPENGOV_URL}/api/og?type=band&slug=${encodeURIComponent(
     slug,
   )}&locale=${encodeURIComponent(locale)}`;
 
   return {
-    title: entry.meta.title,
-    description: entry.meta.description,
-    alternates: { canonical },
+    ...baseMetadata,
     openGraph: {
-      title: entry.meta.title,
-      description: entry.meta.description,
-      url: canonical,
-      siteName: "VoiceOpenGov",
-      type: "article",
+      ...baseMetadata.openGraph,
+      type: "article" as const,
       images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
-      card: "summary_large_image",
-      title: entry.meta.title,
-      description: entry.meta.description,
+      card: "summary_large_image" as const,
+      title: metaBundle.value.title,
+      description: metaBundle.value.description,
       images: [ogImage],
     },
   };
@@ -47,12 +58,8 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function GrundlagenDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getGrundlagenStrings("de"),
-    getGrundlagenStrings(locale),
-  );
+  const { locale, bundle } = await getPageBundle();
+  const strings = bundle.value;
 
   const entry = getGrundlagenSourceEntry(slug);
   if (!entry) notFound();
