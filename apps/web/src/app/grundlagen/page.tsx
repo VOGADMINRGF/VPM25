@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRequestLocale } from "@/lib/locale";
-import { getAutoTranslatedStrings } from "@/lib/i18n/autoTranslateStrings";
+import { getTranslatedBundle } from "@/lib/i18n/getTranslatedBundle";
+import { getPublicRouteMetadata } from "@/lib/i18n/publicRouteMetadata";
 import { getGrundlagenStrings } from "./strings";
 import { GRUNDLAGEN_BANDS, getBand } from "./bands";
 import { getLatestRelease } from "./versioning";
@@ -23,30 +24,33 @@ function formatDate(locale: string, value?: string) {
   }
 }
 
-export async function generateMetadata() {
+async function getPageBundle() {
   const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
+  const bundle = await getTranslatedBundle({
     locale,
-    getGrundlagenStrings("de"),
-    getGrundlagenStrings(locale),
-  );
-  const base = VOICEOPENGOV_URL;
-  const canonical = `${base}/grundlagen`;
-  const ogImage = `${base}/api/og?type=grundlagen&locale=${encodeURIComponent(locale)}`;
-  return {
+    original: getGrundlagenStrings("de"),
+    reviewedEnglish: getGrundlagenStrings("en"),
+  });
+  return { locale, bundle };
+}
+
+export async function generateMetadata() {
+  const { locale, bundle } = await getPageBundle();
+  const strings = bundle.value;
+  const baseMetadata = await getPublicRouteMetadata("/grundlagen", {
     title: strings.overview.meta.title,
     description: strings.overview.meta.description,
-    alternates: { canonical },
+  });
+  const ogImage = `${VOICEOPENGOV_URL}/api/og?type=grundlagen&locale=${encodeURIComponent(locale)}`;
+
+  return {
+    ...baseMetadata,
     openGraph: {
-      title: strings.overview.meta.title,
-      description: strings.overview.meta.description,
-      url: canonical,
-      siteName: "VoiceOpenGov",
-      type: "website",
+      ...baseMetadata.openGraph,
       images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
-      card: "summary_large_image",
+      card: "summary_large_image" as const,
       title: strings.overview.meta.title,
       description: strings.overview.meta.description,
       images: [ogImage],
@@ -55,12 +59,8 @@ export async function generateMetadata() {
 }
 
 export default async function GrundlagenOverviewPage() {
-  const locale = await getRequestLocale();
-  const strings = await getAutoTranslatedStrings(
-    locale,
-    getGrundlagenStrings("de"),
-    getGrundlagenStrings(locale),
-  );
+  const { locale, bundle } = await getPageBundle();
+  const strings = bundle.value;
 
   const slugs = Object.keys(GRUNDLAGEN_BANDS);
   const entriesBySlug = new Map(strings.entries.map((entry) => [entry.slug, entry]));
